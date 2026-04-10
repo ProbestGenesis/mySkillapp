@@ -1,0 +1,21 @@
+export const profession = [
+  { label: 'Électricien', value: 'Électricien' },
+  { label: 'Électronicien', value: 'Électronicien' },
+  { label: 'Maçon', value: 'Maçon' },
+  { label: 'Charpentier', value: 'Charpentier' },
+  { label: 'Coffreur-ferrailleur', value: 'Coffreur-ferrailleur' },
+  { label: 'Terrassier', value: 'Terrassier' },
+  { label: 'Peintre bâtiment', value: 'Peintre bâtiment' },
+  { label: 'Poseur de revêtement', value: 'Poseur de revêtement' },
+  { label: 'Décorateur intérieur', value: 'Décorateur intérieur' },
+  { label: 'Plombier', value: 'Plombier' },
+  { label: 'Frigoriste', value: 'Frigoriste' },
+  { label: 'Installateur solaire', value: 'Installateur solaire' },
+  { label: 'Technicien domotique', value: 'Technicien domotique' },
+  {
+    label: 'Menuisier (aluminium / bois / PVC)',
+    value: 'Menuisier (aluminium / bois / PVC)',
+  },
+  { label: 'Soudeur / ferronnier', value: 'Soudeur / ferronnier' },
+  { label: 'Agent de voirie', value: 'Agent de voirie' },
+];

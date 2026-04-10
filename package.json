@@ -1,5 +1,6 @@
 {
   "name": "skillmap",
+  "type": "module",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -9,6 +10,7 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "babel-preset-expo": "^55.0.15",
     "prettier": "^3.7.4",
     "turbo": "^2.9.3",
     "typescript": "5.9.2"
@@ -20,5 +22,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "zod": "^4.3.6"
+  }
 }

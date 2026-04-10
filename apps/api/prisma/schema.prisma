@@ -1,0 +1,171 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String     @id
+  name          String
+  email         String
+  emailVerified Boolean    @default(false)
+  image         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  Location      Location[]
+  post Post[]
+  city          String?
+  district      String? 
+  provider      Provider?
+  customer Service[] @relation("CustomerRelation")
+
+  phoneNumber         String?
+  phoneNumberVerified Boolean?
+
+  role String?
+  rate String?
+
+  @@unique([email])
+  @@map("user")
+  @@unique([phoneNumber])
+}
+
+model Location {
+  id       String                               @id
+  user     User                                 @relation(fields: [userId], references: id)
+  userId   String
+  position Unsupported("Geometry(Point,4326)")?
+}
+
+model Provider {
+  id            String  @id @default(uuid())
+  rate          Float   @default(1)
+  bio           String?
+  address       String?
+  profession    String
+  mission_nb    Int     @default(0)
+  reviews_count Int     @default(0)
+  isAvailable   Boolean @default(true)
+  availability  String?
+  location      Json? 
+  average_price Float?
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  post          Post[]
+  service       Service[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  skills    Skills[]
+
+  @@unique([userId])
+}
+
+model Post {
+  id             String    @id @default(uuid())
+  title          String?
+  body           String
+  profession   String 
+  location       Json?
+  notification   Boolean
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  providers      Provider? @relation(fields: [providerId], references: [id])
+  providerId     String?   @unique
+  applyProviders Json[]  @default([])
+  service        Service?
+  user           User      @relation(fields: [userId], references: [id])
+  userId         String
+  status         String?
+  avarage_price  Float?
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  post        Post?     @relation(fields: [postId], references: [id])
+  postId      String?   @unique
+  title       String?
+  description String
+  price       Float?
+  location    Json?
+  district    String?
+  code        String    @default(nanoid(5)) @unique
+  role        String?
+  provider    Provider      @relation(fields: [providerId], references: [id])
+  providerId  String
+  skills      Skills?   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  skillId     String?
+  customer    User      @relation(name: "CustomerRelation", fields: [customerId], references: [id], onDelete: Cascade)
+  customerId  String
+  status      String    @default("pending")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  @@unique([providerId, customerId, code])
+}
+
+model Skills {
+  id            String    @id @default(uuid())
+  provider      Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId    String
+  service       Service[]
+  title         String
+  description   String
+  average_price Float
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
