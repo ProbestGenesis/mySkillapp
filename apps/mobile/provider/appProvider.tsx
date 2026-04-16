@@ -18,10 +18,6 @@ export function AppProvider(props: { children: React.ReactNode }) {
           if(error instanceof TRPCClientError && error.data?.code === 'UNAUTHORIZED') {
             authClient.signOut()
           }
-
-          if(error instanceof TRPCClientError && error.data?.code === "" ){
-            
-          }
           return false
         },
         
@@ -32,7 +28,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          url: 'http://192.168.201.16:4000/trpc',
+          url: 'http://192.168.201.16:4000/trpc/',
           headers() {
             const headers = new Map<string, string>();
             const cookies = authClient.getCookie();
@@ -49,7 +45,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
         {props.children}
-      </TRPCProvider>{' '}
+      </TRPCProvider>
     </QueryClientProvider>
   );
 }

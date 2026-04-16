@@ -49,12 +49,13 @@ export const auth = betterAuth({
   },
   plugins: [
     expo(),
-    customSession(async ({session, user}) => {
+    customSession(async ({ session, user }) => {
       return {
         ...session,
+        expires: session.expiresAt,
         user: {
           ...user,
-          role: 'Customer',
+          role: 'CUSTOMER',
           rate: '0',
           city: '',
           district: '',

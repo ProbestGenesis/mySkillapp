@@ -298,6 +298,7 @@ export type ProviderWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   post?: Prisma.PostListRelationFilter
+  postApplied?: Prisma.PostListRelationFilter
   service?: Prisma.ServiceListRelationFilter
   skills?: Prisma.SkillsListRelationFilter
 }
@@ -319,6 +320,7 @@ export type ProviderOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   post?: Prisma.PostOrderByRelationAggregateInput
+  postApplied?: Prisma.PostOrderByRelationAggregateInput
   service?: Prisma.ServiceOrderByRelationAggregateInput
   skills?: Prisma.SkillsOrderByRelationAggregateInput
 }
@@ -343,6 +345,7 @@ export type ProviderWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   post?: Prisma.PostListRelationFilter
+  postApplied?: Prisma.PostListRelationFilter
   service?: Prisma.ServiceListRelationFilter
   skills?: Prisma.SkillsListRelationFilter
 }, "id" | "userId">
@@ -405,6 +408,7 @@ export type ProviderCreateInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProviderInput
   post?: Prisma.PostCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceCreateNestedManyWithoutProviderInput
   skills?: Prisma.SkillsCreateNestedManyWithoutProviderInput
 }
@@ -425,6 +429,7 @@ export type ProviderUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   post?: Prisma.PostUncheckedCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostUncheckedCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
   skills?: Prisma.SkillsUncheckedCreateNestedManyWithoutProviderInput
 }
@@ -445,6 +450,7 @@ export type ProviderUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProviderNestedInput
   post?: Prisma.PostUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
   skills?: Prisma.SkillsUpdateManyWithoutProviderNestedInput
 }
@@ -465,6 +471,7 @@ export type ProviderUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.PostUncheckedUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUncheckedUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
   skills?: Prisma.SkillsUncheckedUpdateManyWithoutProviderNestedInput
 }
@@ -587,6 +594,16 @@ export type ProviderSumOrderByAggregateInput = {
   average_price?: Prisma.SortOrder
 }
 
+export type ProviderListRelationFilter = {
+  every?: Prisma.ProviderWhereInput
+  some?: Prisma.ProviderWhereInput
+  none?: Prisma.ProviderWhereInput
+}
+
+export type ProviderOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type ProviderScalarRelationFilter = {
   is?: Prisma.ProviderWhereInput
   isNot?: Prisma.ProviderWhereInput
@@ -654,6 +671,18 @@ export type ProviderCreateNestedOneWithoutPostInput = {
   connect?: Prisma.ProviderWhereUniqueInput
 }
 
+export type ProviderCreateNestedManyWithoutPostAppliedInput = {
+  create?: Prisma.XOR<Prisma.ProviderCreateWithoutPostAppliedInput, Prisma.ProviderUncheckedCreateWithoutPostAppliedInput> | Prisma.ProviderCreateWithoutPostAppliedInput[] | Prisma.ProviderUncheckedCreateWithoutPostAppliedInput[]
+  connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutPostAppliedInput | Prisma.ProviderCreateOrConnectWithoutPostAppliedInput[]
+  connect?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+}
+
+export type ProviderUncheckedCreateNestedManyWithoutPostAppliedInput = {
+  create?: Prisma.XOR<Prisma.ProviderCreateWithoutPostAppliedInput, Prisma.ProviderUncheckedCreateWithoutPostAppliedInput> | Prisma.ProviderCreateWithoutPostAppliedInput[] | Prisma.ProviderUncheckedCreateWithoutPostAppliedInput[]
+  connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutPostAppliedInput | Prisma.ProviderCreateOrConnectWithoutPostAppliedInput[]
+  connect?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+}
+
 export type ProviderUpdateOneWithoutPostNestedInput = {
   create?: Prisma.XOR<Prisma.ProviderCreateWithoutPostInput, Prisma.ProviderUncheckedCreateWithoutPostInput>
   connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutPostInput
@@ -662,6 +691,32 @@ export type ProviderUpdateOneWithoutPostNestedInput = {
   delete?: Prisma.ProviderWhereInput | boolean
   connect?: Prisma.ProviderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProviderUpdateToOneWithWhereWithoutPostInput, Prisma.ProviderUpdateWithoutPostInput>, Prisma.ProviderUncheckedUpdateWithoutPostInput>
+}
+
+export type ProviderUpdateManyWithoutPostAppliedNestedInput = {
+  create?: Prisma.XOR<Prisma.ProviderCreateWithoutPostAppliedInput, Prisma.ProviderUncheckedCreateWithoutPostAppliedInput> | Prisma.ProviderCreateWithoutPostAppliedInput[] | Prisma.ProviderUncheckedCreateWithoutPostAppliedInput[]
+  connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutPostAppliedInput | Prisma.ProviderCreateOrConnectWithoutPostAppliedInput[]
+  upsert?: Prisma.ProviderUpsertWithWhereUniqueWithoutPostAppliedInput | Prisma.ProviderUpsertWithWhereUniqueWithoutPostAppliedInput[]
+  set?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  disconnect?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  delete?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  connect?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  update?: Prisma.ProviderUpdateWithWhereUniqueWithoutPostAppliedInput | Prisma.ProviderUpdateWithWhereUniqueWithoutPostAppliedInput[]
+  updateMany?: Prisma.ProviderUpdateManyWithWhereWithoutPostAppliedInput | Prisma.ProviderUpdateManyWithWhereWithoutPostAppliedInput[]
+  deleteMany?: Prisma.ProviderScalarWhereInput | Prisma.ProviderScalarWhereInput[]
+}
+
+export type ProviderUncheckedUpdateManyWithoutPostAppliedNestedInput = {
+  create?: Prisma.XOR<Prisma.ProviderCreateWithoutPostAppliedInput, Prisma.ProviderUncheckedCreateWithoutPostAppliedInput> | Prisma.ProviderCreateWithoutPostAppliedInput[] | Prisma.ProviderUncheckedCreateWithoutPostAppliedInput[]
+  connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutPostAppliedInput | Prisma.ProviderCreateOrConnectWithoutPostAppliedInput[]
+  upsert?: Prisma.ProviderUpsertWithWhereUniqueWithoutPostAppliedInput | Prisma.ProviderUpsertWithWhereUniqueWithoutPostAppliedInput[]
+  set?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  disconnect?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  delete?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  connect?: Prisma.ProviderWhereUniqueInput | Prisma.ProviderWhereUniqueInput[]
+  update?: Prisma.ProviderUpdateWithWhereUniqueWithoutPostAppliedInput | Prisma.ProviderUpdateWithWhereUniqueWithoutPostAppliedInput[]
+  updateMany?: Prisma.ProviderUpdateManyWithWhereWithoutPostAppliedInput | Prisma.ProviderUpdateManyWithWhereWithoutPostAppliedInput[]
+  deleteMany?: Prisma.ProviderScalarWhereInput | Prisma.ProviderScalarWhereInput[]
 }
 
 export type ProviderCreateNestedOneWithoutServiceInput = {
@@ -707,6 +762,7 @@ export type ProviderCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   post?: Prisma.PostCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceCreateNestedManyWithoutProviderInput
   skills?: Prisma.SkillsCreateNestedManyWithoutProviderInput
 }
@@ -726,6 +782,7 @@ export type ProviderUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   post?: Prisma.PostUncheckedCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostUncheckedCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
   skills?: Prisma.SkillsUncheckedCreateNestedManyWithoutProviderInput
 }
@@ -761,6 +818,7 @@ export type ProviderUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.PostUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
   skills?: Prisma.SkillsUpdateManyWithoutProviderNestedInput
 }
@@ -780,6 +838,7 @@ export type ProviderUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.PostUncheckedUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUncheckedUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
   skills?: Prisma.SkillsUncheckedUpdateManyWithoutProviderNestedInput
 }
@@ -799,6 +858,7 @@ export type ProviderCreateWithoutPostInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProviderInput
+  postApplied?: Prisma.PostCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceCreateNestedManyWithoutProviderInput
   skills?: Prisma.SkillsCreateNestedManyWithoutProviderInput
 }
@@ -818,6 +878,7 @@ export type ProviderUncheckedCreateWithoutPostInput = {
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  postApplied?: Prisma.PostUncheckedCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
   skills?: Prisma.SkillsUncheckedCreateNestedManyWithoutProviderInput
 }
@@ -825,6 +886,51 @@ export type ProviderUncheckedCreateWithoutPostInput = {
 export type ProviderCreateOrConnectWithoutPostInput = {
   where: Prisma.ProviderWhereUniqueInput
   create: Prisma.XOR<Prisma.ProviderCreateWithoutPostInput, Prisma.ProviderUncheckedCreateWithoutPostInput>
+}
+
+export type ProviderCreateWithoutPostAppliedInput = {
+  id?: string
+  rate?: number
+  bio?: string | null
+  address?: string | null
+  profession: string
+  mission_nb?: number
+  reviews_count?: number
+  isAvailable?: boolean
+  availability?: string | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  average_price?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProviderInput
+  post?: Prisma.PostCreateNestedManyWithoutProvidersInput
+  service?: Prisma.ServiceCreateNestedManyWithoutProviderInput
+  skills?: Prisma.SkillsCreateNestedManyWithoutProviderInput
+}
+
+export type ProviderUncheckedCreateWithoutPostAppliedInput = {
+  id?: string
+  rate?: number
+  bio?: string | null
+  address?: string | null
+  profession: string
+  mission_nb?: number
+  reviews_count?: number
+  isAvailable?: boolean
+  availability?: string | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  average_price?: number | null
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  post?: Prisma.PostUncheckedCreateNestedManyWithoutProvidersInput
+  service?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
+  skills?: Prisma.SkillsUncheckedCreateNestedManyWithoutProviderInput
+}
+
+export type ProviderCreateOrConnectWithoutPostAppliedInput = {
+  where: Prisma.ProviderWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProviderCreateWithoutPostAppliedInput, Prisma.ProviderUncheckedCreateWithoutPostAppliedInput>
 }
 
 export type ProviderUpsertWithoutPostInput = {
@@ -853,6 +959,7 @@ export type ProviderUpdateWithoutPostInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProviderNestedInput
+  postApplied?: Prisma.PostUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
   skills?: Prisma.SkillsUpdateManyWithoutProviderNestedInput
 }
@@ -872,8 +979,45 @@ export type ProviderUncheckedUpdateWithoutPostInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postApplied?: Prisma.PostUncheckedUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
   skills?: Prisma.SkillsUncheckedUpdateManyWithoutProviderNestedInput
+}
+
+export type ProviderUpsertWithWhereUniqueWithoutPostAppliedInput = {
+  where: Prisma.ProviderWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProviderUpdateWithoutPostAppliedInput, Prisma.ProviderUncheckedUpdateWithoutPostAppliedInput>
+  create: Prisma.XOR<Prisma.ProviderCreateWithoutPostAppliedInput, Prisma.ProviderUncheckedCreateWithoutPostAppliedInput>
+}
+
+export type ProviderUpdateWithWhereUniqueWithoutPostAppliedInput = {
+  where: Prisma.ProviderWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProviderUpdateWithoutPostAppliedInput, Prisma.ProviderUncheckedUpdateWithoutPostAppliedInput>
+}
+
+export type ProviderUpdateManyWithWhereWithoutPostAppliedInput = {
+  where: Prisma.ProviderScalarWhereInput
+  data: Prisma.XOR<Prisma.ProviderUpdateManyMutationInput, Prisma.ProviderUncheckedUpdateManyWithoutPostAppliedInput>
+}
+
+export type ProviderScalarWhereInput = {
+  AND?: Prisma.ProviderScalarWhereInput | Prisma.ProviderScalarWhereInput[]
+  OR?: Prisma.ProviderScalarWhereInput[]
+  NOT?: Prisma.ProviderScalarWhereInput | Prisma.ProviderScalarWhereInput[]
+  id?: Prisma.StringFilter<"Provider"> | string
+  rate?: Prisma.FloatFilter<"Provider"> | number
+  bio?: Prisma.StringNullableFilter<"Provider"> | string | null
+  address?: Prisma.StringNullableFilter<"Provider"> | string | null
+  profession?: Prisma.StringFilter<"Provider"> | string
+  mission_nb?: Prisma.IntFilter<"Provider"> | number
+  reviews_count?: Prisma.IntFilter<"Provider"> | number
+  isAvailable?: Prisma.BoolFilter<"Provider"> | boolean
+  availability?: Prisma.StringNullableFilter<"Provider"> | string | null
+  location?: Prisma.JsonNullableFilter<"Provider">
+  average_price?: Prisma.FloatNullableFilter<"Provider"> | number | null
+  userId?: Prisma.StringFilter<"Provider"> | string
+  createdAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
 }
 
 export type ProviderCreateWithoutServiceInput = {
@@ -892,6 +1036,7 @@ export type ProviderCreateWithoutServiceInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProviderInput
   post?: Prisma.PostCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostCreateNestedManyWithoutApplyProvidersInput
   skills?: Prisma.SkillsCreateNestedManyWithoutProviderInput
 }
 
@@ -911,6 +1056,7 @@ export type ProviderUncheckedCreateWithoutServiceInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   post?: Prisma.PostUncheckedCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostUncheckedCreateNestedManyWithoutApplyProvidersInput
   skills?: Prisma.SkillsUncheckedCreateNestedManyWithoutProviderInput
 }
 
@@ -946,6 +1092,7 @@ export type ProviderUpdateWithoutServiceInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProviderNestedInput
   post?: Prisma.PostUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUpdateManyWithoutApplyProvidersNestedInput
   skills?: Prisma.SkillsUpdateManyWithoutProviderNestedInput
 }
 
@@ -965,6 +1112,7 @@ export type ProviderUncheckedUpdateWithoutServiceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.PostUncheckedUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUncheckedUpdateManyWithoutApplyProvidersNestedInput
   skills?: Prisma.SkillsUncheckedUpdateManyWithoutProviderNestedInput
 }
 
@@ -984,6 +1132,7 @@ export type ProviderCreateWithoutSkillsInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProviderInput
   post?: Prisma.PostCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceCreateNestedManyWithoutProviderInput
 }
 
@@ -1003,6 +1152,7 @@ export type ProviderUncheckedCreateWithoutSkillsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   post?: Prisma.PostUncheckedCreateNestedManyWithoutProvidersInput
+  postApplied?: Prisma.PostUncheckedCreateNestedManyWithoutApplyProvidersInput
   service?: Prisma.ServiceUncheckedCreateNestedManyWithoutProviderInput
 }
 
@@ -1038,6 +1188,7 @@ export type ProviderUpdateWithoutSkillsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProviderNestedInput
   post?: Prisma.PostUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
 }
 
@@ -1057,7 +1208,65 @@ export type ProviderUncheckedUpdateWithoutSkillsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.PostUncheckedUpdateManyWithoutProvidersNestedInput
+  postApplied?: Prisma.PostUncheckedUpdateManyWithoutApplyProvidersNestedInput
   service?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
+}
+
+export type ProviderUpdateWithoutPostAppliedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  mission_nb?: Prisma.IntFieldUpdateOperationsInput | number
+  reviews_count?: Prisma.IntFieldUpdateOperationsInput | number
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProviderNestedInput
+  post?: Prisma.PostUpdateManyWithoutProvidersNestedInput
+  service?: Prisma.ServiceUpdateManyWithoutProviderNestedInput
+  skills?: Prisma.SkillsUpdateManyWithoutProviderNestedInput
+}
+
+export type ProviderUncheckedUpdateWithoutPostAppliedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  mission_nb?: Prisma.IntFieldUpdateOperationsInput | number
+  reviews_count?: Prisma.IntFieldUpdateOperationsInput | number
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  post?: Prisma.PostUncheckedUpdateManyWithoutProvidersNestedInput
+  service?: Prisma.ServiceUncheckedUpdateManyWithoutProviderNestedInput
+  skills?: Prisma.SkillsUncheckedUpdateManyWithoutProviderNestedInput
+}
+
+export type ProviderUncheckedUpdateManyWithoutPostAppliedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  mission_nb?: Prisma.IntFieldUpdateOperationsInput | number
+  reviews_count?: Prisma.IntFieldUpdateOperationsInput | number
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -1067,12 +1276,14 @@ export type ProviderUncheckedUpdateWithoutSkillsInput = {
 
 export type ProviderCountOutputType = {
   post: number
+  postApplied: number
   service: number
   skills: number
 }
 
 export type ProviderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | ProviderCountOutputTypeCountPostArgs
+  postApplied?: boolean | ProviderCountOutputTypeCountPostAppliedArgs
   service?: boolean | ProviderCountOutputTypeCountServiceArgs
   skills?: boolean | ProviderCountOutputTypeCountSkillsArgs
 }
@@ -1091,6 +1302,13 @@ export type ProviderCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
  * ProviderCountOutputType without action
  */
 export type ProviderCountOutputTypeCountPostArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PostWhereInput
+}
+
+/**
+ * ProviderCountOutputType without action
+ */
+export type ProviderCountOutputTypeCountPostAppliedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PostWhereInput
 }
 
@@ -1126,6 +1344,7 @@ export type ProviderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   post?: boolean | Prisma.Provider$postArgs<ExtArgs>
+  postApplied?: boolean | Prisma.Provider$postAppliedArgs<ExtArgs>
   service?: boolean | Prisma.Provider$serviceArgs<ExtArgs>
   skills?: boolean | Prisma.Provider$skillsArgs<ExtArgs>
   _count?: boolean | Prisma.ProviderCountOutputTypeDefaultArgs<ExtArgs>
@@ -1188,6 +1407,7 @@ export type ProviderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ProviderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   post?: boolean | Prisma.Provider$postArgs<ExtArgs>
+  postApplied?: boolean | Prisma.Provider$postAppliedArgs<ExtArgs>
   service?: boolean | Prisma.Provider$serviceArgs<ExtArgs>
   skills?: boolean | Prisma.Provider$skillsArgs<ExtArgs>
   _count?: boolean | Prisma.ProviderCountOutputTypeDefaultArgs<ExtArgs>
@@ -1204,6 +1424,7 @@ export type $ProviderPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     post: Prisma.$PostPayload<ExtArgs>[]
+    postApplied: Prisma.$PostPayload<ExtArgs>[]
     service: Prisma.$ServicePayload<ExtArgs>[]
     skills: Prisma.$SkillsPayload<ExtArgs>[]
   }
@@ -1618,6 +1839,7 @@ export interface Prisma__ProviderClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   post<T extends Prisma.Provider$postArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Provider$postArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  postApplied<T extends Prisma.Provider$postAppliedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Provider$postAppliedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   service<T extends Prisma.Provider$serviceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Provider$serviceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   skills<T extends Prisma.Provider$skillsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Provider$skillsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SkillsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2067,6 +2289,30 @@ export type ProviderDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
  * Provider.post
  */
 export type Provider$postArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Post
+   */
+  select?: Prisma.PostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Post
+   */
+  omit?: Prisma.PostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostInclude<ExtArgs> | null
+  where?: Prisma.PostWhereInput
+  orderBy?: Prisma.PostOrderByWithRelationInput | Prisma.PostOrderByWithRelationInput[]
+  cursor?: Prisma.PostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * Provider.postApplied
+ */
+export type Provider$postAppliedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Post
    */

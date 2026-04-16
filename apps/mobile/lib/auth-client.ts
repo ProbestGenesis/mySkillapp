@@ -4,6 +4,19 @@ import { phoneNumberClient, customSessionClient } from "better-auth/client/plugi
 import { Auth } from "../../api/auth";
 import * as SecureStore from "expo-secure-store";
 
+const secureStoreWrapper = {
+  getItem: async (key: string) => {
+    return await SecureStore.getItemAsync(key);
+  },
+  setItem: async (key: string, value: string) => {
+    await SecureStore.setItemAsync(key, value);
+  },
+  removeItem: async (key: string) => {
+    await SecureStore.deleteItemAsync(key);
+  },
+};
+
+
 export const authClient = createAuthClient({
     baseURL:  "http://192.168.201.16:4000", // Base URL of your Better Auth backend.
     plugins: [
@@ -17,4 +30,4 @@ export const authClient = createAuthClient({
     ]
 });
 
-export const { useSession, signIn, signUp, signOut, phoneNumber, updateUser, changeEmail } = authClient;
+export const { useSession, signIn, signUp, signOut, phoneNumber, updateUser, changeEmail } =  authClient;

@@ -7,6 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "skillmap",
     "userInterfaceStyle": "automatic",
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -19,10 +20,16 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.genesiscorp.skillmap",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -57,10 +64,18 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
-      ]
+      ],
+      "expo-web-browser",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "owner": "genesis-corp",
+    "extra": {
+      "eas": {
+        "projectId": "3961fb8c-2232-446f-a414-aad27ecfe046"
+      }
     }
   }
 }

@@ -1174,10 +1174,10 @@ export const PostScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   providerId: 'providerId',
-  applyProviders: 'applyProviders',
   userId: 'userId',
   status: 'status',
-  avarage_price: 'avarage_price'
+  offered_Price: 'offered_Price',
+  average_price: 'average_price'
 } as const
 
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
@@ -1387,9 +1387,16 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'Json[]'
+ * Reference to a field of type 'STATUSPOST'
  */
-export type ListJsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json[]'>
+export type EnumSTATUSPOSTFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'STATUSPOST'>
+    
+
+
+/**
+ * Reference to a field of type 'STATUSPOST[]'
+ */
+export type ListEnumSTATUSPOSTFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'STATUSPOST[]'>
     
 
 /**

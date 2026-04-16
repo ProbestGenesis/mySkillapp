@@ -4,19 +4,18 @@ import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Link, useRouter } from 'expo-router';
-import { supabase } from '@/lib/supabase';
+import { useRouter } from 'expo-router';
 import clsx from 'clsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTRPC } from '@/provider/appProvider';
 
 type Props = {};
 function ProfilPicture({}: Props) {
   const { data: session } = authClient.useSession();
-  const authToken = authClient.useSession().data?.token;
   const queryClient = useQueryClient();
   const router = useRouter();
+  const trpc = useTRPC();
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
-  const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState<{
     message: string | undefined;
     status: number | null;
@@ -27,61 +26,41 @@ function ProfilPicture({}: Props) {
       mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.7,
+      base64: true,
     });
 
     if (!result.canceled) {
       setImage(result.assets[0]);
-      console.log(result.assets[0]);
     }
   };
 
-  const uploadImage = async () => {
-    if (!image?.uri) return;
-    setUploading(true);
-
-    const formData = new FormData();
-
-    const file = {
-      uri: image.uri,
-      type: image.mimeType || 'image/jpeg', 
-      name: image.fileName || 'image.jpg',
-    };
-    //@ts-ignore
-    formData.append('file', file);
-    formData.append('fileName', file.name);
-
-    const response = await fetch(
-      `${process.env.EXPO_PUBLIC_SERVER_URL}/pictureProfilUpdate`,
-      {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Authorization": `Bearer ${authToken}`
-        }
-      }
-    );
-    
-    const { message, status } = await response.json();
-    console.log(message);
-    setSuccess({ message, status });
-    setUploading(false);
-    setTimeout(() => {
-      router.back();
-    }, 1000);
-  };
-
   const profilMutation = useMutation({
-    mutationFn: uploadImage,
-    onSuccess: () => {
-      (queryClient.invalidateQueries({
-        queryKey: ['userProviderInfo'],
-      }),
-        queryClient.invalidateQueries({
-          queryKey: ['bestProvider'],
-        }));
+    ...trpc.user.updateProfilePicture.mutationOptions(),
+    onSuccess: async (data) => {
+      await authClient.updateUser({
+        image: data.imageUrl,
+      });
+      setSuccess({ message: data.message, status: 200 });
+      queryClient.invalidateQueries({ queryKey: ['userProviderInfo'] });
+      setTimeout(() => {
+        router.back();
+      }, 1000);
+    },
+    onError: (error) => {
+      setSuccess({ message: error.message || "Une erreur s'est produite", status: 500 });
     },
   });
+
+  const handleUpload = () => {
+    if (!image?.base64) return;
+
+    profilMutation.mutate({
+      base64: image.base64,
+      mimeType: image.mimeType || 'image/jpeg',
+      fileName: image.fileName || 'image.jpg',
+    });
+  };
 
   return (
     <View className="relative mt-2 h-full flex-col items-center justify-center gap-6 pt-8">
@@ -104,16 +83,16 @@ function ProfilPicture({}: Props) {
       <View className="mt-12">
         <Button
           className="rounded-full"
-          onPress={() => profilMutation.mutate()}
-          disabled={uploading}>
-          {uploading ? <ActivityIndicator size={24} color={"white"} />  : <Text className="text-lg font-bold text-white"> Continuer</Text>}
+          onPress={handleUpload}
+          disabled={profilMutation.isPending || !image?.base64}>
+          {profilMutation.isPending ? <ActivityIndicator size={24} color={"white"} />  : <Text className="text-lg font-bold text-white"> Continuer</Text>}
         </Button>
       </View>
 
       <View className="mt-12">
         <Text
           className={clsx('font-bold', {
-            'text-destructive': success.status !== 200,
+            'text-destructive': success.status !== 200 && success.status !== null,
             'text-green-600': success.status === 200,
           })}>
           {success.message}

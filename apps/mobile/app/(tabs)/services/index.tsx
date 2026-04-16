@@ -7,106 +7,137 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 import { secretCode } from '@/lib/zodSchema';
 
+import { useTRPC } from '@/provider/appProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clsx } from 'clsx';
-import { Redirect, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { AlertCircle, CalendarClock, Check, Locate, QrCode, UserIcon } from 'lucide-react-native';
-import React, { useState } from 'react';
-import { useTRPC } from '@/provider/appProvider';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  ActivityIndicator,
-  FlatList,
-  KeyboardAvoidingView,
-  Linking,
-  Platform,
-  Text,
-  View,
-} from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
-
+import { Star } from 'lucide-react-native';
+import { TouchableOpacity } from 'react-native';
 
 type DialogType = 'CARE' | 'CANCEL' | 'FINISH' | 'RATE' | null;
 
-const StatusIcon = ({ status }: { status: 'success' | 'error' | 'idle' }) => {
-  if (status === 'success') return <Check stroke={'green'} strokeWidth={2.5} size={48} />;
-  if (status === 'error') return <AlertCircle stroke={'red'} strokeWidth={2.5} size={48} />;
-  return null;
+const RatingStars = ({
+  rating,
+  onRatingChange,
+}: {
+  rating: number;
+  onRatingChange: (r: number) => void;
+}) => {
+  return (
+    <View className="flex-row justify-center gap-2 py-4">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <TouchableOpacity key={star} onPress={() => onRatingChange(star)}>
+          <Star
+            size={32}
+            fill={star <= rating ? '#EAB308' : 'transparent'}
+            color={star <= rating ? '#EAB308' : '#A3A3A3'}
+          />
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
+
+const StatusBadge = ({ status }: { status: string }) => {
+  const getStatusConfig = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return { label: 'En attente', color: 'text-destructive', bg: 'bg-destructive/10' };
+      case 'in_progress':
+        return { label: 'En cours', color: 'text-yellow-600', bg: 'bg-yellow-50' };
+      case 'completed':
+        return { label: 'Terminé', color: 'text-green-600', bg: 'bg-green-50' };
+      case 'cancelled':
+        return { label: 'Annulé', color: 'text-muted-foreground', bg: 'bg-muted' };
+      default:
+        return { label: status, color: 'text-foreground', bg: 'bg-muted' };
+    }
+  };
+
+  const config = getStatusConfig(status);
+  return (
+    <View className={clsx('rounded-full px-2 py-0.5', config.bg)}>
+      <Text className={clsx('text-xs font-medium', config.color)}>{config.label}</Text>
+    </View>
+  );
 };
 
 export default function ServiceListScreen() {
   const queryClient = useQueryClient();
-  const trpc = useTRPC()
-  const router = useRouter()
+  const trpc = useTRPC();
+  const router = useRouter();
   const { data: session, isPending: sessionPending } = authClient.useSession();
 
   const [activeDialog, setActiveDialog] = useState<DialogType>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [rating, setRating] = useState(5);
 
-  
- const {data, isLoading, error } = useQuery(trpc.service.getYoursServices.queryOptions({
-  userId: session?.user.id as string
-}))
+  const { data, isLoading, refetch, isRefetching } = useQuery({
+    ...trpc.service.getYoursServices.queryOptions(),
+    enabled: !!session?.user.id,
+  });
 
-  type DataType = typeof data
-
-  const openDialog = (item: DataType, type: DialogType) => {
+  const openDialog = (item: any, type: DialogType) => {
+    setSelectedItem(item);
     setActiveDialog(type);
     setDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
-
     setTimeout(() => {
       setActiveDialog(null);
       setSelectedItem(null);
       resetForm();
+      setRating(5);
     }, 300);
   };
 
-  const careMutation = useMutation({
-    mutationFn: async ({serviceId, providerId}: {serviceId: string, providerId: string}) => {
-      console.log(providerId)
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_SERVER_URL}/api/user/${session?.user.id}/providers/provider/${providerId}/service/${serviceId}/careService`,
-        { method: 'PUT' }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      return data;
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['services'] }),
-  });
+  const careMutation = useMutation(
+    trpc.service.careService.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+      },
+    })
+  );
 
-  // 2. Mutation: Annulation
-  const cancelMutation = useMutation({
-    mutationFn: async ({serviceId, providerId}: {serviceId: string, providerId: string}) => {
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_SERVER_URL}/api/user/${session?.user.id}/providers/provider/${providerId}/service/${serviceId}/cancelService`,
-        { method: 'PUT' }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      return data;
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['services'] }),
-  });
+  const cancelMutation = useMutation(
+    trpc.service.cancelService.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+      },
+    })
+  );
 
-  // 3. Mutation: Terminer (Code)
+  const finishMutation = useMutation(
+    trpc.service.confirmService.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+      },
+    })
+  );
+
+  const rateMutation = useMutation(
+    trpc.service.rateService.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+        handleCloseDialog();
+      },
+    })
+  );
+
   const {
     control,
     handleSubmit,
@@ -115,142 +146,110 @@ export default function ServiceListScreen() {
     resolver: zodResolver(secretCode),
   });
 
-  const finishMutation = useMutation({
-    mutationFn: async ({ code, serviceId, providerId }: { code: string; serviceId: string, providerId: string }) => {
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_SERVER_URL}/api/user/${session?.user.id}/providers/provider/${providerId}/service/${serviceId}/finishService`,
-        {
-          method: 'POST',
-          body: JSON.stringify({ code, id: session?.user?.id }),
-        }
-      );
-      const data = await res.json();
-      if (!res.ok || res.status !== 200) throw new Error(data.message || 'Code invalide');
-      return data;
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['services'] }),
-  });
-
-  if (!sessionPending && !session) return <Redirect href="/auth" />;
-
-  // --- RENDER ITEM (UI PURE) ---
-  const renderItem = ({ item }: { item: DataType }) => {
-    const role = session?.user.role
-    if(!item){
-      return null
+  useEffect(() => {
+    if (!session) {
+      router.push('/auth');
     }
+
+    return;
+  }, [session]);
+
+  const renderItem = ({ item }: { item: any }) => {
+    const role = session?.user.role;
+    if (!item) return null;
+
     return (
-      <Card className="mx-2 my-2">
-        <CardHeader className="p-2">
-          <View className="absolute top-1 left-1 mb-1 px-4">
-            <Text className="text-lg font-bold">
-               {role === 'Customer' ? '🧑‍💼 Client' : '👷 Prestataire'}
-            </Text>
+      <Card className="mx-2 my-2 overflow-hidden border-none shadow-sm">
+        <View
+          className={clsx('h-1 w-full', {
+            'bg-destructive': item.status === 'pending',
+            'bg-yellow-500': item.status === 'in_progress',
+            'bg-green-500': item.status === 'completed',
+            'bg-muted': item.status === 'cancelled',
+          })}
+        />
+        <CardHeader className="flex-row items-start justify-between p-4">
+          <View className="flex-1">
+            <CardTitle className="text-lg font-bold">
+              {item.skills?.title || item.title || 'Service sans titre'}
+            </CardTitle>
+            <CardDescription className="mt-1 line-clamp-2">{item.description}</CardDescription>
           </View>
-          {item?.skills && (
-            <>
-              {' '}
-              <CardTitle className="mt-8">
-                <Text>{item?.skills?.title || item.title}</Text>
-              </CardTitle>
-              <CardDescription>
-                <Text>{item?.description}</Text>
-              </CardDescription>
-            </>
-          )}
+          <StatusBadge status={item.status} />
         </CardHeader>
 
-        <CardContent className="flex-col gap-2 py-0">
-          {/* Info Location */}
-          <View className="flex-row flex-wrap items-center gap-2">
-            <View className="flex-row items-center">
-              <Locate size={16} className="mr-1" />
-              <Text>{item.district ? item.district : `Quartier non ajouté`}</Text>
+        <CardContent className="gap-3 px-4 py-0">
+          <View className="flex-row items-center gap-2">
+            <View className="bg-primary/10 flex-row items-center rounded-full px-2 py-1">
+              <UserIcon size={12} className="text-primary mr-1" />
+              <Text className="text-primary text-xs font-semibold">
+                {role === 'Customer' ? 'Prestataire' : 'Client'}: {item.provider.user.name}
+              </Text>
             </View>
-            {role === 'Provider' && item.status === 'in_progress' && item.location && (
-              <Button
-                variant="link"
-                size="sm"
-                className="h-auto p-0"
-                onPress={() =>
-                  router.push("/(tabs)/home/map")
-                }>
-                <Text className="text-primary underline">Voir la carte</Text>
-              </Button>
-            )}
-          </View>
-
-          {/* Info Date & User */}
-          <View className="flex-row items-center gap-2">
-            <CalendarClock size={16} />
-            <Text className="text-muted-foreground text-xs">
-              {new Date(item.createdAt).toLocaleDateString()} à{' '}
-              {new Date(item.createdAt).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </Text>
+            <View className="bg-muted flex-row items-center rounded-full px-2 py-1">
+              <CalendarClock size={12} className="text-muted-foreground mr-1" />
+              <Text className="text-muted-foreground text-xs">
+                {new Date(item.createdAt).toLocaleDateString()}
+              </Text>
+            </View>
           </View>
 
           <View className="flex-row items-center gap-2">
-            <UserIcon size={16} />
-            <Text className="text-sm">
-              {role === 'Provider'
-                ? `Client: ${item.provider.user.name}`
-                : `Prestataire: ${item.provider.user.name}`}
+            <Locate size={14} className="text-muted-foreground" />
+            <Text className="text-muted-foreground text-sm">
+              {item.district || 'Quartier non renseigné'}
             </Text>
           </View>
 
-          {role === 'Customer' && item.code && (
-            <View className="bg-muted/30 mt-1 flex-row items-center rounded-md p-2">
-              <Text className="mr-2 text-sm">Code secret:</Text>
-              <Text className="text-lg font-bold tracking-widest">{item.code}</Text>
+          {role === 'Customer' && item.code && item.status !== 'completed' && (
+            <View className="bg-primary/5 border-primary/20 mt-1 flex-row items-center justify-between rounded-xl border p-3">
+              <View>
+                <Text className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
+                  Code de confirmation
+                </Text>
+                <Text className="text-primary text-xl font-bold tracking-[6px]">{item.code}</Text>
+              </View>
+              <QrCode size="24" className="text-primary opacity-50" />
             </View>
           )}
-
-          <Text
-            className={clsx('mt-1 font-medium', {
-              'text-destructive': item.status === 'pending',
-              'text-yellow-600': item.status === 'in_progress',
-              'text-green-600': item.status === 'finished',
-            })}>
-            Statut: {item.status === 'in_progress' ? 'En cours' : item.status}
-          </Text>
         </CardContent>
 
-        <CardFooter className="flex-row justify-end gap-2">
-
-        {/* Bouton Annuler (Pour les deux si pending) */}
-          {item.status === 'pending' && (
+        <CardFooter className="flex-row justify-end gap-2 p-4">
+          {item.status !== 'completed' && item.status !== 'cancelled' && (
             <Button
-              variant="destructive"
-              className="rounded-full"
+              variant="outline"
+              size="sm"
+              className="border-destructive/20 rounded-full"
               onPress={() => openDialog(item, 'CANCEL')}>
-              <Text className="text-white">Annuler</Text>
+              <Text className="text-destructive text-xs">Annuler</Text>
             </Button>
           )}
 
-          {/* Logique des Boutons déclencheurs */}
           {role === 'Provider' && item.status === 'pending' && (
-            <Button className="rounded-full" onPress={() => openDialog(item, 'CARE')}>
-              <Text className="text-white">Prendre en charge</Text>
+            <Button
+              size="sm"
+              className="rounded-full px-6"
+              onPress={() => openDialog(item, 'CARE')}>
+              <Text className="text-xs font-bold text-white">Accepter</Text>
             </Button>
           )}
 
           {role === 'Provider' && item.status === 'in_progress' && (
-            <Button className="rounded-full" onPress={() => openDialog(item, 'FINISH')}>
-              <Text className="text-white">Terminer la mission</Text>
+            <Button
+              size="sm"
+              className="rounded-full px-6"
+              onPress={() => openDialog(item, 'FINISH')}>
+              <Text className="text-xs font-bold text-white">Terminer</Text>
             </Button>
           )}
 
-      
-
-          {item.status === 'finished' && (
+          {role === 'Customer' && item.status === 'completed' && (
             <Button
-              className="rounded-full"
+              size="sm"
               variant="outline"
+              className="border-primary rounded-full px-6"
               onPress={() => openDialog(item, 'RATE')}>
-              <Text>Noter</Text>
+              <Text className="text-primary text-xs font-bold">Noter l'expérience</Text>
             </Button>
           )}
         </CardFooter>
@@ -258,230 +257,182 @@ export default function ServiceListScreen() {
     );
   };
 
-  // --- RENDER DIALOG CONTENT (Logique conditionnelle propre) ---
   const renderDialogContent = () => {
     if (!selectedItem) return null;
 
-    // 1. DIALOGUE FINISH (AVEC INPUT)
+    // 1. DIALOGUE FINISH
     if (activeDialog === 'FINISH') {
-      const isSuccess = finishMutation.isSuccess;
-      const isError = finishMutation.isError;
-
-      if (isSuccess) {
+      if (finishMutation.isSuccess) {
         return (
-          <>
-            <DialogHeader className="items-center">
-              <StatusIcon status="success" />
-              <DialogTitle className="text-primary mt-2 text-center">Service terminé !</DialogTitle>
-              <DialogDescription className="text-center">
-                {finishMutation.data?.message}
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button className="w-full rounded-full" onPress={handleCloseDialog}>
-                <Text className="text-white">Fermer</Text>
-              </Button>
-            </DialogFooter>
-          </>
+          <View className="items-center py-6">
+            <Check size={48} color="#10B981" />
+            <Text className="text-foreground mt-4 text-center text-xl font-bold">
+              Service terminé !
+            </Text>
+            <Text className="text-muted-foreground mt-2 text-center">
+              Le service a été validé avec succès.
+            </Text>
+            <Button className="mt-6 w-full rounded-xl" onPress={handleCloseDialog}>
+              <Text className="text-white">Génial !</Text>
+            </Button>
+          </View>
         );
       }
 
       return (
-        <>
-          <DialogHeader>
-            <DialogTitle>Terminer la mission</DialogTitle>
-            <DialogDescription>Demandez le code secret au client pour valider.</DialogDescription>
-          </DialogHeader>
-
-          <View className="flex-row items-center justify-center gap-2 py-4">
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-              <Controller
-                control={control}
-                name="code"
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <View>
-                    <Input
-                      placeholder="123456"
-                      className="w-[150px] text-center text-lg tracking-widest"
-                      keyboardType="number-pad"
-                      onChangeText={onChange}
-                      value={value}
-                    />
-                    {error && (
-                      <Text className="text-destructive mt-1 text-center text-xs">
-                        {error.message}
-                      </Text>
-                    )}
-                    {isError && (
-                      <Text className="text-destructive mt-1 text-center text-xs">
-                        {finishMutation.error?.message}
-                      </Text>
-                    )}
-                  </View>
-                )}
-              />
-            </KeyboardAvoidingView>
-            <Button variant="outline" size="icon">
-              <QrCode size={20} />
-            </Button>
+        <View className="gap-4 py-4">
+          <View>
+            <Text className="text-xl font-bold">Valider la mission</Text>
+            <Text className="text-muted-foreground mt-1">
+              Saisissez le code secret fourni par le client.
+            </Text>
           </View>
 
-          <DialogFooter className="flex-row justify-end gap-2">
-            <Button variant="ghost" onPress={handleCloseDialog}>
+          <Controller
+            control={control}
+            name="code"
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <View>
+                <Input
+                  placeholder="Ex: 12345"
+                  className="h-14 text-center text-2xl font-bold tracking-[10px]"
+                  keyboardType="number-pad"
+                  maxLength={5}
+                  onChangeText={onChange}
+                  value={value}
+                />
+                {(error || finishMutation.isError) && (
+                  <Text className="text-destructive mt-2 text-center text-sm">
+                    {error?.message || finishMutation.error?.message}
+                  </Text>
+                )}
+              </View>
+            )}
+          />
+
+          <View className="flex-row gap-3">
+            <Button variant="ghost" className="flex-1" onPress={handleCloseDialog}>
               <Text>Annuler</Text>
             </Button>
             <Button
-              className="rounded-full"
+              className="flex-1 rounded-xl"
               disabled={finishMutation.isPending}
               onPress={handleSubmit((data) =>
-                finishMutation.mutate({ code: data.code, serviceId: selectedItem.id,providerId: selectedItem.provider.id })
+                finishMutation.mutateAsync({ ...data, serviceId: selectedItem.id })
               )}>
-              <Text className="text-white">
-                {finishMutation.isPending ? (
-                  <ActivityIndicator size={24} color={'white'} />
-                ) : (
-                  'Confirmer'
-                )}
+              <Text className="font-bold text-white">
+                {finishMutation.isPending ? <ActivityIndicator color="white" /> : 'Confirmer'}
               </Text>
             </Button>
-          </DialogFooter>
-        </>
+          </View>
+        </View>
       );
     }
 
-    // 2. DIALOGUE CARE (PRISE EN CHARGE)
+    // 2. DIALOGUE CARE
     if (activeDialog === 'CARE') {
-      const isSuccess = careMutation.isSuccess;
-      if (isSuccess) {
-        return (
-          <>
-            <DialogHeader className="items-center">
-              <StatusIcon status="success" />
-              <DialogTitle className="text-primary text-center">
-                Prise en charge confirmée
-              </DialogTitle>
-              <DialogDescription className="text-center">
-                Vous pouvez maintenant voir la localisation du client.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter className="flex-col gap-2">
-              <Button
-                className="w-full rounded-full"
-                onPress={() => {
-                  handleCloseDialog();
-                  if (selectedItem.location) {
-                    Linking.openURL(
-                      `http://maps.google.com/?q=${selectedItem.location.latitude},${selectedItem.location.longitude}`
-                    );
-                  }
-                }}>
-                <Text className="text-white">Voir la localisation</Text>
-              </Button>
-              <Button variant="ghost" onPress={handleCloseDialog}>
-                <Text>Fermer</Text>
-              </Button>
-            </DialogFooter>
-          </>
-        );
-      }
       return (
-        <>
-          <DialogHeader>
-            <DialogTitle>Confirmer la prise en charge ?</DialogTitle>
-            <DialogDescription>
-              Assurez-vous d'être disponible. Une annulation ultérieure affectera votre note.
-            </DialogDescription>
-          </DialogHeader>
+        <View className="gap-4 py-4">
+          <View className="items-center">
+            <View className="bg-primary/10 rounded-full p-4">
+              <Check size={32} className="text-primary" />
+            </View>
+            <Text className="mt-4 text-center text-xl font-bold">Accepter la mission ?</Text>
+            <Text className="text-muted-foreground mt-2 text-center">
+              En acceptant, vous vous engagez à réaliser ce service.
+            </Text>
+          </View>
+
           {careMutation.isError && (
             <Text className="text-destructive text-center">{careMutation.error?.message}</Text>
           )}
-          <DialogFooter className="flex-row justify-end gap-2">
-            <Button variant="ghost" onPress={handleCloseDialog}>
-              <Text>Annuler</Text>
+
+          <View className="flex-row gap-3">
+            <Button variant="ghost" className="flex-1" onPress={handleCloseDialog}>
+              <Text>Plus tard</Text>
             </Button>
             <Button
-              className="rounded-full"
+              className="flex-1 rounded-xl"
               disabled={careMutation.isPending}
-              onPress={() => careMutation.mutate({serviceId: selectedItem.id, providerId: selectedItem?.provider.id})}>
-              <Text className="text-white">
-                {careMutation.isPending ? (
-                  <ActivityIndicator size={24} color={'white'} />
-                ) : (
-                  'Accepter'
-                )}
+              onPress={() => careMutation.mutate({ serviceId: selectedItem.id })}>
+              <Text className="font-bold text-white">
+                {careMutation.isPending ? <ActivityIndicator color="white" /> : 'Accepter'}
               </Text>
             </Button>
-          </DialogFooter>
-        </>
+          </View>
+        </View>
       );
     }
 
-    // 3. DIALOGUE CANCEL (ANNULATION)
+    // 3. DIALOGUE CANCEL
     if (activeDialog === 'CANCEL') {
-      const isSuccess = cancelMutation.isSuccess;
-      if (isSuccess) {
-        return (
-          <>
-            <DialogHeader className="items-center">
-              <StatusIcon status="success" />
-              <DialogTitle>Service annulé</DialogTitle>
-            </DialogHeader>
-            <DialogFooter>
-              <Button className="w-full" onPress={handleCloseDialog}>
-                <Text>Fermer</Text>
-              </Button>
-            </DialogFooter>
-          </>
-        );
-      }
       return (
-        <>
-          <DialogHeader className="items-center">
-            <AlertCircle className="text-destructive mb-2" stroke="red" size={48} />
-            <DialogTitle className="text-destructive">Annuler le service ?</DialogTitle>
-            <DialogDescription className="text-center">
-              Cette action est irréversible.
-            </DialogDescription>
-          </DialogHeader>
+        <View className="gap-4 py-4">
+          <View className="items-center">
+            <View className="bg-destructive/10 rounded-full p-4">
+              <AlertCircle size={32} className="text-destructive" />
+            </View>
+            <Text className="text-destructive mt-4 text-center text-xl font-bold">
+              Annuler le service ?
+            </Text>
+            <Text className="text-muted-foreground mt-2 text-center">
+              Cette action informera l'autre partie de l'annulation.
+            </Text>
+          </View>
+
           {cancelMutation.isError && (
             <Text className="text-destructive text-center">{cancelMutation.error?.message}</Text>
           )}
-          <DialogFooter className="flex-row justify-end gap-2">
-            <Button variant="outline" onPress={handleCloseDialog}>
+
+          <View className="flex-row gap-3">
+            <Button variant="ghost" className="flex-1" onPress={handleCloseDialog}>
               <Text>Retour</Text>
             </Button>
             <Button
               variant="destructive"
-              className="rounded-full"
+              className="flex-1 rounded-xl"
               disabled={cancelMutation.isPending}
-              onPress={() => cancelMutation.mutate({serviceId:selectedItem.id, providerId: selectedItem.provider.id})}>
-              <Text className="text-white">
-                {cancelMutation.isPending ? (
-                  <ActivityIndicator size={24} color={'white'} />
-                ) : (
-                  "Confirmer l'annulation"
-                )}
+              onPress={() => cancelMutation.mutate({ serviceId: selectedItem.id })}>
+              <Text className="font-bold text-white">
+                {cancelMutation.isPending ? <ActivityIndicator color="white" /> : 'Annuler'}
               </Text>
             </Button>
-          </DialogFooter>
-        </>
+          </View>
+        </View>
       );
     }
 
-    // 4. RATE (Exemple simple)
+    // 4. RATE
     if (activeDialog === 'RATE') {
       return (
-        <>
-          <DialogHeader>
-            <DialogTitle>Notez le service</DialogTitle>
-            <DialogDescription>Fonctionnalité à venir...</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onPress={handleCloseDialog}>
-              <Text className="text-white">Fermer</Text>
-            </Button>
-          </DialogFooter>
-        </>
+        <View className="gap-4 py-4">
+          <View className="items-center">
+            <Text className="text-xl font-bold">Comment c'était ?</Text>
+            <Text className="text-muted-foreground mt-1 text-center">
+              Votre avis aide la communauté SkillMap.
+            </Text>
+          </View>
+
+          <RatingStars rating={rating} onRatingChange={setRating} />
+
+          {rateMutation.isError && (
+            <Text className="text-destructive text-center">{rateMutation.error?.message}</Text>
+          )}
+
+          <Button
+            className="rounded-xl"
+            disabled={rateMutation.isPending}
+            onPress={() =>
+              rateMutation.mutate({
+                serviceId: selectedItem.id,
+                rating,
+              })
+            }>
+            <Text className="font-bold text-white">
+              {rateMutation.isPending ? <ActivityIndicator color="white" /> : 'Envoyer ma note'}
+            </Text>
+          </Button>
+        </View>
       );
     }
 
@@ -499,7 +450,7 @@ export default function ServiceListScreen() {
           {data && data?.length > 0 ? (
             <View className="flex-1 p-2">
               <FlatList
-                data={data}
+                data={data as unknown as any[]}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
                 contentContainerStyle={{ paddingBottom: 100 }}

@@ -19,7 +19,6 @@ type FormSchema = z.infer<typeof signInForm>;
 type Props = {};
 function index({}: Props) {
   const { data: session } = useSession();
-  console.log(session)
   const { role } = useLocalSearchParams();
 
   const queryClient = useQueryClient();

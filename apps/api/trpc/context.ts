@@ -16,16 +16,6 @@ export const createContext = async ({ req }: CreateExpressContextOptions) => {
 };
 
 
-export const isAuthed  = t.middleware(({next, ctx}) => {
-  if(!ctx.session) {
-    throw new TRPCError({code: "UNAUTHORIZED"})
-  }
-  return next({
-    ctx: {
-      session: ctx.session,
-      prisma: ctx.prisma
-    }
-  })
-})
+
 
 export type Context = Awaited<ReturnType<typeof createContext>>;

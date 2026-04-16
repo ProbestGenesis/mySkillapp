@@ -27,11 +27,13 @@ export type AggregatePost = {
 }
 
 export type PostAvgAggregateOutputType = {
-  avarage_price: number | null
+  offered_Price: number | null
+  average_price: number | null
 }
 
 export type PostSumAggregateOutputType = {
-  avarage_price: number | null
+  offered_Price: number[]
+  average_price: number | null
 }
 
 export type PostMinAggregateOutputType = {
@@ -44,8 +46,8 @@ export type PostMinAggregateOutputType = {
   updatedAt: Date | null
   providerId: string | null
   userId: string | null
-  status: string | null
-  avarage_price: number | null
+  status: $Enums.STATUSPOST | null
+  average_price: number | null
 }
 
 export type PostMaxAggregateOutputType = {
@@ -58,8 +60,8 @@ export type PostMaxAggregateOutputType = {
   updatedAt: Date | null
   providerId: string | null
   userId: string | null
-  status: string | null
-  avarage_price: number | null
+  status: $Enums.STATUSPOST | null
+  average_price: number | null
 }
 
 export type PostCountAggregateOutputType = {
@@ -72,20 +74,22 @@ export type PostCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   providerId: number
-  applyProviders: number
   userId: number
   status: number
-  avarage_price: number
+  offered_Price: number
+  average_price: number
   _all: number
 }
 
 
 export type PostAvgAggregateInputType = {
-  avarage_price?: true
+  offered_Price?: true
+  average_price?: true
 }
 
 export type PostSumAggregateInputType = {
-  avarage_price?: true
+  offered_Price?: true
+  average_price?: true
 }
 
 export type PostMinAggregateInputType = {
@@ -99,7 +103,7 @@ export type PostMinAggregateInputType = {
   providerId?: true
   userId?: true
   status?: true
-  avarage_price?: true
+  average_price?: true
 }
 
 export type PostMaxAggregateInputType = {
@@ -113,7 +117,7 @@ export type PostMaxAggregateInputType = {
   providerId?: true
   userId?: true
   status?: true
-  avarage_price?: true
+  average_price?: true
 }
 
 export type PostCountAggregateInputType = {
@@ -126,10 +130,10 @@ export type PostCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   providerId?: true
-  applyProviders?: true
   userId?: true
   status?: true
-  avarage_price?: true
+  offered_Price?: true
+  average_price?: true
   _all?: true
 }
 
@@ -229,10 +233,10 @@ export type PostGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   providerId: string | null
-  applyProviders: runtime.JsonValue[]
   userId: string
-  status: string | null
-  avarage_price: number | null
+  status: $Enums.STATUSPOST
+  offered_Price: number[]
+  average_price: number | null
   _count: PostCountAggregateOutputType | null
   _avg: PostAvgAggregateOutputType | null
   _sum: PostSumAggregateOutputType | null
@@ -268,11 +272,12 @@ export type PostWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   providerId?: Prisma.StringNullableFilter<"Post"> | string | null
-  applyProviders?: Prisma.JsonNullableListFilter<"Post">
   userId?: Prisma.StringFilter<"Post"> | string
-  status?: Prisma.StringNullableFilter<"Post"> | string | null
-  avarage_price?: Prisma.FloatNullableFilter<"Post"> | number | null
+  status?: Prisma.EnumSTATUSPOSTFilter<"Post"> | $Enums.STATUSPOST
+  offered_Price?: Prisma.FloatNullableListFilter<"Post">
+  average_price?: Prisma.FloatNullableFilter<"Post"> | number | null
   providers?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
+  applyProviders?: Prisma.ProviderListRelationFilter
   service?: Prisma.XOR<Prisma.ServiceNullableScalarRelationFilter, Prisma.ServiceWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -287,11 +292,12 @@ export type PostOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   providerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  applyProviders?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  status?: Prisma.SortOrderInput | Prisma.SortOrder
-  avarage_price?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  offered_Price?: Prisma.SortOrder
+  average_price?: Prisma.SortOrderInput | Prisma.SortOrder
   providers?: Prisma.ProviderOrderByWithRelationInput
+  applyProviders?: Prisma.ProviderOrderByRelationAggregateInput
   service?: Prisma.ServiceOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -309,11 +315,12 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   notification?: Prisma.BoolFilter<"Post"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Post"> | Date | string
-  applyProviders?: Prisma.JsonNullableListFilter<"Post">
   userId?: Prisma.StringFilter<"Post"> | string
-  status?: Prisma.StringNullableFilter<"Post"> | string | null
-  avarage_price?: Prisma.FloatNullableFilter<"Post"> | number | null
+  status?: Prisma.EnumSTATUSPOSTFilter<"Post"> | $Enums.STATUSPOST
+  offered_Price?: Prisma.FloatNullableListFilter<"Post">
+  average_price?: Prisma.FloatNullableFilter<"Post"> | number | null
   providers?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
+  applyProviders?: Prisma.ProviderListRelationFilter
   service?: Prisma.XOR<Prisma.ServiceNullableScalarRelationFilter, Prisma.ServiceWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "providerId">
@@ -328,10 +335,10 @@ export type PostOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   providerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  applyProviders?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  status?: Prisma.SortOrderInput | Prisma.SortOrder
-  avarage_price?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  offered_Price?: Prisma.SortOrder
+  average_price?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PostCountOrderByAggregateInput
   _avg?: Prisma.PostAvgOrderByAggregateInput
   _max?: Prisma.PostMaxOrderByAggregateInput
@@ -352,10 +359,10 @@ export type PostScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Post"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Post"> | Date | string
   providerId?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
-  applyProviders?: Prisma.JsonNullableListFilter<"Post">
   userId?: Prisma.StringWithAggregatesFilter<"Post"> | string
-  status?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
-  avarage_price?: Prisma.FloatNullableWithAggregatesFilter<"Post"> | number | null
+  status?: Prisma.EnumSTATUSPOSTWithAggregatesFilter<"Post"> | $Enums.STATUSPOST
+  offered_Price?: Prisma.FloatNullableListFilter<"Post">
+  average_price?: Prisma.FloatNullableWithAggregatesFilter<"Post"> | number | null
 }
 
 export type PostCreateInput = {
@@ -367,10 +374,11 @@ export type PostCreateInput = {
   notification: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
   providers?: Prisma.ProviderCreateNestedOneWithoutPostInput
+  applyProviders?: Prisma.ProviderCreateNestedManyWithoutPostAppliedInput
   service?: Prisma.ServiceCreateNestedOneWithoutPostInput
   user: Prisma.UserCreateNestedOneWithoutPostInput
 }
@@ -385,10 +393,11 @@ export type PostUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   providerId?: string | null
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
   userId: string
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
+  applyProviders?: Prisma.ProviderUncheckedCreateNestedManyWithoutPostAppliedInput
   service?: Prisma.ServiceUncheckedCreateNestedOneWithoutPostInput
 }
 
@@ -401,10 +410,11 @@ export type PostUpdateInput = {
   notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   providers?: Prisma.ProviderUpdateOneWithoutPostNestedInput
+  applyProviders?: Prisma.ProviderUpdateManyWithoutPostAppliedNestedInput
   service?: Prisma.ServiceUpdateOneWithoutPostNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPostNestedInput
 }
@@ -419,10 +429,11 @@ export type PostUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  applyProviders?: Prisma.ProviderUncheckedUpdateManyWithoutPostAppliedNestedInput
   service?: Prisma.ServiceUncheckedUpdateOneWithoutPostNestedInput
 }
 
@@ -436,10 +447,10 @@ export type PostCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   providerId?: string | null
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
   userId: string
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
 }
 
 export type PostUpdateManyMutationInput = {
@@ -451,9 +462,9 @@ export type PostUpdateManyMutationInput = {
   notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type PostUncheckedUpdateManyInput = {
@@ -466,10 +477,10 @@ export type PostUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type PostListRelationFilter = {
@@ -482,18 +493,11 @@ export type PostOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type JsonNullableListFilter<$PrismaModel = never> =
-| Prisma.PatchUndefined<
-    Prisma.Either<Required<JsonNullableListFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableListFilterBase<$PrismaModel>>, 'path'>>,
-    Required<JsonNullableListFilterBase<$PrismaModel>>
-  >
-| Prisma.OptionalFlat<Omit<Required<JsonNullableListFilterBase<$PrismaModel>>, 'path'>>
-
-export type JsonNullableListFilterBase<$PrismaModel = never> = {
-  equals?: runtime.InputJsonValue[] | Prisma.ListJsonFieldRefInput<$PrismaModel> | null
-  has?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
-  hasEvery?: runtime.InputJsonValue[] | Prisma.ListJsonFieldRefInput<$PrismaModel>
-  hasSome?: runtime.InputJsonValue[] | Prisma.ListJsonFieldRefInput<$PrismaModel>
+export type FloatNullableListFilter<$PrismaModel = never> = {
+  equals?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  has?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  hasEvery?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  hasSome?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
   isEmpty?: boolean
 }
 
@@ -507,14 +511,15 @@ export type PostCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
-  applyProviders?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  avarage_price?: Prisma.SortOrder
+  offered_Price?: Prisma.SortOrder
+  average_price?: Prisma.SortOrder
 }
 
 export type PostAvgOrderByAggregateInput = {
-  avarage_price?: Prisma.SortOrder
+  offered_Price?: Prisma.SortOrder
+  average_price?: Prisma.SortOrder
 }
 
 export type PostMaxOrderByAggregateInput = {
@@ -528,7 +533,7 @@ export type PostMaxOrderByAggregateInput = {
   providerId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  avarage_price?: Prisma.SortOrder
+  average_price?: Prisma.SortOrder
 }
 
 export type PostMinOrderByAggregateInput = {
@@ -542,11 +547,12 @@ export type PostMinOrderByAggregateInput = {
   providerId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  avarage_price?: Prisma.SortOrder
+  average_price?: Prisma.SortOrder
 }
 
 export type PostSumOrderByAggregateInput = {
-  avarage_price?: Prisma.SortOrder
+  offered_Price?: Prisma.SortOrder
+  average_price?: Prisma.SortOrder
 }
 
 export type PostNullableScalarRelationFilter = {
@@ -603,10 +609,22 @@ export type PostCreateNestedManyWithoutProvidersInput = {
   connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
 }
 
+export type PostCreateNestedManyWithoutApplyProvidersInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutApplyProvidersInput, Prisma.PostUncheckedCreateWithoutApplyProvidersInput> | Prisma.PostCreateWithoutApplyProvidersInput[] | Prisma.PostUncheckedCreateWithoutApplyProvidersInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutApplyProvidersInput | Prisma.PostCreateOrConnectWithoutApplyProvidersInput[]
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+}
+
 export type PostUncheckedCreateNestedManyWithoutProvidersInput = {
   create?: Prisma.XOR<Prisma.PostCreateWithoutProvidersInput, Prisma.PostUncheckedCreateWithoutProvidersInput> | Prisma.PostCreateWithoutProvidersInput[] | Prisma.PostUncheckedCreateWithoutProvidersInput[]
   connectOrCreate?: Prisma.PostCreateOrConnectWithoutProvidersInput | Prisma.PostCreateOrConnectWithoutProvidersInput[]
   createMany?: Prisma.PostCreateManyProvidersInputEnvelope
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+}
+
+export type PostUncheckedCreateNestedManyWithoutApplyProvidersInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutApplyProvidersInput, Prisma.PostUncheckedCreateWithoutApplyProvidersInput> | Prisma.PostCreateWithoutApplyProvidersInput[] | Prisma.PostUncheckedCreateWithoutApplyProvidersInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutApplyProvidersInput | Prisma.PostCreateOrConnectWithoutApplyProvidersInput[]
   connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
 }
 
@@ -624,6 +642,19 @@ export type PostUpdateManyWithoutProvidersNestedInput = {
   deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
 }
 
+export type PostUpdateManyWithoutApplyProvidersNestedInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutApplyProvidersInput, Prisma.PostUncheckedCreateWithoutApplyProvidersInput> | Prisma.PostCreateWithoutApplyProvidersInput[] | Prisma.PostUncheckedCreateWithoutApplyProvidersInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutApplyProvidersInput | Prisma.PostCreateOrConnectWithoutApplyProvidersInput[]
+  upsert?: Prisma.PostUpsertWithWhereUniqueWithoutApplyProvidersInput | Prisma.PostUpsertWithWhereUniqueWithoutApplyProvidersInput[]
+  set?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  disconnect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  delete?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  update?: Prisma.PostUpdateWithWhereUniqueWithoutApplyProvidersInput | Prisma.PostUpdateWithWhereUniqueWithoutApplyProvidersInput[]
+  updateMany?: Prisma.PostUpdateManyWithWhereWithoutApplyProvidersInput | Prisma.PostUpdateManyWithWhereWithoutApplyProvidersInput[]
+  deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
+}
+
 export type PostUncheckedUpdateManyWithoutProvidersNestedInput = {
   create?: Prisma.XOR<Prisma.PostCreateWithoutProvidersInput, Prisma.PostUncheckedCreateWithoutProvidersInput> | Prisma.PostCreateWithoutProvidersInput[] | Prisma.PostUncheckedCreateWithoutProvidersInput[]
   connectOrCreate?: Prisma.PostCreateOrConnectWithoutProvidersInput | Prisma.PostCreateOrConnectWithoutProvidersInput[]
@@ -638,13 +669,30 @@ export type PostUncheckedUpdateManyWithoutProvidersNestedInput = {
   deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
 }
 
-export type PostCreateapplyProvidersInput = {
-  set: runtime.InputJsonValue[]
+export type PostUncheckedUpdateManyWithoutApplyProvidersNestedInput = {
+  create?: Prisma.XOR<Prisma.PostCreateWithoutApplyProvidersInput, Prisma.PostUncheckedCreateWithoutApplyProvidersInput> | Prisma.PostCreateWithoutApplyProvidersInput[] | Prisma.PostUncheckedCreateWithoutApplyProvidersInput[]
+  connectOrCreate?: Prisma.PostCreateOrConnectWithoutApplyProvidersInput | Prisma.PostCreateOrConnectWithoutApplyProvidersInput[]
+  upsert?: Prisma.PostUpsertWithWhereUniqueWithoutApplyProvidersInput | Prisma.PostUpsertWithWhereUniqueWithoutApplyProvidersInput[]
+  set?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  disconnect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  delete?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  connect?: Prisma.PostWhereUniqueInput | Prisma.PostWhereUniqueInput[]
+  update?: Prisma.PostUpdateWithWhereUniqueWithoutApplyProvidersInput | Prisma.PostUpdateWithWhereUniqueWithoutApplyProvidersInput[]
+  updateMany?: Prisma.PostUpdateManyWithWhereWithoutApplyProvidersInput | Prisma.PostUpdateManyWithWhereWithoutApplyProvidersInput[]
+  deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
 }
 
-export type PostUpdateapplyProvidersInput = {
-  set?: runtime.InputJsonValue[]
-  push?: runtime.InputJsonValue | runtime.InputJsonValue[]
+export type PostCreateoffered_PriceInput = {
+  set: number[]
+}
+
+export type EnumSTATUSPOSTFieldUpdateOperationsInput = {
+  set?: $Enums.STATUSPOST
+}
+
+export type PostUpdateoffered_PriceInput = {
+  set?: number[]
+  push?: number | number[]
 }
 
 export type PostCreateNestedOneWithoutServiceInput = {
@@ -672,10 +720,11 @@ export type PostCreateWithoutUserInput = {
   notification: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
   providers?: Prisma.ProviderCreateNestedOneWithoutPostInput
+  applyProviders?: Prisma.ProviderCreateNestedManyWithoutPostAppliedInput
   service?: Prisma.ServiceCreateNestedOneWithoutPostInput
 }
 
@@ -689,9 +738,10 @@ export type PostUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   providerId?: string | null
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
+  applyProviders?: Prisma.ProviderUncheckedCreateNestedManyWithoutPostAppliedInput
   service?: Prisma.ServiceUncheckedCreateNestedOneWithoutPostInput
 }
 
@@ -734,10 +784,10 @@ export type PostScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Post"> | Date | string
   providerId?: Prisma.StringNullableFilter<"Post"> | string | null
-  applyProviders?: Prisma.JsonNullableListFilter<"Post">
   userId?: Prisma.StringFilter<"Post"> | string
-  status?: Prisma.StringNullableFilter<"Post"> | string | null
-  avarage_price?: Prisma.FloatNullableFilter<"Post"> | number | null
+  status?: Prisma.EnumSTATUSPOSTFilter<"Post"> | $Enums.STATUSPOST
+  offered_Price?: Prisma.FloatNullableListFilter<"Post">
+  average_price?: Prisma.FloatNullableFilter<"Post"> | number | null
 }
 
 export type PostCreateWithoutProvidersInput = {
@@ -749,9 +799,10 @@ export type PostCreateWithoutProvidersInput = {
   notification: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
+  applyProviders?: Prisma.ProviderCreateNestedManyWithoutPostAppliedInput
   service?: Prisma.ServiceCreateNestedOneWithoutPostInput
   user: Prisma.UserCreateNestedOneWithoutPostInput
 }
@@ -765,10 +816,11 @@ export type PostUncheckedCreateWithoutProvidersInput = {
   notification: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
   userId: string
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
+  applyProviders?: Prisma.ProviderUncheckedCreateNestedManyWithoutPostAppliedInput
   service?: Prisma.ServiceUncheckedCreateNestedOneWithoutPostInput
 }
 
@@ -780,6 +832,45 @@ export type PostCreateOrConnectWithoutProvidersInput = {
 export type PostCreateManyProvidersInputEnvelope = {
   data: Prisma.PostCreateManyProvidersInput | Prisma.PostCreateManyProvidersInput[]
   skipDuplicates?: boolean
+}
+
+export type PostCreateWithoutApplyProvidersInput = {
+  id?: string
+  title?: string | null
+  body: string
+  profession: string
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notification: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
+  providers?: Prisma.ProviderCreateNestedOneWithoutPostInput
+  service?: Prisma.ServiceCreateNestedOneWithoutPostInput
+  user: Prisma.UserCreateNestedOneWithoutPostInput
+}
+
+export type PostUncheckedCreateWithoutApplyProvidersInput = {
+  id?: string
+  title?: string | null
+  body: string
+  profession: string
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notification: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  providerId?: string | null
+  userId: string
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
+  service?: Prisma.ServiceUncheckedCreateNestedOneWithoutPostInput
+}
+
+export type PostCreateOrConnectWithoutApplyProvidersInput = {
+  where: Prisma.PostWhereUniqueInput
+  create: Prisma.XOR<Prisma.PostCreateWithoutApplyProvidersInput, Prisma.PostUncheckedCreateWithoutApplyProvidersInput>
 }
 
 export type PostUpsertWithWhereUniqueWithoutProvidersInput = {
@@ -798,6 +889,22 @@ export type PostUpdateManyWithWhereWithoutProvidersInput = {
   data: Prisma.XOR<Prisma.PostUpdateManyMutationInput, Prisma.PostUncheckedUpdateManyWithoutProvidersInput>
 }
 
+export type PostUpsertWithWhereUniqueWithoutApplyProvidersInput = {
+  where: Prisma.PostWhereUniqueInput
+  update: Prisma.XOR<Prisma.PostUpdateWithoutApplyProvidersInput, Prisma.PostUncheckedUpdateWithoutApplyProvidersInput>
+  create: Prisma.XOR<Prisma.PostCreateWithoutApplyProvidersInput, Prisma.PostUncheckedCreateWithoutApplyProvidersInput>
+}
+
+export type PostUpdateWithWhereUniqueWithoutApplyProvidersInput = {
+  where: Prisma.PostWhereUniqueInput
+  data: Prisma.XOR<Prisma.PostUpdateWithoutApplyProvidersInput, Prisma.PostUncheckedUpdateWithoutApplyProvidersInput>
+}
+
+export type PostUpdateManyWithWhereWithoutApplyProvidersInput = {
+  where: Prisma.PostScalarWhereInput
+  data: Prisma.XOR<Prisma.PostUpdateManyMutationInput, Prisma.PostUncheckedUpdateManyWithoutApplyProvidersInput>
+}
+
 export type PostCreateWithoutServiceInput = {
   id?: string
   title?: string | null
@@ -807,10 +914,11 @@ export type PostCreateWithoutServiceInput = {
   notification: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
   providers?: Prisma.ProviderCreateNestedOneWithoutPostInput
+  applyProviders?: Prisma.ProviderCreateNestedManyWithoutPostAppliedInput
   user: Prisma.UserCreateNestedOneWithoutPostInput
 }
 
@@ -824,10 +932,11 @@ export type PostUncheckedCreateWithoutServiceInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   providerId?: string | null
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
   userId: string
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
+  applyProviders?: Prisma.ProviderUncheckedCreateNestedManyWithoutPostAppliedInput
 }
 
 export type PostCreateOrConnectWithoutServiceInput = {
@@ -855,10 +964,11 @@ export type PostUpdateWithoutServiceInput = {
   notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   providers?: Prisma.ProviderUpdateOneWithoutPostNestedInput
+  applyProviders?: Prisma.ProviderUpdateManyWithoutPostAppliedNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPostNestedInput
 }
 
@@ -872,10 +982,11 @@ export type PostUncheckedUpdateWithoutServiceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  applyProviders?: Prisma.ProviderUncheckedUpdateManyWithoutPostAppliedNestedInput
 }
 
 export type PostCreateManyUserInput = {
@@ -888,9 +999,9 @@ export type PostCreateManyUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   providerId?: string | null
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
 }
 
 export type PostUpdateWithoutUserInput = {
@@ -902,10 +1013,11 @@ export type PostUpdateWithoutUserInput = {
   notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   providers?: Prisma.ProviderUpdateOneWithoutPostNestedInput
+  applyProviders?: Prisma.ProviderUpdateManyWithoutPostAppliedNestedInput
   service?: Prisma.ServiceUpdateOneWithoutPostNestedInput
 }
 
@@ -919,9 +1031,10 @@ export type PostUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  applyProviders?: Prisma.ProviderUncheckedUpdateManyWithoutPostAppliedNestedInput
   service?: Prisma.ServiceUncheckedUpdateOneWithoutPostNestedInput
 }
 
@@ -935,9 +1048,9 @@ export type PostUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type PostCreateManyProvidersInput = {
@@ -949,10 +1062,10 @@ export type PostCreateManyProvidersInput = {
   notification: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  applyProviders?: Prisma.PostCreateapplyProvidersInput | runtime.InputJsonValue[]
   userId: string
-  status?: string | null
-  avarage_price?: number | null
+  status?: $Enums.STATUSPOST
+  offered_Price?: Prisma.PostCreateoffered_PriceInput | number[]
+  average_price?: number | null
 }
 
 export type PostUpdateWithoutProvidersInput = {
@@ -964,9 +1077,10 @@ export type PostUpdateWithoutProvidersInput = {
   notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  applyProviders?: Prisma.ProviderUpdateManyWithoutPostAppliedNestedInput
   service?: Prisma.ServiceUpdateOneWithoutPostNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPostNestedInput
 }
@@ -980,10 +1094,11 @@ export type PostUncheckedUpdateWithoutProvidersInput = {
   notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  applyProviders?: Prisma.ProviderUncheckedUpdateManyWithoutPostAppliedNestedInput
   service?: Prisma.ServiceUncheckedUpdateOneWithoutPostNestedInput
 }
 
@@ -996,12 +1111,91 @@ export type PostUncheckedUpdateManyWithoutProvidersInput = {
   notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applyProviders?: Prisma.PostUpdateapplyProvidersInput | runtime.InputJsonValue[]
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avarage_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
+export type PostUpdateWithoutApplyProvidersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  providers?: Prisma.ProviderUpdateOneWithoutPostNestedInput
+  service?: Prisma.ServiceUpdateOneWithoutPostNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPostNestedInput
+}
+
+export type PostUncheckedUpdateWithoutApplyProvidersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  service?: Prisma.ServiceUncheckedUpdateOneWithoutPostNestedInput
+}
+
+export type PostUncheckedUpdateManyWithoutApplyProvidersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  notification?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSPOSTFieldUpdateOperationsInput | $Enums.STATUSPOST
+  offered_Price?: Prisma.PostUpdateoffered_PriceInput | number[]
+  average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+}
+
+
+/**
+ * Count Type PostCountOutputType
+ */
+
+export type PostCountOutputType = {
+  applyProviders: number
+}
+
+export type PostCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  applyProviders?: boolean | PostCountOutputTypeCountApplyProvidersArgs
+}
+
+/**
+ * PostCountOutputType without action
+ */
+export type PostCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PostCountOutputType
+   */
+  select?: Prisma.PostCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PostCountOutputType without action
+ */
+export type PostCountOutputTypeCountApplyProvidersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProviderWhereInput
+}
 
 
 export type PostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1014,13 +1208,15 @@ export type PostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   providerId?: boolean
-  applyProviders?: boolean
   userId?: boolean
   status?: boolean
-  avarage_price?: boolean
+  offered_Price?: boolean
+  average_price?: boolean
   providers?: boolean | Prisma.Post$providersArgs<ExtArgs>
+  applyProviders?: boolean | Prisma.Post$applyProvidersArgs<ExtArgs>
   service?: boolean | Prisma.Post$serviceArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.PostCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
 
 export type PostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1033,10 +1229,10 @@ export type PostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   providerId?: boolean
-  applyProviders?: boolean
   userId?: boolean
   status?: boolean
-  avarage_price?: boolean
+  offered_Price?: boolean
+  average_price?: boolean
   providers?: boolean | Prisma.Post$providersArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
@@ -1051,10 +1247,10 @@ export type PostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   providerId?: boolean
-  applyProviders?: boolean
   userId?: boolean
   status?: boolean
-  avarage_price?: boolean
+  offered_Price?: boolean
+  average_price?: boolean
   providers?: boolean | Prisma.Post$providersArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
@@ -1069,17 +1265,19 @@ export type PostSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   providerId?: boolean
-  applyProviders?: boolean
   userId?: boolean
   status?: boolean
-  avarage_price?: boolean
+  offered_Price?: boolean
+  average_price?: boolean
 }
 
-export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "body" | "profession" | "location" | "notification" | "createdAt" | "updatedAt" | "providerId" | "applyProviders" | "userId" | "status" | "avarage_price", ExtArgs["result"]["post"]>
+export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "body" | "profession" | "location" | "notification" | "createdAt" | "updatedAt" | "providerId" | "userId" | "status" | "offered_Price" | "average_price", ExtArgs["result"]["post"]>
 export type PostInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   providers?: boolean | Prisma.Post$providersArgs<ExtArgs>
+  applyProviders?: boolean | Prisma.Post$applyProvidersArgs<ExtArgs>
   service?: boolean | Prisma.Post$serviceArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.PostCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PostIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   providers?: boolean | Prisma.Post$providersArgs<ExtArgs>
@@ -1094,6 +1292,7 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Post"
   objects: {
     providers: Prisma.$ProviderPayload<ExtArgs> | null
+    applyProviders: Prisma.$ProviderPayload<ExtArgs>[]
     service: Prisma.$ServicePayload<ExtArgs> | null
     user: Prisma.$UserPayload<ExtArgs>
   }
@@ -1107,10 +1306,10 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt: Date
     updatedAt: Date
     providerId: string | null
-    applyProviders: runtime.JsonValue[]
     userId: string
-    status: string | null
-    avarage_price: number | null
+    status: $Enums.STATUSPOST
+    offered_Price: number[]
+    average_price: number | null
   }, ExtArgs["result"]["post"]>
   composites: {}
 }
@@ -1506,6 +1705,7 @@ readonly fields: PostFieldRefs;
 export interface Prisma__PostClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   providers<T extends Prisma.Post$providersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Post$providersArgs<ExtArgs>>): Prisma.Prisma__ProviderClient<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  applyProviders<T extends Prisma.Post$applyProvidersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Post$applyProvidersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   service<T extends Prisma.Post$serviceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Post$serviceArgs<ExtArgs>>): Prisma.Prisma__ServiceClient<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1546,10 +1746,10 @@ export interface PostFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Post", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Post", 'DateTime'>
   readonly providerId: Prisma.FieldRef<"Post", 'String'>
-  readonly applyProviders: Prisma.FieldRef<"Post", 'Json[]'>
   readonly userId: Prisma.FieldRef<"Post", 'String'>
-  readonly status: Prisma.FieldRef<"Post", 'String'>
-  readonly avarage_price: Prisma.FieldRef<"Post", 'Float'>
+  readonly status: Prisma.FieldRef<"Post", 'STATUSPOST'>
+  readonly offered_Price: Prisma.FieldRef<"Post", 'Float[]'>
+  readonly average_price: Prisma.FieldRef<"Post", 'Float'>
 }
     
 
@@ -1967,6 +2167,30 @@ export type Post$providersArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.ProviderInclude<ExtArgs> | null
   where?: Prisma.ProviderWhereInput
+}
+
+/**
+ * Post.applyProviders
+ */
+export type Post$applyProvidersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Provider
+   */
+  select?: Prisma.ProviderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Provider
+   */
+  omit?: Prisma.ProviderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProviderInclude<ExtArgs> | null
+  where?: Prisma.ProviderWhereInput
+  orderBy?: Prisma.ProviderOrderByWithRelationInput | Prisma.ProviderOrderByWithRelationInput[]
+  cursor?: Prisma.ProviderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProviderScalarFieldEnum | Prisma.ProviderScalarFieldEnum[]
 }
 
 /**

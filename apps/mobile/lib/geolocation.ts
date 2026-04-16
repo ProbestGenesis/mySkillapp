@@ -8,6 +8,37 @@ export type LocationData = {
   timestamp: number;
 };
 
+/**
+ * Demande la permission si besoin, puis lit une position ponctuelle (ex. au démarrage ou avant envoi serveur).
+ */
+export async function getCurrentUserCoordinates(): Promise<{
+  latitude: number;
+  longitude: number;
+  accuracy: number | null;
+} | null> {
+  let { status } = await Location.getForegroundPermissionsAsync();
+  if (status !== 'granted') {
+    const asked = await Location.requestForegroundPermissionsAsync();
+    status = asked.status;
+  }
+  if (status !== 'granted') {
+    return null;
+  }
+  if (!(await Location.hasServicesEnabledAsync())) {
+    return null;
+  }
+
+  const pos = await Location.getCurrentPositionAsync({
+    accuracy: Location.Accuracy.Balanced,
+  });
+
+  return {
+    latitude: pos.coords.latitude,
+    longitude: pos.coords.longitude,
+    accuracy: pos.coords.accuracy ?? null,
+  };
+}
+
 export function usePreciseLocation(pollingInterval = 1000 * 60 * 10) {
   const [location, setLocation] = useState<LocationData | null>(null);
   const [permissionGranted, setPermissionGranted] = useState(false);

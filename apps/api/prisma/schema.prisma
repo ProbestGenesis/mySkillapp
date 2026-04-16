@@ -8,6 +8,11 @@ datasource db {
   provider = "postgresql"
 }
 
+
+enum STATUSPOST {
+  PENDING
+  ACCEPTED
+}
 model User {
   id            String     @id
   name          String
@@ -58,6 +63,7 @@ model Provider {
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
   post          Post[]
+  postApplied   Post[] @relation("ApplyProviders")
   service       Service[]
 
   createdAt DateTime @default(now())
@@ -78,12 +84,14 @@ model Post {
   updatedAt      DateTime  @updatedAt
   providers      Provider? @relation(fields: [providerId], references: [id])
   providerId     String?   @unique
-  applyProviders Json[]  @default([])
+  //applyProviders Json[]  @default([])
+  applyProviders   Provider[] @relation("ApplyProviders")
   service        Service?
   user           User      @relation(fields: [userId], references: [id])
   userId         String
-  status         String?
-  avarage_price  Float?
+  status         STATUSPOST @default(PENDING)
+  offered_Price  Float[] @default([])
+  average_price  Float?
 }
 
 model Service {

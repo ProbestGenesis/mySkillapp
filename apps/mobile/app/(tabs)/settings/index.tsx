@@ -12,9 +12,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { authClient } from '@/lib/auth-client';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTRPC } from '@/provider/appProvider';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { Link, Redirect, useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import {
   AlertCircle,
   BriefcaseBusiness,
@@ -29,6 +30,7 @@ import {
   Star,
   UserIcon,
 } from 'lucide-react-native';
+import { useEffect } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -38,17 +40,17 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTRPC } from '@/provider/appProvider';
-
 
 type Props = {};
 
 function SettingScreen({}: Props) {
   const { data: session, isPending } = authClient.useSession();
-  const trpc = useTRPC()
+  const trpc = useTRPC();
   const router = useRouter();
 
-  const { data , isLoading, error} = useQuery(trpc.user.getUserWithProviderData.queryOptions({userId: session?.user.id as string}))
+  const { data, isLoading, error } = useQuery(
+    trpc.user.getUserWithProviderData.queryOptions({ userId: session?.user.id as string })
+  );
   const handleSignOut = async () => {
     try {
       await authClient.signOut();
@@ -57,13 +59,14 @@ function SettingScreen({}: Props) {
     }
   };
 
-  if (!session) {
-    return <Redirect href={"/auth"} />;
-  }
-
+  useEffect(() => {
+    if (!session) {
+      router.replace('/auth');
+    }
+  }, [session]);
   if (isLoading || isPending) {
     return (
-      <SafeAreaView className="flex-1 h-screen">
+      <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-row items-center justify-center">
           <ActivityIndicator size={64} color={'orange'} />
         </View>
@@ -71,9 +74,9 @@ function SettingScreen({}: Props) {
     );
   }
 
-  if(error){
+  if (error) {
     return (
-      <SafeAreaView className="flex-1 h-screen">
+      <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-row items-center justify-center">
           <AlertCircle size={64} color={'red'} />
           <Text className="text-red-600">Une erreur est survenue</Text>
@@ -82,9 +85,9 @@ function SettingScreen({}: Props) {
     );
   }
 
-  if(!data){
+  if (!data) {
     return (
-      <SafeAreaView className="flex-1 h-screen">
+      <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-row items-center justify-center">
           <AlertCircle size={64} color={'red'} />
           <Text className="text-red-600">Impossible de charger vos informations</Text>
@@ -121,7 +124,7 @@ function SettingScreen({}: Props) {
             </View>
 
             <View className="flex-row gap-2">
-              <Link href="/(tabs)">
+              <Link href="/(tabs)/settings/profilPicture">
                 <Avatar alt="user profil" className="h-20 w-20">
                   <AvatarImage
                     //@ts-ignore
@@ -144,21 +147,28 @@ function SettingScreen({}: Props) {
                   <View className="flex-col gap-1">
                     {' '}
                     <Text className="text-primary">
-                      {data?.provider?.profession || 'Profession non renseignée'}
+                      {data?.provider?.profession
+                        ? `Profession:   ${data?.provider?.profession}`
+                        : 'Profession non renseignée'}
                     </Text>
                     {data?.provider && (
-                      <Badge variant="secondary" className="rounded-full">
-                        <View className="flex-row gap-2">
-                          <Star fill="yellow" stroke={'yellow'} size="18" />
+                      <View className="flex-row items-center gap-1.5">
+                        {' '}
+                        <View className="flex-row items-center gap-0.5">
                           <Text
                             className={clsx({
                               'text-green-600': data?.provider?.rate > 3,
                               'text-red-700': data?.provider?.rate < 3,
                             })}>
-                            {data?.rate}
+                            {data?.provider?.rate}
                           </Text>
+                          <Star size={8} />
+                        </View>{' '}
+                        <Text>-</Text>
+                        <View>
+                          <Text>{data?.provider?.mission_nb} missions</Text>
                         </View>
-                      </Badge>
+                      </View>
                     )}
                   </View>
                 )}
@@ -359,8 +369,7 @@ function SettingScreen({}: Props) {
               <Skeleton className="h-32 w-full rounded-lg" />
             ) : (
               <View>
-                
-                {session.user.role === "PROVIDER" && data.provider && (
+                {session?.user.role === 'PROVIDER' && data.provider && (
                   <Card>
                     <CardHeader className="flex-row justify-between">
                       <View className="flex-row items-center gap-2">
@@ -431,7 +440,7 @@ function SettingScreen({}: Props) {
                           <Link
                             asChild
                             href={{
-                              pathname: "/(tabs)/settings/skills",
+                              pathname: '/(tabs)/settings/skills',
                               params: { providerId: data?.provider?.id as string },
                             }}>
                             <Button size={'lg'} className="rounded-full">

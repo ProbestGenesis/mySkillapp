@@ -1,9 +1,8 @@
-
 import { useTRPC } from "@/provider/appProvider";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 import { createProvider } from "../../../../packages/lib/zodSchema";
 
-
-const trpc = useTRPC()
-export const useCreateProvider = useMutation(trpc.user.createProvider.mutationOptions())
+export const useCreateProvider = () => {
+  const trpc = useTRPC();
+  return useMutation(trpc.user.createProvider.mutationOptions());
+};

@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "3961fb8c-2232-446f-a414-aad27ecfe046"
+      }
+    },
+    "android": {
+      "package": "com.genesiscorp.skillmap"
+    }
+  }
+}

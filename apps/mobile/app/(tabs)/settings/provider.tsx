@@ -10,10 +10,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { authClient } from '@/lib/auth-client';
 import { availability } from '@/data/availability';
 import { profession } from '@/data/selectProfessionData';
+import { authClient } from '@/lib/auth-client';
 import { usePreciseLocation } from '@/lib/geolocation';
+import { createProvider } from '@/lib/zodSchema';
+import { useTRPC } from '@/provider/appProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -25,8 +27,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
-import { useTRPC } from '@/provider/appProvider';
-import { createProvider } from '@/lib/zodSchema';
 
 type Props = {
   onComplete?: () => void;
@@ -70,10 +70,13 @@ export default function BecomeProvider({}: Props) {
     }
   }, [locationError, permissionGranted]);
 
+  useEffect(() => {
+    if (!session) {
+      router.replace('/auth');
+    }
 
-  if (!session) {
-    return <Redirect href="/auth" />;
-  }
+    return;
+  }, [session]);
 
   const handleCloseLanding = () => {
     setCloseLanding(true);
@@ -244,9 +247,7 @@ export default function BecomeProvider({}: Props) {
               <Pressable
                 onPress={handleCloseLanding}
                 className="bg-primary flex-row items-center justify-center gap-2 rounded-full py-3 active:opacity-80">
-                <Text className="text-base font-medium text-white">
-                  Quel emploi exercez-vous ?
-                </Text>
+                <Text className="text-base font-medium text-white">Quel emploi exercez-vous ?</Text>
               </Pressable>
             </View>
           </MotiView>

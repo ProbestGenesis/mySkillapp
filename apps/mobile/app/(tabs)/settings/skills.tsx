@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { AnimatePresence, MotiView } from 'moti';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@/components/ui/button';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -123,7 +123,7 @@ const FormView = ({
             render={({ field: { onChange, value, onBlur } }) => (
               <View>
                 <Label>
-                  <Text className="font-bold">Description</Text>{' '}
+                  <Text className="font-bold">Description </Text>
                 </Label>
                 <Textarea
                   placeholder="Décris ton service en détail..."
@@ -235,9 +235,13 @@ export default function AddSkills() {
   };  
 
 
-  if (!session) {
-    return <Redirect href="/auth" />
-  }
+  useEffect(() => {
+    if (!session) {
+      router.replace('/auth');
+    }
+
+    return;
+  }, [session]);
 
 
   return (

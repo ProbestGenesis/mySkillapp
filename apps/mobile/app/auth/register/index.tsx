@@ -204,7 +204,6 @@ function RegisterPage() {
   return (
     <SafeAreaView className="flex-1 bg-blue-900">
       <ScrollView showsVerticalScrollIndicator={false} className="">
-        {' '}
         <KeyboardAvoidingView
           keyboardVerticalOffset={Platform.OS == 'ios' ? 60 : 40}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -310,7 +309,7 @@ function RegisterPage() {
                 <View className="w-full">
                   <Text className="mb-2 text-center text-2xl font-bold">Vérification</Text>
                   <Text className="text-center text-gray-400">
-                    Entrez le code à 4 chiffres envoyé au{' '}
+                    Entrez le code à 4 chiffres envoyé au{" "}
                     <Text className="font-bold text-black">
                       {currentPhone || session?.user.phoneNumber}
                     </Text>
@@ -381,7 +380,7 @@ function RegisterPage() {
 
             {step === 3 && <UserInfo forAuth={true} closeDrawer={() => {}} />}
           </View>
-        </KeyboardAvoidingView>{' '}
+        </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
   );
