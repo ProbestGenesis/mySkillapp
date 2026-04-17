@@ -43,6 +43,10 @@ export type ServiceMinAggregateOutputType = {
   district: string | null
   code: string | null
   role: string | null
+  isViewed: boolean | null
+  isViewedAt: Date | null
+  appointmentTime: string | null
+  appointmentTimeIsAccepted: boolean | null
   providerId: string | null
   skillId: string | null
   customerId: string | null
@@ -62,6 +66,10 @@ export type ServiceMaxAggregateOutputType = {
   district: string | null
   code: string | null
   role: string | null
+  isViewed: boolean | null
+  isViewedAt: Date | null
+  appointmentTime: string | null
+  appointmentTimeIsAccepted: boolean | null
   providerId: string | null
   skillId: string | null
   customerId: string | null
@@ -82,6 +90,10 @@ export type ServiceCountAggregateOutputType = {
   district: number
   code: number
   role: number
+  isViewed: number
+  isViewedAt: number
+  appointmentTime: number
+  appointmentTimeIsAccepted: number
   providerId: number
   skillId: number
   customerId: number
@@ -111,6 +123,10 @@ export type ServiceMinAggregateInputType = {
   district?: true
   code?: true
   role?: true
+  isViewed?: true
+  isViewedAt?: true
+  appointmentTime?: true
+  appointmentTimeIsAccepted?: true
   providerId?: true
   skillId?: true
   customerId?: true
@@ -130,6 +146,10 @@ export type ServiceMaxAggregateInputType = {
   district?: true
   code?: true
   role?: true
+  isViewed?: true
+  isViewedAt?: true
+  appointmentTime?: true
+  appointmentTimeIsAccepted?: true
   providerId?: true
   skillId?: true
   customerId?: true
@@ -150,6 +170,10 @@ export type ServiceCountAggregateInputType = {
   district?: true
   code?: true
   role?: true
+  isViewed?: true
+  isViewedAt?: true
+  appointmentTime?: true
+  appointmentTimeIsAccepted?: true
   providerId?: true
   skillId?: true
   customerId?: true
@@ -257,6 +281,10 @@ export type ServiceGroupByOutputType = {
   district: string | null
   code: string
   role: string | null
+  isViewed: boolean
+  isViewedAt: Date | null
+  appointmentTime: string | null
+  appointmentTimeIsAccepted: boolean
   providerId: string
   skillId: string | null
   customerId: string
@@ -300,6 +328,10 @@ export type ServiceWhereInput = {
   district?: Prisma.StringNullableFilter<"Service"> | string | null
   code?: Prisma.StringFilter<"Service"> | string
   role?: Prisma.StringNullableFilter<"Service"> | string | null
+  isViewed?: Prisma.BoolFilter<"Service"> | boolean
+  isViewedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  appointmentTime?: Prisma.StringNullableFilter<"Service"> | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFilter<"Service"> | boolean
   providerId?: Prisma.StringFilter<"Service"> | string
   skillId?: Prisma.StringNullableFilter<"Service"> | string | null
   customerId?: Prisma.StringFilter<"Service"> | string
@@ -324,6 +356,10 @@ export type ServiceOrderByWithRelationInput = {
   district?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
+  isViewed?: Prisma.SortOrder
+  isViewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  appointmentTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  appointmentTimeIsAccepted?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
   skillId?: Prisma.SortOrderInput | Prisma.SortOrder
   customerId?: Prisma.SortOrder
@@ -352,6 +388,10 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   location?: Prisma.JsonNullableFilter<"Service">
   district?: Prisma.StringNullableFilter<"Service"> | string | null
   role?: Prisma.StringNullableFilter<"Service"> | string | null
+  isViewed?: Prisma.BoolFilter<"Service"> | boolean
+  isViewedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  appointmentTime?: Prisma.StringNullableFilter<"Service"> | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFilter<"Service"> | boolean
   providerId?: Prisma.StringFilter<"Service"> | string
   skillId?: Prisma.StringNullableFilter<"Service"> | string | null
   customerId?: Prisma.StringFilter<"Service"> | string
@@ -376,6 +416,10 @@ export type ServiceOrderByWithAggregationInput = {
   district?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
+  isViewed?: Prisma.SortOrder
+  isViewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  appointmentTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  appointmentTimeIsAccepted?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
   skillId?: Prisma.SortOrderInput | Prisma.SortOrder
   customerId?: Prisma.SortOrder
@@ -404,6 +448,10 @@ export type ServiceScalarWhereWithAggregatesInput = {
   district?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   code?: Prisma.StringWithAggregatesFilter<"Service"> | string
   role?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
+  isViewed?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
+  isViewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Service"> | Date | string | null
+  appointmentTime?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
   providerId?: Prisma.StringWithAggregatesFilter<"Service"> | string
   skillId?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   customerId?: Prisma.StringWithAggregatesFilter<"Service"> | string
@@ -423,6 +471,10 @@ export type ServiceCreateInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -444,6 +496,10 @@ export type ServiceUncheckedCreateInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   providerId: string
   skillId?: string | null
   customerId: string
@@ -463,6 +519,10 @@ export type ServiceUpdateInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -484,6 +544,10 @@ export type ServiceUncheckedUpdateInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -504,6 +568,10 @@ export type ServiceCreateManyInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   providerId: string
   skillId?: string | null
   customerId: string
@@ -523,6 +591,10 @@ export type ServiceUpdateManyMutationInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -540,6 +612,10 @@ export type ServiceUncheckedUpdateManyInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -581,6 +657,10 @@ export type ServiceCountOrderByAggregateInput = {
   district?: Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  isViewed?: Prisma.SortOrder
+  isViewedAt?: Prisma.SortOrder
+  appointmentTime?: Prisma.SortOrder
+  appointmentTimeIsAccepted?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
@@ -604,6 +684,10 @@ export type ServiceMaxOrderByAggregateInput = {
   district?: Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  isViewed?: Prisma.SortOrder
+  isViewedAt?: Prisma.SortOrder
+  appointmentTime?: Prisma.SortOrder
+  appointmentTimeIsAccepted?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
@@ -623,6 +707,10 @@ export type ServiceMinOrderByAggregateInput = {
   district?: Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  isViewed?: Prisma.SortOrder
+  isViewedAt?: Prisma.SortOrder
+  appointmentTime?: Prisma.SortOrder
+  appointmentTimeIsAccepted?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   customerId?: Prisma.SortOrder
@@ -753,12 +841,12 @@ export type ServiceUncheckedUpdateOneWithoutPostNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ServiceUpdateToOneWithWhereWithoutPostInput, Prisma.ServiceUpdateWithoutPostInput>, Prisma.ServiceUncheckedUpdateWithoutPostInput>
 }
 
-export type EnumSTATUSSERVICEFieldUpdateOperationsInput = {
-  set?: $Enums.STATUSSERVICE
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type EnumSTATUSSERVICEFieldUpdateOperationsInput = {
+  set?: $Enums.STATUSSERVICE
 }
 
 export type ServiceCreateNestedManyWithoutSkillsInput = {
@@ -812,6 +900,10 @@ export type ServiceCreateWithoutCustomerInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -832,6 +924,10 @@ export type ServiceUncheckedCreateWithoutCustomerInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   providerId: string
   skillId?: string | null
   status?: $Enums.STATUSSERVICE
@@ -880,6 +976,10 @@ export type ServiceScalarWhereInput = {
   district?: Prisma.StringNullableFilter<"Service"> | string | null
   code?: Prisma.StringFilter<"Service"> | string
   role?: Prisma.StringNullableFilter<"Service"> | string | null
+  isViewed?: Prisma.BoolFilter<"Service"> | boolean
+  isViewedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  appointmentTime?: Prisma.StringNullableFilter<"Service"> | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFilter<"Service"> | boolean
   providerId?: Prisma.StringFilter<"Service"> | string
   skillId?: Prisma.StringNullableFilter<"Service"> | string | null
   customerId?: Prisma.StringFilter<"Service"> | string
@@ -899,6 +999,10 @@ export type ServiceCreateWithoutProviderInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -919,6 +1023,10 @@ export type ServiceUncheckedCreateWithoutProviderInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   skillId?: string | null
   customerId: string
   status?: $Enums.STATUSSERVICE
@@ -963,6 +1071,10 @@ export type ServiceCreateWithoutPostInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -982,6 +1094,10 @@ export type ServiceUncheckedCreateWithoutPostInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   providerId: string
   skillId?: string | null
   customerId: string
@@ -1017,6 +1133,10 @@ export type ServiceUpdateWithoutPostInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1036,6 +1156,10 @@ export type ServiceUncheckedUpdateWithoutPostInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1055,6 +1179,10 @@ export type ServiceCreateWithoutSkillsInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1075,6 +1203,10 @@ export type ServiceUncheckedCreateWithoutSkillsInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   providerId: string
   customerId: string
   status?: $Enums.STATUSSERVICE
@@ -1120,6 +1252,10 @@ export type ServiceCreateManyCustomerInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   providerId: string
   skillId?: string | null
   status?: $Enums.STATUSSERVICE
@@ -1138,6 +1274,10 @@ export type ServiceUpdateWithoutCustomerInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1158,6 +1298,10 @@ export type ServiceUncheckedUpdateWithoutCustomerInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
@@ -1177,6 +1321,10 @@ export type ServiceUncheckedUpdateManyWithoutCustomerInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
@@ -1196,6 +1344,10 @@ export type ServiceCreateManyProviderInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   skillId?: string | null
   customerId: string
   status?: $Enums.STATUSSERVICE
@@ -1214,6 +1366,10 @@ export type ServiceUpdateWithoutProviderInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1234,6 +1390,10 @@ export type ServiceUncheckedUpdateWithoutProviderInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
@@ -1253,6 +1413,10 @@ export type ServiceUncheckedUpdateManyWithoutProviderInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
@@ -1272,6 +1436,10 @@ export type ServiceCreateManySkillsInput = {
   district?: string | null
   code?: string
   role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
   providerId: string
   customerId: string
   status?: $Enums.STATUSSERVICE
@@ -1290,6 +1458,10 @@ export type ServiceUpdateWithoutSkillsInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1310,6 +1482,10 @@ export type ServiceUncheckedUpdateWithoutSkillsInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
@@ -1329,6 +1505,10 @@ export type ServiceUncheckedUpdateManyWithoutSkillsInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
@@ -1350,6 +1530,10 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   district?: boolean
   code?: boolean
   role?: boolean
+  isViewed?: boolean
+  isViewedAt?: boolean
+  appointmentTime?: boolean
+  appointmentTimeIsAccepted?: boolean
   providerId?: boolean
   skillId?: boolean
   customerId?: boolean
@@ -1374,6 +1558,10 @@ export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   district?: boolean
   code?: boolean
   role?: boolean
+  isViewed?: boolean
+  isViewedAt?: boolean
+  appointmentTime?: boolean
+  appointmentTimeIsAccepted?: boolean
   providerId?: boolean
   skillId?: boolean
   customerId?: boolean
@@ -1398,6 +1586,10 @@ export type ServiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   district?: boolean
   code?: boolean
   role?: boolean
+  isViewed?: boolean
+  isViewedAt?: boolean
+  appointmentTime?: boolean
+  appointmentTimeIsAccepted?: boolean
   providerId?: boolean
   skillId?: boolean
   customerId?: boolean
@@ -1422,6 +1614,10 @@ export type ServiceSelectScalar = {
   district?: boolean
   code?: boolean
   role?: boolean
+  isViewed?: boolean
+  isViewedAt?: boolean
+  appointmentTime?: boolean
+  appointmentTimeIsAccepted?: boolean
   providerId?: boolean
   skillId?: boolean
   customerId?: boolean
@@ -1432,7 +1628,7 @@ export type ServiceSelectScalar = {
   completedAt?: boolean
 }
 
-export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "postId" | "title" | "description" | "price" | "location" | "district" | "code" | "role" | "providerId" | "skillId" | "customerId" | "status" | "createdAt" | "updatedAt" | "startedAt" | "completedAt", ExtArgs["result"]["service"]>
+export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "postId" | "title" | "description" | "price" | "location" | "district" | "code" | "role" | "isViewed" | "isViewedAt" | "appointmentTime" | "appointmentTimeIsAccepted" | "providerId" | "skillId" | "customerId" | "status" | "createdAt" | "updatedAt" | "startedAt" | "completedAt", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.Service$postArgs<ExtArgs>
   provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
@@ -1470,6 +1666,10 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     district: string | null
     code: string
     role: string | null
+    isViewed: boolean
+    isViewedAt: Date | null
+    appointmentTime: string | null
+    appointmentTimeIsAccepted: boolean
     providerId: string
     skillId: string | null
     customerId: string
@@ -1914,6 +2114,10 @@ export interface ServiceFieldRefs {
   readonly district: Prisma.FieldRef<"Service", 'String'>
   readonly code: Prisma.FieldRef<"Service", 'String'>
   readonly role: Prisma.FieldRef<"Service", 'String'>
+  readonly isViewed: Prisma.FieldRef<"Service", 'Boolean'>
+  readonly isViewedAt: Prisma.FieldRef<"Service", 'DateTime'>
+  readonly appointmentTime: Prisma.FieldRef<"Service", 'String'>
+  readonly appointmentTimeIsAccepted: Prisma.FieldRef<"Service", 'Boolean'>
   readonly providerId: Prisma.FieldRef<"Service", 'String'>
   readonly skillId: Prisma.FieldRef<"Service", 'String'>
   readonly customerId: Prisma.FieldRef<"Service", 'String'>

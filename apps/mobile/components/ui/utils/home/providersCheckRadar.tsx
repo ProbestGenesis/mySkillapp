@@ -216,12 +216,12 @@ function ProviderCheckRadar(_props: Props) {
 
       {userPostFecthing ? (
         <View className="absolute right-1 bottom-4 mx-auto">
-          <View className="flex flex-col space-y-2">
-            <Skeleton className="h-4 w-8" />
+          <View className="flex flex-col gap-2.5">
+            <Skeleton className="h-6 w-12" />
 
-            <View className="flex flex-col space-y-2">
+            <View className="flex flex-col gap-2">
               {Array.from({ length: 3 }).map((_, idx) => (
-                <Skeleton key={idx} className="h-4 w-4 rounded-full" />
+                <Skeleton key={idx} className="h-12 w-12 rounded-full" />
               ))}
             </View>
           </View>

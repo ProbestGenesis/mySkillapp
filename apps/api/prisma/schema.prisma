@@ -118,6 +118,10 @@ model Service {
   code        String    @default(nanoid(5)) @unique
   role        String?
   provider    Provider      @relation(fields: [providerId], references: [id])
+  isViewed      Boolean @default(false)
+  isViewedAt  DateTime? 
+  appointmentTime String?  
+  appointmentTimeIsAccepted Boolean @default(true)
   providerId  String
   skills      Skills?   @relation(fields: [skillId], references: [id], onDelete: Cascade)
   skillId     String?

@@ -12,10 +12,19 @@ export const serviceRouter = t.router({
   getYoursServices: protectedProcedure.query(async ({ ctx }) => {
     try {
       const session = ctx.session
-
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: session?.user.id },
+        include: {
+          provider: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      })
       return await ctx.prisma.service.findMany({
         where: {
-          OR: [{ customerId: session!.user.id }, { providerId: session!.user.providerId }],
+          OR: [{ customerId: session!.user.id }, { providerId: user?.provider?.id }],
         },
         include: {
           provider: {
@@ -28,6 +37,12 @@ export const serviceRouter = t.router({
             },
           },
           skills: true,
+          customer: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
         },
       })
     } catch (error: any) {
@@ -44,6 +59,16 @@ export const serviceRouter = t.router({
       try {
         const { serviceId } = input
         const session = ctx.session
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: session?.user.id },
+          include: {
+            provider: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        })
 
         const service = await ctx.prisma.service.findUnique({
           where: { id: serviceId },
@@ -63,7 +88,7 @@ export const serviceRouter = t.router({
           })
         }
 
-        if (service.providerId !== session!.user.providerId) {
+        if (service.providerId !== user?.provider?.id) {
           throw new TRPCError({
             code: 'FORBIDDEN',
             message: "Vous n'êtes pas le prestataire assigné à ce service",
@@ -243,6 +268,111 @@ export const serviceRouter = t.router({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error.message || 'Erreur lors de la notation du service',
+        })
+      }
+    }),
+
+  markServiceAsViewed: protectedProcedure
+    .input(z.object({ serviceId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const { serviceId } = input
+        const session = ctx.session
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: session!.user.id },
+          include: {
+            provider: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        })
+
+        const service = await ctx.prisma.service.findUnique({
+          where: { id: serviceId },
+        })
+
+        if (!service) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Service non trouvé',
+          })
+        }
+
+        // Seul le prestataire peut marquer comme vu
+        if (service.providerId !== user?.provider?.id) {
+          return { success: false, message: 'Not authorized' }
+        }
+
+        if (service.isViewed) return { success: true }
+
+        return await ctx.prisma.service.update({
+          where: { id: serviceId },
+          data: {
+            isViewed: true,
+            isViewedAt: new Date(),
+          },
+        })
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message || 'Erreur lors du marquage comme vu',
+        })
+      }
+    }),
+
+  setAppointmentTime: protectedProcedure
+    .input(
+      z.object({
+        serviceId: z.string(),
+        appointmentTime: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const { serviceId, appointmentTime } = input
+        const session = ctx.session
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: session?.user.id },
+          include: {
+            provider: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        })
+
+        const service = await ctx.prisma.service.findUnique({
+          where: { id: serviceId },
+        })
+
+        if (!service) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Service non trouvé',
+          })
+        }
+
+        if (service.providerId !== user?.provider?.id) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: "Vous n'êtes pas autorisé à modifier ce service",
+          })
+        }
+
+        return await ctx.prisma.service.update({
+          where: { id: serviceId },
+          data: {
+            appointmentTime,
+            appointmentTimeIsAccepted: false, // On attend la validation du client ou on notifie
+          },
+        })
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message || 'Erreur lors de la définition du rendez-vous',
         })
       }
     }),

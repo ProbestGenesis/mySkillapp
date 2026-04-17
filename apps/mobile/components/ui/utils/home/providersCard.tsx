@@ -92,7 +92,7 @@ export function ProviderCard({
               <Text className="text-muted-foreground text-sm">Aucune compétence renseignée.</Text>
             )}
 
-            <Button className="mt-6 rounded-xl" variant="outline" onPress={onClose}>
+            <Button className="mt-6 rounded-full" variant="outline" onPress={onClose}>
               <Text>Fermer</Text>
             </Button>
           </ScrollView>

@@ -91,12 +91,8 @@ export const postRouter = t.router({
                     image: true,
                     phoneNumberVerified: true,
                     emailVerified: true,
-                    provider: {
-                      select: {
-                        profession: true
-                      }
-                    }
                   },
+                  
                 },
               },
             },
@@ -260,6 +256,7 @@ export const postRouter = t.router({
                 id: ctx.session!.user.id
               }
             },
+            title: `Recherche de ${post.profession}`,
             status: 'ACCEPTED',
             description: post.body,
             code,

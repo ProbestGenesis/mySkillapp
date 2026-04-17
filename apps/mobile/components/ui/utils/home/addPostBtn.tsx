@@ -60,7 +60,7 @@ function AddPostBtn({}: Props) {
         
       </DialogTrigger> 
 
-      <DialogContent>
+      <DialogContent className="w-[90%] rounded-2xl">
         <DialogHeader>
           <DialogTitle>Demander un services</DialogTitle>
 

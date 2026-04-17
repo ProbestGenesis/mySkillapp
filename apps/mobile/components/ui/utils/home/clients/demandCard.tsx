@@ -96,7 +96,7 @@ export default function DemandCard({ showDemandCard, onClose, clientIds }: Props
       onOpenChange={(open) => {
         if (!open) onClose();
       }}>
-      <DialogContent className="w-full rounded-2xl">
+      <DialogContent className="w-[90%] rounded-2xl">
         {isLoading ? (
           <View className="items-center py-10">
             <ActivityIndicator />

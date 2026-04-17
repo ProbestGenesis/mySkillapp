@@ -25,7 +25,7 @@ import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { Star } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
 
-type DialogType = 'CARE' | 'CANCEL' | 'FINISH' | 'RATE' | null;
+type DialogType = 'CARE' | 'CANCEL' | 'FINISH' | 'RATE' | 'APPOINTMENT' | null;
 
 const RatingStars = ({
   rating,
@@ -85,6 +85,7 @@ export default function ServiceListScreen() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [rating, setRating] = useState(5);
+  const [timeStr, setTimeStr] = useState('');
 
   const { data, isLoading, refetch, isRefetching } = useQuery({
     ...trpc.service.getYoursServices.queryOptions(),
@@ -104,6 +105,7 @@ export default function ServiceListScreen() {
       setSelectedItem(null);
       resetForm();
       setRating(5);
+      setTimeStr('');
     }, 300);
   };
 
@@ -139,6 +141,24 @@ export default function ServiceListScreen() {
       },
     })
   );
+  
+  const markAsViewedMutation = useMutation(
+    trpc.service.markServiceAsViewed.mutationOptions({
+      onSuccess: () => {
+         // Silently update cache or just invalidate if needed
+         // queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+      },
+    })
+  );
+
+  const setAppointmentMutation = useMutation(
+    trpc.service.setAppointmentTime.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+        handleCloseDialog();
+      },
+    })
+  );
 
   const {
     control,
@@ -153,12 +173,26 @@ export default function ServiceListScreen() {
       router.push('/auth');
     }
 
+    if (data && session?.user?.id) {
+      // @ts-ignore
+      const providerId = session.user?.providerId;
+      const unviewedServices = data.filter(
+        (s: any) => s.providerId === providerId && !s.isViewed
+      );
+      unviewedServices.forEach((s: any) => {
+        markAsViewedMutation.mutate({ serviceId: s.id });
+      });
+    }
+
     return;
-  }, [session]);
+  }, [session, data]);
 
   const renderItem = ({ item }: { item: any }) => {
-    const role = session?.user.role;
     if (!item) return null;
+
+    const isCustomer = item.customerId === session?.user?.id;
+    const partnerName = isCustomer ? item.provider.user.name : item.customer.name;
+    const partnerRoleLabel = isCustomer ? 'Prestataire' : 'Client';
 
     return (
       <Card className="mx-2 my-2 overflow-hidden border-none shadow-sm">
@@ -186,7 +220,7 @@ export default function ServiceListScreen() {
             <View className="bg-primary/10 flex-row items-center rounded-full px-2 py-1">
               <UserIcon size={12} className="text-primary mr-1" />
               <Text className="text-primary text-xs font-semibold">
-                {role === 'Customer' ? 'Prestataire' : 'Client'}: {item.provider.user.name}
+                {partnerRoleLabel}: {partnerName}
               </Text>
             </View>
             <View className="bg-muted flex-row items-center rounded-full px-2 py-1">
@@ -204,7 +238,7 @@ export default function ServiceListScreen() {
             </Text>
           </View>
 
-          {role === 'Customer' && item.code && item.status !== 'COMPLETED' && (
+          {isCustomer && item.code && item.status !== 'COMPLETED' && (
             <View className="bg-primary/5 border-primary/20 mt-1 flex-row items-center justify-between rounded-xl border p-3">
               <View>
                 <Text className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
@@ -213,6 +247,21 @@ export default function ServiceListScreen() {
                 <Text className="text-primary text-xl font-bold tracking-[6px]">{item.code}</Text>
               </View>
               <QrCode size="24" className="text-primary opacity-50" />
+            </View>
+          )}
+
+          {item.appointmentTime && (
+            <View className="bg-yellow-50 border-yellow-200 mt-2 flex-row items-center gap-2 rounded-xl border p-2">
+              <CalendarClock size={16} className="text-yellow-600" />
+              <View>
+                <Text className="text-[10px] font-bold text-yellow-600 uppercase">RDV Prévu</Text>
+                <Text className="text-yellow-700 text-sm font-semibold">
+                  {new Date(item.appointmentTime).toLocaleString()}
+                </Text>
+              </View>
+              {!item.appointmentTimeIsAccepted && (
+                 <Text className="ml-auto text-[10px] italic text-yellow-600">En attente...</Text>
+              )}
             </View>
           )}
         </CardContent>
@@ -228,7 +277,7 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {role === 'Provider' && item.status === 'ACCEPTED' && (
+          {!isCustomer && item.status === 'ACCEPTED' && (
             <Button
               size="sm"
               className="rounded-full px-6"
@@ -237,7 +286,7 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {role === 'Provider' && item.status === 'IN_PROGRESS' && (
+          {!isCustomer && item.status === 'IN_PROGRESS' && (
             <Button
               size="sm"
               className="rounded-full px-6"
@@ -246,13 +295,23 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {role === 'Customer' && item.status === 'COMPLETED' && (
+          {isCustomer && item.status === 'COMPLETED' && (
             <Button
               size="sm"
               variant="outline"
               className="border-primary rounded-full px-6"
               onPress={() => openDialog(item, 'RATE')}>
               <Text className="text-primary text-xs font-bold">Noter l'expérience</Text>
+            </Button>
+          )}
+
+          {!isCustomer && item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (
+            <Button
+              size="sm"
+              variant="secondary"
+              className="rounded-full px-4"
+              onPress={() => openDialog(item, 'APPOINTMENT')}>
+              <Text className="text-xs font-bold">RDV</Text>
             </Button>
           )}
         </CardFooter>
@@ -275,7 +334,7 @@ export default function ServiceListScreen() {
             <Text className="text-muted-foreground mt-2 text-center">
               Le service a été validé avec succès.
             </Text>
-            <Button className="mt-6 w-full rounded-xl" onPress={handleCloseDialog}>
+            <Button className="mt-6 w-full rounded-full" onPress={handleCloseDialog}>
               <Text className="text-white">Génial !</Text>
             </Button>
           </View>
@@ -318,7 +377,7 @@ export default function ServiceListScreen() {
               <Text>Annuler</Text>
             </Button>
             <Button
-              className="flex-1 rounded-xl"
+              className="flex-1 rounded-full"
               disabled={finishMutation.isPending}
               onPress={handleSubmit((data) =>
                 finishMutation.mutateAsync({ ...data, serviceId: selectedItem.id })
@@ -355,7 +414,7 @@ export default function ServiceListScreen() {
               <Text>Plus tard</Text>
             </Button>
             <Button
-              className="flex-1 rounded-xl"
+              className="flex-1 rounded-full"
               disabled={careMutation.isPending}
               onPress={() => careMutation.mutate({ serviceId: selectedItem.id })}>
               <Text className="font-bold text-white">
@@ -393,7 +452,7 @@ export default function ServiceListScreen() {
             </Button>
             <Button
               variant="destructive"
-              className="flex-1 rounded-xl"
+              className="flex-1 rounded-full"
               disabled={cancelMutation.isPending}
               onPress={() => cancelMutation.mutate({ serviceId: selectedItem.id })}>
               <Text className="font-bold text-white">
@@ -423,7 +482,7 @@ export default function ServiceListScreen() {
           )}
 
           <Button
-            className="rounded-xl"
+            className="rounded-full"
             disabled={rateMutation.isPending}
             onPress={() =>
               rateMutation.mutate({
@@ -435,6 +494,72 @@ export default function ServiceListScreen() {
               {rateMutation.isPending ? <ActivityIndicator color="white" /> : 'Envoyer ma note'}
             </Text>
           </Button>
+        </View>
+      );
+    }
+
+    // 5. APPOINTMENT
+    if (activeDialog === 'APPOINTMENT') {
+
+      const handleSetAppointment = () => {
+        if (!timeStr) return;
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        if (isNaN(hours) || isNaN(minutes)) {
+          alert('Format invalide. Utilisez HH:MM');
+          return;
+        }
+        
+
+        setAppointmentMutation.mutate({
+          serviceId: selectedItem.id,
+          appointmentTime: timeStr,
+        });
+      };
+
+      return (
+        <View className="gap-4 py-4">
+          <View>
+            <Text className="text-xl font-bold">Définir un rendez-vous</Text>
+            <Text className="text-muted-foreground mt-1">
+              Proposez une date et une heure au client.
+            </Text>
+          </View>
+
+          <View className="gap-3">
+            <View>
+              <Text className="mb-1 text-sm font-medium">Heure (HH:MM)</Text>
+              <Input
+                placeholder="14:30"
+                value={timeStr}
+                onChangeText={setTimeStr}
+                className="h-12"
+              />
+            </View>
+          </View>
+
+          {setAppointmentMutation.isError && (
+            <Text className="text-destructive text-center">
+              {setAppointmentMutation.error?.message}
+            </Text>
+          )}
+
+          <View className="mt-4 flex-row gap-3">
+            <Button variant="ghost" className="flex-1" onPress={handleCloseDialog}>
+              <Text>Annuler</Text>
+            </Button>
+            <Button
+              className="flex-1 rounded-full"
+              disabled={setAppointmentMutation.isPending}
+              onPress={handleSetAppointment}>
+              <Text className="font-bold text-white">
+                {setAppointmentMutation.isPending ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  'Enregistrer'
+                )}
+              </Text>
+            </Button>
+          </View>
         </View>
       );
     }
@@ -476,7 +601,7 @@ export default function ServiceListScreen() {
           {/* --- LE DIALOGUE GLOBAL --- */}
           {/* Il est rendu HORS de la liste, une seule fois */}
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogContent className="w-[90%] rounded-2xl">{renderDialogContent()}</DialogContent>
+            <DialogContent className="w-full rounded-2xl">{renderDialogContent()}</DialogContent>
           </Dialog>
         </>
       )}

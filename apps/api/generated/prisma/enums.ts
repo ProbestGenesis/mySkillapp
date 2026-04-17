@@ -19,6 +19,7 @@ export type STATUSPOST = (typeof STATUSPOST)[keyof typeof STATUSPOST]
 
 
 export const STATUSSERVICE = {
+  DEMAND: 'DEMAND',
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
   ACCEPTED: 'ACCEPTED',

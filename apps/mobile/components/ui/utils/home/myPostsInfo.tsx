@@ -16,6 +16,7 @@ import React, { useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { Avatar, AvatarFallback, AvatarImage } from '../../avatar';
 import { Button } from '../../button';
+import { useEffect } from 'react';
 
 function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: string }) {
   const { data: session } = authClient.useSession();
@@ -31,7 +32,7 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
   });
 
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
-  const { mutateAsync: selectedProviderMutation, isPending } = useMutation({
+  const { mutateAsync: selectedProviderMutation, isPending, error } = useMutation({
     ...trpc.post.selectProvider.mutationOptions(),
     onSuccess: () => {
       setSuccess({ status: 200, message: 'Prestataire selectionné avec succès' });
@@ -48,10 +49,22 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
       queryClient.invalidateQueries({ queryKey: ['post', 'getMyPost'] });
     },
   });
+
+  useEffect(() => {
+    if (error instanceof TRPCClientError) {
+      setSuccess({ status: 500, message: error.message });
+    } else if (error) {
+      setSuccess({ status: 400, message: 'Prestataire non selectionné' });
+    }
+
+   
+    setSuccess({ status: 200, message: 'Prestataire selectionné avec succès' });
+
+  }, [error])
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="w-full min-w-full">
+      <DialogContent className="w-[90%] rounded-2xl">
         {isLoading ? (
           <View className="flex-row items-center justify-center">
             <ActivityIndicator />
@@ -72,7 +85,7 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
               {userPost?.providerId !== null ? (
                 <View className="mx-auto">
                   <Text className="text-accent text-lg text-center">
-                    Vous avez déjà selectionner un prestataire
+                    Vous avez déjà selectionner un prestataires
                   </Text>
                 </View>
               ) : (
@@ -86,10 +99,10 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
                           <Pressable
                             key={item.id}
                             style={{
-                              backgroundColor: selectedProvider === item.user.providerId ? '#e5e7eb' : '#fff',
+                              backgroundColor: selectedProvider === item.id ? '#e5e7eb' : '#fff',
                             }}
                             onPress={() => {
-                              setSelectedProvider(item.user.providerId);
+                              setSelectedProvider(item.id);
                             }}
                             className="w-full flex-row gap-2 rounded-lg px-0.5 py-2">
                             <Avatar alt="provider profil picture">
@@ -102,7 +115,7 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
                               </AvatarFallback>
                             </Avatar>
                             <View className="flex flex-col">
-                              <Text>{`${item?.user?.name} (${item?.user?.provider?.profession})`}</Text>
+                              <Text>{`${item?.user?.name} (${item?.profession})`}</Text>
                               <Text>Prix proposé : {userPost?.offered_Price[idx]} fcfa</Text>
                             </View>
                           </Pressable>
