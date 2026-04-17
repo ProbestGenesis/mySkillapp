@@ -10,6 +10,8 @@ const nearByInput = z.object({
   limit: z.number().min(1).max(40).optional().default(20),
   /** Exclure un utilisateur (ex. soi-même) du résultat. */
   excludeUserId: z.string().optional(),
+  /** Filtre métier (profession/compétence). */
+  service: z.string().min(2).optional(),
 })
 
 export const providersRouter = t.router({
@@ -36,7 +38,7 @@ export const providersRouter = t.router({
    * Prestataires proches : jointure PostGIS sur `Location` puis chargement Prisma.
    */
   listNear: t.procedure.input(nearByInput).query(async ({ input, ctx }) => {
-    const { excludeUserId, ...point } = input
+    const { excludeUserId, service, ...point } = input
 
     const rows = await findNearbyProviderUserIds(ctx.prisma, {
       latitude: point.latitude,
@@ -52,7 +54,23 @@ export const providersRouter = t.router({
     const distanceByUserId = new Map(filtered.map((r) => [r.userId, r.distanceM]))
 
     const found = await ctx.prisma.provider.findMany({
-      where: { userId: { in: userIds } },
+      where: {
+        userId: { in: userIds },
+        ...(service
+          ? {
+              OR: [
+                { profession: { contains: service, mode: 'insensitive' } },
+                {
+                  skills: {
+                    some: {
+                      title: { contains: service, mode: 'insensitive' },
+                    },
+                  },
+                },
+              ],
+            }
+          : {}),
+      },
       include: { user: true, skills: true },
     })
 

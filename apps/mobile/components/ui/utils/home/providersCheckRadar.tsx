@@ -17,11 +17,14 @@ type NearProviderRow = {
   id: string;
   profession: string;
   user: { name: string; image: string | null };
+  distanceM: number;
 };
 
-type Props = Record<string, never>;
+type Props = {
+  selectedService: string | null;
+};
 
-function ProviderCheckRadar(_props: Props) {
+function ProviderCheckRadar({ selectedService }: Props) {
   const trpc = useTRPC();
   const { data: session } = authClient.useSession();
   const { location, error: locationError } = usePreciseLocation();
@@ -42,8 +45,8 @@ function ProviderCheckRadar(_props: Props) {
   const stableLoc = useMemo(() => {
     if (!location) return null;
     return {
-      lat: parseFloat(location.latitude.toFixed(4)),
-      long: parseFloat(location.longitude.toFixed(4)),
+      lat: location.latitude,
+      long: location.longitude,
     };
   }, [location?.latitude, location?.longitude]);
 
@@ -63,6 +66,7 @@ function ProviderCheckRadar(_props: Props) {
       latitude: stableLoc?.lat ?? 0,
       longitude: stableLoc?.long ?? 0,
       excludeUserId: session?.user?.id,
+      service: selectedService ?? undefined,
     }),
     enabled: !!stableLoc,
   });
@@ -110,8 +114,13 @@ function ProviderCheckRadar(_props: Props) {
         </View>
         <AnimatePresence>
           {nearProviders.map((item, idx: number) => {
-            const total = nearProviders.length > 1 ? nearProviders.length - 1 : 1;
-            const radiusRatio = idx / total;
+            const minDistance = nearProviders[0]?.distanceM ?? 0;
+            const maxDistance = nearProviders[nearProviders.length - 1]?.distanceM ?? minDistance;
+            const distanceRange = Math.max(maxDistance - minDistance, 1);
+            const radiusRatio = Math.min(
+              Math.max((item.distanceM - minDistance) / distanceRange, 0),
+              1
+            );
             const currentRadius = MIN_RADIUS + radiusRatio * (MAX_RADIUS - MIN_RADIUS);
             const goldenAngle = 137.5 * (Math.PI / 180);
             const angleRad = idx * goldenAngle;
@@ -197,6 +206,7 @@ function ProviderCheckRadar(_props: Props) {
                 ) : (
                   <Text className="mx-auto mt-2 text-center text-sm">
                     {nearProviders.length} prestataires à proximité
+                    {selectedService ? ` - ${selectedService}` : ''}
                   </Text>
                 )}
               </>

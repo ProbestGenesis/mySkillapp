@@ -15,11 +15,14 @@ import Ripple from '../../radar';
 type NearDemandPost = {
   id: string;
   user: { id: string; name: string; image: string | null };
+  distanceM: number;
 };
 
-type Props = Record<string, never>;
+type Props = {
+  selectedService: string | null;
+};
 
-function CustomerCheckRadar(_props: Props) {
+function CustomerCheckRadar({ selectedService }: Props) {
   const trpc = useTRPC();
   const router = useRouter();
   const { data: session } = authClient.useSession();
@@ -31,8 +34,8 @@ function CustomerCheckRadar(_props: Props) {
   const stableLoc = useMemo(() => {
     if (!location) return null;
     return {
-      lat: parseFloat(location.latitude.toFixed(4)),
-      long: parseFloat(location.longitude.toFixed(4)),
+      lat: location.latitude,
+      long: location.longitude,
     };
   }, [location?.latitude, location?.longitude]);
 
@@ -41,6 +44,7 @@ function CustomerCheckRadar(_props: Props) {
       latitude: stableLoc?.lat ?? 0,
       longitude: stableLoc?.long ?? 0,
       excludeUserId: session?.user?.id,
+      service: selectedService ?? undefined,
     }),
     enabled: !!stableLoc,
   });
@@ -82,8 +86,14 @@ function CustomerCheckRadar(_props: Props) {
 
           <AnimatePresence>
             {nearsCustomers.map((item, idx: number) => {
-              const total = nearsCustomers.length > 1 ? nearsCustomers.length - 1 : 1;
-              const radiusRatio = idx / total;
+              const minDistance = nearsCustomers[0]?.distanceM ?? 0;
+              const maxDistance =
+                nearsCustomers[nearsCustomers.length - 1]?.distanceM ?? minDistance;
+              const distanceRange = Math.max(maxDistance - minDistance, 1);
+              const radiusRatio = Math.min(
+                Math.max((item.distanceM - minDistance) / distanceRange, 0),
+                1
+              );
               const currentRadius = MIN_RADIUS + radiusRatio * (MAX_RADIUS - MIN_RADIUS);
               const goldenAngle = 137.5 * (Math.PI / 180);
               const angleRad = idx * goldenAngle;
@@ -171,6 +181,7 @@ function CustomerCheckRadar(_props: Props) {
                 ) : (
                   <Text className="mt-2 text-sm text-center mx-auto">
                     {nearsCustomers.length} client(s) à proximité
+                    {selectedService ? ` - ${selectedService}` : ''}
                   </Text>
                 )}
               </>

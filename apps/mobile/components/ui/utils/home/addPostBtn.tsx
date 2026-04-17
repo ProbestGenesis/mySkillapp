@@ -71,7 +71,7 @@ function AddPostBtn({}: Props) {
 
         <View className='gap-3.5'>
 
-          <Controller />
+          
          {/* <Controller
             control={control}
             name="profession"

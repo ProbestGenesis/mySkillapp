@@ -20,6 +20,7 @@ function index({}: Props) {
   const { data: session } = useSession();
   const router = useRouter();
   const [showPostCard, setShowPostCard] = useState(false);
+  const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const [role, setRole] = useState<'PROVIDER' | 'CUSTOMER'>('PROVIDER');
 
@@ -72,7 +73,11 @@ function index({}: Props) {
           </View>
 
           <View className={`min-h-[calc(100vh-198px)]`}>
-            {role === 'PROVIDER' ? <ProviderCheckRadar /> : <CustomerCheckRadar />}
+            {role === 'PROVIDER' ? (
+              <ProviderCheckRadar selectedService={selectedService} />
+            ) : (
+              <CustomerCheckRadar selectedService={selectedService} />
+            )}
           </View>
         </View>
 
@@ -97,7 +102,7 @@ function index({}: Props) {
         </AnimatePresence>
 
         <View className="h-16 w-full">
-          <ServicesBulles />
+          <ServicesBulles selectedService={selectedService} onSelectService={setSelectedService} />
         </View>
       </View>
     </SafeAreaView>
