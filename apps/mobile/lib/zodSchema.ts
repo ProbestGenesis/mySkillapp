@@ -164,21 +164,23 @@ export const postsSchema = z.object({
     city: z.string().optional(),
   });
   
-  export const editProfil = z.object({
-    bio: z
-      .string()
-      .min(20, {
-        message:
-          "Veuillez saisir au moins 20 caracètre pour décrire vos compétences",
-      })
-      .optional(),
+  export const updatePersonalProfileSchema = z.object({
+    name: z.string().nonempty("Veuillez saisir votre nom complet"),
+    phoneNumber: z.string().optional(),
+    city: z.string().optional(),
+    district: z.string().optional(),
+  });
+
+  export const updateProviderProfileSchema = z.object({
+    profession: z.object({
+      value: z.string(),
+      label: z.string(),
+    }),
+    bio: z.string().min(20, "Veuillez saisir au moins 20 caractères"),
     availability: z.object({
       value: z.enum(["7j/7", "Lundi-Samedi", "week-end"]),
       label: z.enum(["7j/7", "Lundi-Samedi", "week-end"]),
     }),
-    phoneNumber: z.string().optional(),
-    city: z.string().optional(),
-    district: z.string().optional(),
     average_price: z.string().optional(),
   });
   

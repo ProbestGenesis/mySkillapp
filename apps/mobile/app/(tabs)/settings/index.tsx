@@ -77,7 +77,7 @@ function SettingScreen({}: Props) {
   if (error) {
     return (
       <SafeAreaView className="h-screen flex-1">
-        <View className="h-full w-full flex-row items-center justify-center">
+        <View className="h-full w-full flex-col items-center justify-center">
           <AlertCircle size={64} color={'red'} />
           <Text className="text-red-600">Une erreur est survenue</Text>
         </View>
@@ -88,7 +88,7 @@ function SettingScreen({}: Props) {
   if (!data) {
     return (
       <SafeAreaView className="h-screen flex-1">
-        <View className="h-full w-full flex-row items-center justify-center">
+        <View className="h-full w-full flex-col items-center justify-center">
           <AlertCircle size={64} color={'red'} />
           <Text className="text-red-600">Impossible de charger vos informations</Text>
         </View>
