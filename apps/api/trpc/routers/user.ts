@@ -70,7 +70,11 @@ export const userRouter = t.router({
 
     const provider = await ctx.prisma.provider.create({
       data: {
-        userId,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
         profession: input.profession.value,
         bio: input.bio,
         availability: input.availability.value,

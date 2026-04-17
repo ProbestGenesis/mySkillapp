@@ -250,6 +250,7 @@ export type UserWhereInput = {
   accounts?: Prisma.AccountListRelationFilter
   Location?: Prisma.LocationListRelationFilter
   post?: Prisma.PostListRelationFilter
+  postViewed?: Prisma.PostListRelationFilter
   provider?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
   customer?: Prisma.ServiceListRelationFilter
 }
@@ -272,6 +273,7 @@ export type UserOrderByWithRelationInput = {
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   Location?: Prisma.LocationOrderByRelationAggregateInput
   post?: Prisma.PostOrderByRelationAggregateInput
+  postViewed?: Prisma.PostOrderByRelationAggregateInput
   provider?: Prisma.ProviderOrderByWithRelationInput
   customer?: Prisma.ServiceOrderByRelationAggregateInput
 }
@@ -297,6 +299,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   accounts?: Prisma.AccountListRelationFilter
   Location?: Prisma.LocationListRelationFilter
   post?: Prisma.PostListRelationFilter
+  postViewed?: Prisma.PostListRelationFilter
   provider?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
   customer?: Prisma.ServiceListRelationFilter
 }, "id" | "email" | "phoneNumber">
@@ -357,6 +360,7 @@ export type UserCreateInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
 }
@@ -379,6 +383,7 @@ export type UserUncheckedCreateInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
 }
@@ -401,6 +406,7 @@ export type UserUpdateInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
 }
@@ -423,6 +429,7 @@ export type UserUncheckedUpdateInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
 }
@@ -528,6 +535,16 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -582,12 +599,50 @@ export type UserCreateNestedOneWithoutPostInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedManyWithoutPostViewedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostViewedInput, Prisma.UserUncheckedCreateWithoutPostViewedInput> | Prisma.UserCreateWithoutPostViewedInput[] | Prisma.UserUncheckedCreateWithoutPostViewedInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostViewedInput | Prisma.UserCreateOrConnectWithoutPostViewedInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutPostViewedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostViewedInput, Prisma.UserUncheckedCreateWithoutPostViewedInput> | Prisma.UserCreateWithoutPostViewedInput[] | Prisma.UserUncheckedCreateWithoutPostViewedInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostViewedInput | Prisma.UserCreateOrConnectWithoutPostViewedInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
 export type UserUpdateOneRequiredWithoutPostNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPostInput, Prisma.UserUncheckedCreateWithoutPostInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostInput
   upsert?: Prisma.UserUpsertWithoutPostInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostInput, Prisma.UserUpdateWithoutPostInput>, Prisma.UserUncheckedUpdateWithoutPostInput>
+}
+
+export type UserUpdateManyWithoutPostViewedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostViewedInput, Prisma.UserUncheckedCreateWithoutPostViewedInput> | Prisma.UserCreateWithoutPostViewedInput[] | Prisma.UserUncheckedCreateWithoutPostViewedInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostViewedInput | Prisma.UserCreateOrConnectWithoutPostViewedInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutPostViewedInput | Prisma.UserUpsertWithWhereUniqueWithoutPostViewedInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutPostViewedInput | Prisma.UserUpdateWithWhereUniqueWithoutPostViewedInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutPostViewedInput | Prisma.UserUpdateManyWithWhereWithoutPostViewedInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutPostViewedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostViewedInput, Prisma.UserUncheckedCreateWithoutPostViewedInput> | Prisma.UserCreateWithoutPostViewedInput[] | Prisma.UserUncheckedCreateWithoutPostViewedInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostViewedInput | Prisma.UserCreateOrConnectWithoutPostViewedInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutPostViewedInput | Prisma.UserUpsertWithWhereUniqueWithoutPostViewedInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutPostViewedInput | Prisma.UserUpdateWithWhereUniqueWithoutPostViewedInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutPostViewedInput | Prisma.UserUpdateManyWithWhereWithoutPostViewedInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
 export type UserCreateNestedOneWithoutCustomerInput = {
@@ -649,6 +704,7 @@ export type UserCreateWithoutLocationInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
 }
@@ -670,6 +726,7 @@ export type UserUncheckedCreateWithoutLocationInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
 }
@@ -707,6 +764,7 @@ export type UserUpdateWithoutLocationInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
 }
@@ -728,6 +786,7 @@ export type UserUncheckedUpdateWithoutLocationInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
 }
@@ -750,6 +809,7 @@ export type UserCreateWithoutProviderInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
 }
 
@@ -771,6 +831,7 @@ export type UserUncheckedCreateWithoutProviderInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
 }
 
@@ -808,6 +869,7 @@ export type UserUpdateWithoutProviderInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
 }
 
@@ -829,6 +891,7 @@ export type UserUncheckedUpdateWithoutProviderInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
@@ -849,6 +912,7 @@ export type UserCreateWithoutPostInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
 }
@@ -870,6 +934,7 @@ export type UserUncheckedCreateWithoutPostInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
 }
@@ -877,6 +942,55 @@ export type UserUncheckedCreateWithoutPostInput = {
 export type UserCreateOrConnectWithoutPostInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutPostInput, Prisma.UserUncheckedCreateWithoutPostInput>
+}
+
+export type UserCreateWithoutPostViewedInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationCreateNestedManyWithoutUserInput
+  post?: Prisma.PostCreateNestedManyWithoutUserInput
+  provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+}
+
+export type UserUncheckedCreateWithoutPostViewedInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+}
+
+export type UserCreateOrConnectWithoutPostViewedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostViewedInput, Prisma.UserUncheckedCreateWithoutPostViewedInput>
 }
 
 export type UserUpsertWithoutPostInput = {
@@ -907,6 +1021,7 @@ export type UserUpdateWithoutPostInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
 }
@@ -928,8 +1043,44 @@ export type UserUncheckedUpdateWithoutPostInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+}
+
+export type UserUpsertWithWhereUniqueWithoutPostViewedInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPostViewedInput, Prisma.UserUncheckedUpdateWithoutPostViewedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostViewedInput, Prisma.UserUncheckedCreateWithoutPostViewedInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutPostViewedInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPostViewedInput, Prisma.UserUncheckedUpdateWithoutPostViewedInput>
+}
+
+export type UserUpdateManyWithWhereWithoutPostViewedInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutPostViewedInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  image?: Prisma.StringNullableFilter<"User"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  city?: Prisma.StringNullableFilter<"User"> | string | null
+  district?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneNumberVerified?: Prisma.BoolNullableFilter<"User"> | boolean | null
+  role?: Prisma.StringNullableFilter<"User"> | string | null
+  rate?: Prisma.StringNullableFilter<"User"> | string | null
 }
 
 export type UserCreateWithoutCustomerInput = {
@@ -950,6 +1101,7 @@ export type UserCreateWithoutCustomerInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
 }
 
@@ -971,6 +1123,7 @@ export type UserUncheckedCreateWithoutCustomerInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1008,6 +1161,7 @@ export type UserUpdateWithoutCustomerInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
 }
 
@@ -1029,6 +1183,7 @@ export type UserUncheckedUpdateWithoutCustomerInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1049,6 +1204,7 @@ export type UserCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
 }
@@ -1070,6 +1226,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
 }
@@ -1107,6 +1264,7 @@ export type UserUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
 }
@@ -1128,6 +1286,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
 }
@@ -1149,6 +1308,7 @@ export type UserCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
 }
@@ -1170,6 +1330,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
 }
@@ -1207,6 +1368,7 @@ export type UserUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
 }
@@ -1228,8 +1390,69 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+}
+
+export type UserUpdateWithoutPostViewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPostViewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutPostViewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1242,6 +1465,7 @@ export type UserCountOutputType = {
   accounts: number
   Location: number
   post: number
+  postViewed: number
   customer: number
 }
 
@@ -1250,6 +1474,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   Location?: boolean | UserCountOutputTypeCountLocationArgs
   post?: boolean | UserCountOutputTypeCountPostArgs
+  postViewed?: boolean | UserCountOutputTypeCountPostViewedArgs
   customer?: boolean | UserCountOutputTypeCountCustomerArgs
 }
 
@@ -1294,6 +1519,13 @@ export type UserCountOutputTypeCountPostArgs<ExtArgs extends runtime.Types.Exten
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountPostViewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PostWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountCustomerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ServiceWhereInput
 }
@@ -1317,6 +1549,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   Location?: boolean | Prisma.User$LocationArgs<ExtArgs>
   post?: boolean | Prisma.User$postArgs<ExtArgs>
+  postViewed?: boolean | Prisma.User$postViewedArgs<ExtArgs>
   provider?: boolean | Prisma.User$providerArgs<ExtArgs>
   customer?: boolean | Prisma.User$customerArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1376,6 +1609,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   Location?: boolean | Prisma.User$LocationArgs<ExtArgs>
   post?: boolean | Prisma.User$postArgs<ExtArgs>
+  postViewed?: boolean | Prisma.User$postViewedArgs<ExtArgs>
   provider?: boolean | Prisma.User$providerArgs<ExtArgs>
   customer?: boolean | Prisma.User$customerArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1390,6 +1624,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     Location: Prisma.$LocationPayload<ExtArgs>[]
     post: Prisma.$PostPayload<ExtArgs>[]
+    postViewed: Prisma.$PostPayload<ExtArgs>[]
     provider: Prisma.$ProviderPayload<ExtArgs> | null
     customer: Prisma.$ServicePayload<ExtArgs>[]
   }
@@ -1805,6 +2040,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Location<T extends Prisma.User$LocationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LocationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   post<T extends Prisma.User$postArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  postViewed<T extends Prisma.User$postViewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postViewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   provider<T extends Prisma.User$providerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$providerArgs<ExtArgs>>): Prisma.Prisma__ProviderClient<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   customer<T extends Prisma.User$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2317,6 +2553,30 @@ export type User$LocationArgs<ExtArgs extends runtime.Types.Extensions.InternalA
  * User.post
  */
 export type User$postArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Post
+   */
+  select?: Prisma.PostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Post
+   */
+  omit?: Prisma.PostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostInclude<ExtArgs> | null
+  where?: Prisma.PostWhereInput
+  orderBy?: Prisma.PostOrderByWithRelationInput | Prisma.PostOrderByWithRelationInput[]
+  cursor?: Prisma.PostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * User.postViewed
+ */
+export type User$postViewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Post
    */

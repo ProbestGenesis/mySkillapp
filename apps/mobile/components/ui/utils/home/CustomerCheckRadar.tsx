@@ -9,6 +9,7 @@ import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Text, TouchableOpacity, View } from 'react-native';
 import DemandCard from './clients/demandCard';
+import Ripple from '../../radar';
 
 /** Aligné sur `customers.listNearDemands` (Post + user + distance). */
 type NearDemandPost = {
@@ -67,7 +68,8 @@ function CustomerCheckRadar(_props: Props) {
       <View
         className="relative h-[60vh] w-full flex-col items-center justify-center"
         onLayout={onLayout}>
-        <View className="absolute top-[47%] left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 items-center">
+          <Ripple  />
+        <View className="absolute top-[53%] left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 items-center">
           <View className="absolute top-[47%] left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 items-center">
             <Avatar
               alt="user-avatar"

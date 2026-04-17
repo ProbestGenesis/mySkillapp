@@ -10,8 +10,18 @@ datasource db {
 
 
 enum STATUSPOST {
+  WAITING_FOR_PROVIDER
   PENDING
   ACCEPTED
+}
+
+enum STATUSSERVICE {
+  DEMAND
+  PENDING
+  IN_PROGRESS
+  ACCEPTED
+  REJECTED
+  COMPLETED
 }
 model User {
   id            String     @id
@@ -25,6 +35,7 @@ model User {
   accounts      Account[]
   Location      Location[]
   post Post[]
+  postViewed Post[] @relation(name: "PostViewers")
   city          String?
   district      String? 
   provider      Provider?
@@ -83,13 +94,14 @@ model Post {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   providers      Provider? @relation(fields: [providerId], references: [id])
-  providerId     String?   @unique
+  providerId     String?   
   //applyProviders Json[]  @default([])
   applyProviders   Provider[] @relation("ApplyProviders")
   service        Service?
   user           User      @relation(fields: [userId], references: [id])
+  viewedBy         User[]    @relation(name: "PostViewers")
   userId         String
-  status         STATUSPOST @default(PENDING)
+  status         STATUSPOST @default(WAITING_FOR_PROVIDER)
   offered_Price  Float[] @default([])
   average_price  Float?
 }
@@ -111,7 +123,7 @@ model Service {
   skillId     String?
   customer    User      @relation(name: "CustomerRelation", fields: [customerId], references: [id], onDelete: Cascade)
   customerId  String
-  status      String    @default("pending")
+  status      STATUSSERVICE    @default(PENDING)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   startedAt   DateTime?

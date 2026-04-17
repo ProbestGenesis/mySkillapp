@@ -4,14 +4,13 @@ import { authClient } from '@/lib/auth-client';
 import { usePreciseLocation } from '@/lib/geolocation';
 import { useTRPC } from '@/provider/appProvider';
 import { useQuery } from '@tanstack/react-query';
-import { AlertCircleIcon } from 'lucide-react-native';
 import { AnimatePresence, MotiView } from 'moti';
 import React, { useCallback, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Text, TouchableOpacity, View } from 'react-native';
-import { ProviderCard } from './providersCard';
-import AddPostBtn from './addPostBtn';
 import Ripple from '../../radar';
+import { Skeleton } from '../../skeleton';
 import MyPostInfo from './myPostsInfo';
+import { ProviderCard } from './providersCard';
 
 /** Aligné sur `providers.listNear` (Provider + user + skills + distance). */
 type NearProviderRow = {
@@ -40,17 +39,6 @@ function ProviderCheckRadar(_props: Props) {
     setViewProviderCard(false);
   };
 
-  React.useEffect(() => {
-    if (locationError) {
-      setLocationAlert(true);
-      setLocationMessageError({
-        title: 'Erreur de localisation',
-        description: locationError,
-        type: undefined,
-      });
-    }
-  }, [locationError]);
-
   const stableLoc = useMemo(() => {
     if (!location) return null;
     return {
@@ -58,6 +46,17 @@ function ProviderCheckRadar(_props: Props) {
       long: parseFloat(location.longitude.toFixed(4)),
     };
   }, [location?.latitude, location?.longitude]);
+
+  React.useEffect(() => {
+    if (locationError || !stableLoc) {
+      setLocationAlert(true);
+      setLocationMessageError({
+        title: 'Erreur de localisation',
+        description: 'Veuillez activer votre localisation pour voir les prestataires à proximité',
+        type: undefined,
+      });
+    }
+  }, [locationError, stableLoc]);
 
   const nearQuery = useQuery({
     ...trpc.providers.listNear.queryOptions({
@@ -75,7 +74,7 @@ function ProviderCheckRadar(_props: Props) {
     enabled: viewProviderCard && !!providerId,
   });
 
-  const userPostsQuery = useQuery({
+  const { data: userPostsQuery, isPending: userPostFecthing } = useQuery({
     ...trpc.post.listMyPosts.queryOptions(),
     enabled: !!session,
   });
@@ -91,15 +90,16 @@ function ProviderCheckRadar(_props: Props) {
     void nearQuery.refetch();
   };
 
-  const userPosts = userPostsQuery.data ?? [];
+  const userPosts = userPostsQuery ?? [];
 
   return (
     <View className="relative flex-1 flex-col items-center justify-center">
       <View
         className="relative m-2 h-[60vh] w-full flex-col items-center justify-center"
-        onLayout={onLayout}>  <Ripple  />
+        onLayout={onLayout}>
+        {' '}
+        <Ripple />
         <View className="absolute top-[53%] left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 items-center">
-       
           <Avatar
             alt="user-avatar"
             style={{ width: CENTRAL_AVATAR_SIZE, height: CENTRAL_AVATAR_SIZE }}>
@@ -108,7 +108,6 @@ function ProviderCheckRadar(_props: Props) {
           </Avatar>
           <Text className="mt-2 text-sm font-medium">{session?.user?.name ?? 'Vous'}</Text>
         </View>
-
         <AnimatePresence>
           {nearProviders.map((item, idx: number) => {
             const total = nearProviders.length > 1 ? nearProviders.length - 1 : 1;
@@ -174,26 +173,33 @@ function ProviderCheckRadar(_props: Props) {
             );
           })}
         </AnimatePresence>
-
         <ProviderCard
           provider={providerQuery.data}
           viewProviderCard={viewProviderCard}
           onClose={onCloseProvieerCard}
           providerCardDataLoading={providerQuery.isPending}
         />
-
         <View className="absolute bottom-2 items-center">
           <View className="flex-col gap-1.5">
             {!stableLoc ? (
-              <Text className="text-muted-foreground text-center text-sm">
+              <Text className="text-destructive text-center text-sm">
                 Activez la localisation pour voir les prestataires à proximité.
               </Text>
-            ) : null}
-            <Text className="mx-auto text-2xl font-bold tracking-tighter">Près de chez vous</Text>
-            {loadingNearProviders ? (
-              <Text className="text-muted-foreground mt-2 text-sm text-center mx-auto">Recherche…</Text>
             ) : (
-              <Text className="mt-2 text-sm text-center mx-auto">{nearProviders.length} prestataires à proximité</Text>
+              <>
+                <Text className="mx-auto text-2xl font-bold tracking-tighter">
+                  Près de chez vous
+                </Text>
+                {loadingNearProviders ? (
+                  <Text className="text-muted-foreground mx-auto mt-2 text-center text-sm">
+                    Recherche…
+                  </Text>
+                ) : (
+                  <Text className="mx-auto mt-2 text-center text-sm">
+                    {nearProviders.length} prestataires à proximité
+                  </Text>
+                )}
+              </>
             )}
 
             <Button
@@ -208,35 +214,39 @@ function ProviderCheckRadar(_props: Props) {
         </View>
       </View>
 
-      {locationAlert && (
-        <View className="border-destructive/30 bg-destructive/10 mx-2 mt-2 rounded-xl border p-3">
-          <View className="flex-row items-start gap-2">
-            <AlertCircleIcon size={20} color="#ef4444" />
-            <View className="flex-1">
-              <Text className="text-destructive font-semibold">{locationMessageError.title}</Text>
-              <Text className="text-muted-foreground mt-1 text-sm">
-                {locationMessageError.description}
-              </Text>
+      {userPostFecthing ? (
+        <View className="absolute right-1 bottom-4 mx-auto">
+          <View className="flex flex-col space-y-2">
+            <Skeleton className="h-4 w-8" />
+
+            <View className="flex flex-col space-y-2">
+              {Array.from({ length: 3 }).map((_, idx) => (
+                <Skeleton key={idx} className="h-4 w-4 rounded-full" />
+              ))}
             </View>
           </View>
         </View>
-      )}
-
-      {userPosts && userPosts?.length > 0 && (
-        <View className="absolute bottom-4 right-1 mx-auto">
-          <View className="flex-col items-center gap-2">
-            <Text>Vos posts</Text>
-            {userPosts && userPosts?.map((item: any) => (
-              <MyPostInfo key={item.id} postId={item.id} >
-                <Avatar alt="posts" className="size-12">
-                  <AvatarFallback>
-                    <Text className="text-xs">{item?.title?.slice(0, 2)}</Text>
-                  </AvatarFallback>
-                </Avatar>
-              </MyPostInfo>
-            ))}
-          </View>
-        </View>
+      ) : (
+        <>
+          {' '}
+          {userPosts && userPosts?.length > 0 && (
+            <View className="absolute right-1 bottom-4 mx-auto">
+              <View className="flex-col items-center gap-2">
+                <Text>Vos posts</Text>
+                {userPosts &&
+                  userPosts?.map((item: any) => (
+                    <MyPostInfo key={item.id} postId={item.id}>
+                      <Avatar alt="posts" className="size-12">
+                        <AvatarFallback>
+                          <Text className="text-xs">{item?.title?.slice(0, 2)}</Text>
+                        </AvatarFallback>
+                      </Avatar>
+                    </MyPostInfo>
+                  ))}
+              </View>
+            </View>
+          )}
+        </>
       )}
     </View>
   );

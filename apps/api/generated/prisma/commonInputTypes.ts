@@ -285,6 +285,13 @@ export type EnumSTATUSPOSTWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSTATUSPOSTFilter<$PrismaModel>
 }
 
+export type EnumSTATUSSERVICEFilter<$PrismaModel = never> = {
+  equals?: $Enums.STATUSSERVICE | Prisma.EnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  in?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  notIn?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSTATUSSERVICEFilter<$PrismaModel> | $Enums.STATUSSERVICE
+}
+
 export type DateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -294,6 +301,16 @@ export type DateTimeNullableFilter<$PrismaModel = never> = {
   gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+}
+
+export type EnumSTATUSSERVICEWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.STATUSSERVICE | Prisma.EnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  in?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  notIn?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSTATUSSERVICEWithAggregatesFilter<$PrismaModel> | $Enums.STATUSSERVICE
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSTATUSSERVICEFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSTATUSSERVICEFilter<$PrismaModel>
 }
 
 export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -556,6 +573,13 @@ export type NestedEnumSTATUSPOSTWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSTATUSPOSTFilter<$PrismaModel>
 }
 
+export type NestedEnumSTATUSSERVICEFilter<$PrismaModel = never> = {
+  equals?: $Enums.STATUSSERVICE | Prisma.EnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  in?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  notIn?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSTATUSSERVICEFilter<$PrismaModel> | $Enums.STATUSSERVICE
+}
+
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -565,6 +589,16 @@ export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+}
+
+export type NestedEnumSTATUSSERVICEWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.STATUSSERVICE | Prisma.EnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  in?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  notIn?: $Enums.STATUSSERVICE[] | Prisma.ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSTATUSSERVICEWithAggregatesFilter<$PrismaModel> | $Enums.STATUSSERVICE
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSTATUSSERVICEFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSTATUSSERVICEFilter<$PrismaModel>
 }
 
 export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {

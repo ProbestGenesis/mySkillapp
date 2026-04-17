@@ -52,13 +52,15 @@ const RatingStars = ({
 const StatusBadge = ({ status }: { status: string }) => {
   const getStatusConfig = (status: string) => {
     switch (status) {
-      case 'pending':
+      case 'PENDING':
         return { label: 'En attente', color: 'text-destructive', bg: 'bg-destructive/10' };
-      case 'in_progress':
+      case 'ACCEPTED':
+        return { label: 'Accepté', color: 'text-primary', bg: 'bg-primary/10' };
+      case 'IN_PROGRESS':
         return { label: 'En cours', color: 'text-yellow-600', bg: 'bg-yellow-50' };
-      case 'completed':
+      case 'COMPLETED':
         return { label: 'Terminé', color: 'text-green-600', bg: 'bg-green-50' };
-      case 'cancelled':
+      case 'REJECTED':
         return { label: 'Annulé', color: 'text-muted-foreground', bg: 'bg-muted' };
       default:
         return { label: status, color: 'text-foreground', bg: 'bg-muted' };
@@ -162,10 +164,11 @@ export default function ServiceListScreen() {
       <Card className="mx-2 my-2 overflow-hidden border-none shadow-sm">
         <View
           className={clsx('h-1 w-full', {
-            'bg-destructive': item.status === 'pending',
-            'bg-yellow-500': item.status === 'in_progress',
-            'bg-green-500': item.status === 'completed',
-            'bg-muted': item.status === 'cancelled',
+            'bg-destructive': item.status === 'PENDING',
+            'bg-primary': item.status === 'ACCEPTED',
+            'bg-yellow-500': item.status === 'IN_PROGRESS',
+            'bg-green-500': item.status === 'COMPLETED',
+            'bg-muted': item.status === 'REJECTED',
           })}
         />
         <CardHeader className="flex-row items-start justify-between p-4">
@@ -201,7 +204,7 @@ export default function ServiceListScreen() {
             </Text>
           </View>
 
-          {role === 'Customer' && item.code && item.status !== 'completed' && (
+          {role === 'Customer' && item.code && item.status !== 'COMPLETED' && (
             <View className="bg-primary/5 border-primary/20 mt-1 flex-row items-center justify-between rounded-xl border p-3">
               <View>
                 <Text className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
@@ -215,7 +218,7 @@ export default function ServiceListScreen() {
         </CardContent>
 
         <CardFooter className="flex-row justify-end gap-2 p-4">
-          {item.status !== 'completed' && item.status !== 'cancelled' && (
+          {item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (
             <Button
               variant="outline"
               size="sm"
@@ -225,7 +228,7 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {role === 'Provider' && item.status === 'pending' && (
+          {role === 'Provider' && item.status === 'ACCEPTED' && (
             <Button
               size="sm"
               className="rounded-full px-6"
@@ -234,7 +237,7 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {role === 'Provider' && item.status === 'in_progress' && (
+          {role === 'Provider' && item.status === 'IN_PROGRESS' && (
             <Button
               size="sm"
               className="rounded-full px-6"
@@ -243,7 +246,7 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {role === 'Customer' && item.status === 'completed' && (
+          {role === 'Customer' && item.status === 'COMPLETED' && (
             <Button
               size="sm"
               variant="outline"
@@ -464,7 +467,7 @@ export default function ServiceListScreen() {
               <Text className="font-lg text-muted-foreground text-xl">
                 Vous n'avez aucun service en cours
               </Text>
-              <Button variant="outline" onPress={() => refetch()}>
+              <Button variant="outline" onPress={() => refetch()} className="rounded-full">
                 <Text>Actualiser</Text>
               </Button>
             </View>

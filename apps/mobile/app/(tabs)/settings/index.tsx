@@ -346,8 +346,8 @@ function SettingScreen({}: Props) {
                     {' '}
                     <Input
                       placeholder="Entrer le code"
-                      className="w-[120px] rounded-full text-xl"
-                    />
+                      className="w-[120px] rounded-full text-xl" 
+                                          />
                   </KeyboardAvoidingView>
                   <Button className="rounded-full" variant={'outline'}>
                     <Text>

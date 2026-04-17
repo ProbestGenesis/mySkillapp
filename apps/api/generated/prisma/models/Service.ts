@@ -46,7 +46,7 @@ export type ServiceMinAggregateOutputType = {
   providerId: string | null
   skillId: string | null
   customerId: string | null
-  status: string | null
+  status: $Enums.STATUSSERVICE | null
   createdAt: Date | null
   updatedAt: Date | null
   startedAt: Date | null
@@ -65,7 +65,7 @@ export type ServiceMaxAggregateOutputType = {
   providerId: string | null
   skillId: string | null
   customerId: string | null
-  status: string | null
+  status: $Enums.STATUSSERVICE | null
   createdAt: Date | null
   updatedAt: Date | null
   startedAt: Date | null
@@ -260,7 +260,7 @@ export type ServiceGroupByOutputType = {
   providerId: string
   skillId: string | null
   customerId: string
-  status: string
+  status: $Enums.STATUSSERVICE
   createdAt: Date
   updatedAt: Date
   startedAt: Date | null
@@ -303,7 +303,7 @@ export type ServiceWhereInput = {
   providerId?: Prisma.StringFilter<"Service"> | string
   skillId?: Prisma.StringNullableFilter<"Service"> | string | null
   customerId?: Prisma.StringFilter<"Service"> | string
-  status?: Prisma.StringFilter<"Service"> | string
+  status?: Prisma.EnumSTATUSSERVICEFilter<"Service"> | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   startedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
@@ -355,7 +355,7 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   providerId?: Prisma.StringFilter<"Service"> | string
   skillId?: Prisma.StringNullableFilter<"Service"> | string | null
   customerId?: Prisma.StringFilter<"Service"> | string
-  status?: Prisma.StringFilter<"Service"> | string
+  status?: Prisma.EnumSTATUSSERVICEFilter<"Service"> | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   startedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
@@ -407,7 +407,7 @@ export type ServiceScalarWhereWithAggregatesInput = {
   providerId?: Prisma.StringWithAggregatesFilter<"Service"> | string
   skillId?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   customerId?: Prisma.StringWithAggregatesFilter<"Service"> | string
-  status?: Prisma.StringWithAggregatesFilter<"Service"> | string
+  status?: Prisma.EnumSTATUSSERVICEWithAggregatesFilter<"Service"> | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Service"> | Date | string
   startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Service"> | Date | string | null
@@ -423,7 +423,7 @@ export type ServiceCreateInput = {
   district?: string | null
   code?: string
   role?: string | null
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -447,7 +447,7 @@ export type ServiceUncheckedCreateInput = {
   providerId: string
   skillId?: string | null
   customerId: string
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -463,7 +463,7 @@ export type ServiceUpdateInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -487,7 +487,7 @@ export type ServiceUncheckedUpdateInput = {
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -507,7 +507,7 @@ export type ServiceCreateManyInput = {
   providerId: string
   skillId?: string | null
   customerId: string
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -523,7 +523,7 @@ export type ServiceUpdateManyMutationInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -543,7 +543,7 @@ export type ServiceUncheckedUpdateManyInput = {
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -753,6 +753,10 @@ export type ServiceUncheckedUpdateOneWithoutPostNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ServiceUpdateToOneWithWhereWithoutPostInput, Prisma.ServiceUpdateWithoutPostInput>, Prisma.ServiceUncheckedUpdateWithoutPostInput>
 }
 
+export type EnumSTATUSSERVICEFieldUpdateOperationsInput = {
+  set?: $Enums.STATUSSERVICE
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
@@ -808,7 +812,7 @@ export type ServiceCreateWithoutCustomerInput = {
   district?: string | null
   code?: string
   role?: string | null
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -830,7 +834,7 @@ export type ServiceUncheckedCreateWithoutCustomerInput = {
   role?: string | null
   providerId: string
   skillId?: string | null
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -879,7 +883,7 @@ export type ServiceScalarWhereInput = {
   providerId?: Prisma.StringFilter<"Service"> | string
   skillId?: Prisma.StringNullableFilter<"Service"> | string | null
   customerId?: Prisma.StringFilter<"Service"> | string
-  status?: Prisma.StringFilter<"Service"> | string
+  status?: Prisma.EnumSTATUSSERVICEFilter<"Service"> | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   startedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
@@ -895,7 +899,7 @@ export type ServiceCreateWithoutProviderInput = {
   district?: string | null
   code?: string
   role?: string | null
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -917,7 +921,7 @@ export type ServiceUncheckedCreateWithoutProviderInput = {
   role?: string | null
   skillId?: string | null
   customerId: string
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -959,7 +963,7 @@ export type ServiceCreateWithoutPostInput = {
   district?: string | null
   code?: string
   role?: string | null
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -981,7 +985,7 @@ export type ServiceUncheckedCreateWithoutPostInput = {
   providerId: string
   skillId?: string | null
   customerId: string
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -1013,7 +1017,7 @@ export type ServiceUpdateWithoutPostInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1035,7 +1039,7 @@ export type ServiceUncheckedUpdateWithoutPostInput = {
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1051,7 +1055,7 @@ export type ServiceCreateWithoutSkillsInput = {
   district?: string | null
   code?: string
   role?: string | null
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -1073,7 +1077,7 @@ export type ServiceUncheckedCreateWithoutSkillsInput = {
   role?: string | null
   providerId: string
   customerId: string
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -1118,7 +1122,7 @@ export type ServiceCreateManyCustomerInput = {
   role?: string | null
   providerId: string
   skillId?: string | null
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -1134,7 +1138,7 @@ export type ServiceUpdateWithoutCustomerInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1156,7 +1160,7 @@ export type ServiceUncheckedUpdateWithoutCustomerInput = {
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1175,7 +1179,7 @@ export type ServiceUncheckedUpdateManyWithoutCustomerInput = {
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1194,7 +1198,7 @@ export type ServiceCreateManyProviderInput = {
   role?: string | null
   skillId?: string | null
   customerId: string
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -1210,7 +1214,7 @@ export type ServiceUpdateWithoutProviderInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1232,7 +1236,7 @@ export type ServiceUncheckedUpdateWithoutProviderInput = {
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1251,7 +1255,7 @@ export type ServiceUncheckedUpdateManyWithoutProviderInput = {
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1270,7 +1274,7 @@ export type ServiceCreateManySkillsInput = {
   role?: string | null
   providerId: string
   customerId: string
-  status?: string
+  status?: $Enums.STATUSSERVICE
   createdAt?: Date | string
   updatedAt?: Date | string
   startedAt?: Date | string | null
@@ -1286,7 +1290,7 @@ export type ServiceUpdateWithoutSkillsInput = {
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1308,7 +1312,7 @@ export type ServiceUncheckedUpdateWithoutSkillsInput = {
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1327,7 +1331,7 @@ export type ServiceUncheckedUpdateManyWithoutSkillsInput = {
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
   customerId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1469,7 +1473,7 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     providerId: string
     skillId: string | null
     customerId: string
-    status: string
+    status: $Enums.STATUSSERVICE
     createdAt: Date
     updatedAt: Date
     startedAt: Date | null
@@ -1913,7 +1917,7 @@ export interface ServiceFieldRefs {
   readonly providerId: Prisma.FieldRef<"Service", 'String'>
   readonly skillId: Prisma.FieldRef<"Service", 'String'>
   readonly customerId: Prisma.FieldRef<"Service", 'String'>
-  readonly status: Prisma.FieldRef<"Service", 'String'>
+  readonly status: Prisma.FieldRef<"Service", 'STATUSSERVICE'>
   readonly createdAt: Prisma.FieldRef<"Service", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Service", 'DateTime'>
   readonly startedAt: Prisma.FieldRef<"Service", 'DateTime'>

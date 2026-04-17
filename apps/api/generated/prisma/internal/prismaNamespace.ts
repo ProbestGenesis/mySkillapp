@@ -1399,6 +1399,20 @@ export type EnumSTATUSPOSTFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 export type ListEnumSTATUSPOSTFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'STATUSPOST[]'>
     
 
+
+/**
+ * Reference to a field of type 'STATUSSERVICE'
+ */
+export type EnumSTATUSSERVICEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'STATUSSERVICE'>
+    
+
+
+/**
+ * Reference to a field of type 'STATUSSERVICE[]'
+ */
+export type ListEnumSTATUSSERVICEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'STATUSSERVICE[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
