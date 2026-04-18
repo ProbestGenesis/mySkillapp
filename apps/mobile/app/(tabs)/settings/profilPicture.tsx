@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router';
 import clsx from 'clsx';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/provider/appProvider';
+import { Alert } from 'react-native';
 
 type Props = {};
 function ProfilPicture({}: Props) {
@@ -21,17 +22,35 @@ function ProfilPicture({}: Props) {
     status: number | null;
   }>({ message: '', status: null });
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.7,
-      base64: true,
-    });
+  const [permissionStatus, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
-    if (!result.canceled) {
-      setImage(result.assets[0]);
+  const pickImage = async () => {
+    try {
+      // S'assurer que les permissions sont accordées avant d'ouvrir le picker
+      if (!permissionStatus?.granted) {
+        const permission = await requestPermission();
+        if (!permission.granted) {
+          Alert.alert(
+            'Permission requise',
+            "L'accès à la galerie est nécessaire pour changer votre photo de profil."
+          );
+          return;
+        }
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.7,
+        base64: true,
+      });
+
+      if (!result.canceled && result.assets.length > 0) {
+        setImage(result.assets[0]);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sélection de l\'image:', error);
     }
   };
 

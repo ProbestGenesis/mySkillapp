@@ -1,6 +1,8 @@
 import z from 'zod'
-import { t } from '../trpc.ts'
 import { findNearbyProviderUserIds } from '../lib/geoNearby.ts'
+import { t, protectedProcedure } from '../trpc.ts'
+import { createSkill } from '../../../../packages/lib/zodSchema.ts'
+import { TRPCError } from '@trpc/server'
 
 const nearByInput = z.object({
   latitude: z.number().min(-90).max(90),
@@ -15,6 +17,37 @@ const nearByInput = z.object({
 })
 
 export const providersRouter = t.router({
+  addSkill: protectedProcedure.input(createSkill).mutation(async ({ input, ctx }) => {
+    const userId = ctx.session!.user.id
+
+    const userWithProvider = await ctx.prisma.user.findUnique({
+      where: { id: userId },
+      include: { provider: true },
+    })
+
+    if (!userWithProvider?.provider) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Vous devez avoir un profil prestataire pour ajouter des compétences',
+      })
+    }
+
+    const skill = await ctx.prisma.skills.create({
+      data: {
+        providerId: userWithProvider.provider.id,
+        title: input.title,
+        description: input.description,
+        average_price: parseInt(input.averagePrice, 10),
+      },
+    })
+
+    return {
+      ok: true,
+      message: 'Compétence ajoutée avec succès',
+      skill,
+    }
+  }),
+
   getProviders: t.procedure.query(async ({ ctx }) => {
     return ctx.prisma.provider.findMany({
       include: { user: true },

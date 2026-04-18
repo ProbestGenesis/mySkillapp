@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Preference } from '@/components/ui/utils/settings/preference';
+import { Skills } from '@/components/ui/utils/settings/skills';
 import { authClient } from '@/lib/auth-client';
 import { useTRPC } from '@/provider/appProvider';
 import { useQuery } from '@tanstack/react-query';
@@ -60,10 +62,10 @@ function SettingScreen({}: Props) {
   };
 
   useEffect(() => {
-    if (!session) {
+    if (!isPending && !session) {
       router.replace('/auth');
     }
-  }, [session]);
+  }, [session, isPending]);
   if (isLoading || isPending) {
     return (
       <SafeAreaView className="h-screen flex-1">
@@ -148,7 +150,7 @@ function SettingScreen({}: Props) {
                     {' '}
                     <Text className="text-primary">
                       {data?.provider?.profession
-                        ? `Profession:   ${data?.provider?.profession}`
+                        ? `Profession: ${data?.provider?.profession}`
                         : 'Profession non renseignée'}
                     </Text>
                     {data?.provider && (
@@ -365,126 +367,9 @@ function SettingScreen({}: Props) {
               </CardFooter>
             </Card>
 
-            {isLoading ? (
-              <Skeleton className="h-32 w-full rounded-lg" />
-            ) : (
-              <View>
-                {session?.user.role === 'PROVIDER' && data.provider && (
-                  <Card>
-                    <CardHeader className="flex-row justify-between">
-                      <View className="flex-row items-center gap-2">
-                        <Text>
-                          <ServerIcon />{' '}
-                        </Text>
-                        <Text className="text-lg font-bold">Vos services</Text>
-                      </View>
-
-                      {data.provider && data?.provider?.skills?.length > 0 && (
-                        <Link
-                          asChild
-                          href={{
-                            pathname: '/(tabs)/settings/skills',
-                            params: { providerId: data?.provider?.id as string },
-                          }}>
-                          <Button size="sm" className="rounded-full">
-                            <Text className="text-white">Ajouter un service</Text>
-                          </Button>
-                        </Link>
-                      )}
-                    </CardHeader>
-
-                    <CardContent className="w-full flex-col gap-4">
-                      {data?.provider && data?.provider?.skills?.length > 0 ? (
-                        <View>
-                          {data?.provider?.skills?.map((service: any, idx: number) => {
-                            if (idx < 3) {
-                              return (
-                                <View className="mb-1 flex-col gap-2" key={service.id}>
-                                  <View className="flex-row items-center gap-2">
-                                    <View className="flex-1 flex-col">
-                                      <View className="flex-col gap-1">
-                                        <Text className="text-lg font-semibold">
-                                          {service.title}
-                                        </Text>
-                                        <Text className="text-muted">{service.description}</Text>
-                                      </View>
-
-                                      <View>
-                                        <Text className="text-primary font-semibold -tracking-tighter">
-                                          Prix de base: {service.average_price} FCFA
-                                        </Text>
-                                      </View>
-                                    </View>
-
-                                    <Button
-                                      className="h-8 w-8 rounded-full"
-                                      variant="link"
-                                      size={'sm'}>
-                                      <Text className="text-xs">Modifier</Text>
-                                    </Button>
-                                  </View>
-
-                                  <View className="h-0.5 w-full bg-gray-200" />
-                                </View>
-                              );
-                            }
-                            return null;
-                          })}
-                        </View>
-                      ) : (
-                        <View className="w-full flex-col items-center justify-center gap-6">
-                          <Text className="font-bold">
-                            Vous n'avez pas encore ajouté les services que vous éffectuez
-                          </Text>
-
-                          <Link
-                            asChild
-                            href={{
-                              pathname: '/(tabs)/settings/skills',
-                              params: { providerId: data?.provider?.id as string },
-                            }}>
-                            <Button size={'lg'} className="rounded-full">
-                              <Text className="text-white">Ajouter un service</Text>
-                            </Button>
-                          </Link>
-                        </View>
-                      )}
-                    </CardContent>
-                  </Card>
-                )}
-              </View>
-            )}
-
-            <Card>
-              <CardHeader>
-                <View className="flex-row items-center gap-2">
-                  <Settings />
-                  <Text className="text-lg font-bold">Preference</Text>
-                </View>
-              </CardHeader>
-
-              <CardContent className="flex-col gap-4">
-                <View className="flex-row items-center justify-between">
-                  <View className="flex-col gap-1">
-                    <Text className="text-lg">Activer les notifications</Text>
-                    <Text className="text-muted">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, magnam
-                      laboriosam
-                    </Text>
-                  </View>
-                </View>
-
-                <View className="flex-row items-center justify-between">
-                  <View className="flex-col gap-1">
-                    <Text className="text-lg">Email marketing</Text>
-                    <Text className="text-muted">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, magnam
-                      laboriosam
-                    </Text>
-                  </View>
-                </View>
-              </CardContent>
-            </Card>
+            <Skills data={data} isLoading={isLoading} session={session} />
+           
+            <Preference />
 
             <Button className="w-full flex-row gap-6" variant={'outline'} onPress={handleSignOut}>
               <LogOut />

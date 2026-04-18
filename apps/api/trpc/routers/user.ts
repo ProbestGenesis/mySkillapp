@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import z from 'zod'
 import { t } from '../trpc.ts'
 import { TRPCError } from '@trpc/server'
-import { createProvider, createSkill } from '../../../../packages/lib/zodSchema.ts'
+import { createProvider, createSkill, updatePersonalProfileSchema, updateProviderProfileSchema } from '../../../../packages/lib/zodSchema.ts'
 import { protectedProcedure } from '../trpc.ts'
 import { supabase } from '../../lib/supabase.ts'
 
@@ -94,36 +94,7 @@ export const userRouter = t.router({
     }
   }),
 
-  addSkill : protectedProcedure.input(createSkill).mutation(async ({input, ctx}) => {
-    const userId = ctx.session!.user.id
-
-    const userWithProvider = await ctx.prisma.user.findUnique({
-      where: { id: userId },
-      include: { provider: true },
-    })
-
-    if (!userWithProvider?.provider) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Vous devez avoir un profil prestataire pour ajouter des compétences',
-      })
-    }
-
-    const skill = await ctx.prisma.skills.create({
-      data: {
-        providerId: userWithProvider.provider.id,
-        title: input.title,
-        description: input.description,
-        average_price: parseInt(input.averagePrice, 10)
-      },
-    })
-
-    return {
-      ok: true,
-      message: 'Compétence ajoutée avec succès',
-      skill,
-    }
-  }),
+  
 
   updateProfilePicture: protectedProcedure
     .input(z.object({
@@ -182,4 +153,42 @@ export const userRouter = t.router({
         imageUrl: publicUrl,
       };
     }),
+
+  updatePersonalProfile: protectedProcedure.input(updatePersonalProfileSchema).mutation(async ({ input, ctx }) => {
+    const userId = ctx.session!.user.id;
+    await ctx.prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: input.name,
+        phoneNumber: input.phoneNumber,
+        city: input.city,
+        district: input.district,
+      },
+    });
+    return { ok: true, message: 'Informations personnelles mises à jour avec succès' };
+  }),
+
+  updateProviderProfile: protectedProcedure.input(updateProviderProfileSchema).mutation(async ({ input, ctx }) => {
+    const userId = ctx.session!.user.id;
+    const user = await ctx.prisma.user.findUnique({
+      where: { id: userId },
+      include: { provider: true },
+    });
+    if (!user?.provider) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Profil prestataire non trouvé',
+      });
+    }
+    await ctx.prisma.provider.update({
+      where: { id: user.provider.id },
+      data: {
+        profession: input.profession.value,
+        bio: input.bio,
+        availability: input.availability.value,
+        average_price: input.average_price ? parseFloat(input.average_price) : null,
+      },
+    });
+    return { ok: true, message: 'Informations de prestation mises à jour avec succès' };
+  }),
 })

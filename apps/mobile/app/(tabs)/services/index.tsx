@@ -24,6 +24,7 @@ import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
 import { Star } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DialogType = 'CARE' | 'CANCEL' | 'FINISH' | 'RATE' | 'APPOINTMENT' | null;
 
@@ -195,7 +196,7 @@ export default function ServiceListScreen() {
     const partnerRoleLabel = isCustomer ? 'Prestataire' : 'Client';
 
     return (
-      <Card className="mx-2 my-2 overflow-hidden border-none shadow-sm">
+      <Card className="mx-2 my-2 overflow-hidden border-none gap-0 shadow-sm">
         <View
           className={clsx('h-1 w-full', {
             'bg-destructive': item.status === 'PENDING',
@@ -205,7 +206,7 @@ export default function ServiceListScreen() {
             'bg-muted': item.status === 'REJECTED',
           })}
         />
-        <CardHeader className="flex-row items-start justify-between p-4">
+        <CardHeader className="flex-row items-start justify-between px-4 py-1.5">
           <View className="flex-1">
             <CardTitle className="text-lg font-bold">
               {item.skills?.title || item.title || 'Service sans titre'}
@@ -256,7 +257,7 @@ export default function ServiceListScreen() {
               <View>
                 <Text className="text-[10px] font-bold text-yellow-600 uppercase">RDV Prévu</Text>
                 <Text className="text-yellow-700 text-sm font-semibold">
-                  {new Date(item.appointmentTime).toLocaleString()}
+                  {item.appointmentTime}
                 </Text>
               </View>
               {!item.appointmentTimeIsAccepted && (
@@ -266,7 +267,7 @@ export default function ServiceListScreen() {
           )}
         </CardContent>
 
-        <CardFooter className="flex-row justify-end gap-2 p-4">
+        <CardFooter className="flex-row justify-end gap-2 p-4 py-1.5">
           {item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (
             <Button
               variant="outline"
@@ -305,7 +306,7 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {!isCustomer && item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (
+          {!item.appointmentTime && !isCustomer && item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (
             <Button
               size="sm"
               variant="secondary"
@@ -356,7 +357,7 @@ export default function ServiceListScreen() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <View>
                 <Input
-                  placeholder="Ex: 12345"
+                  placeholder="12345"
                   className="h-14 text-center text-2xl font-bold tracking-[10px]"
                   keyboardType="number-pad"
                   maxLength={5}
@@ -438,7 +439,7 @@ export default function ServiceListScreen() {
               Annuler le service ?
             </Text>
             <Text className="text-muted-foreground mt-2 text-center">
-              Cette action informera l'autre partie de l'annulation.
+              Annuler une mission déjà accepté peut affecter votre note
             </Text>
           </View>
 
@@ -503,11 +504,11 @@ export default function ServiceListScreen() {
 
       const handleSetAppointment = () => {
         if (!timeStr) return;
-        const [hours, minutes] = timeStr.split(':').map(Number);
+       {/* const [hours, minutes] = timeStr.split(':').map(Number);
         if (isNaN(hours) || isNaN(minutes)) {
           alert('Format invalide. Utilisez HH:MM');
           return;
-        }
+        }*/}
         
 
         setAppointmentMutation.mutate({
@@ -568,10 +569,11 @@ export default function ServiceListScreen() {
   };
 
   return (
-    <View className="bg-background flex-1">
+    <SafeAreaView className='flex-1'>
+    <View className="bg-background h-screen">
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-muted-foreground text-xl font-bold">Chargement ...</Text>
+          <ActivityIndicator size="large" color="#F97316" />
         </View>
       ) : (
         <>
@@ -606,5 +608,7 @@ export default function ServiceListScreen() {
         </>
       )}
     </View>
+    </SafeAreaView>
+    
   );
 }

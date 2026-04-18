@@ -52,16 +52,14 @@ export const auth = betterAuth({
     customSession(async ({ session, user }) => {
       return {
         ...session,
-        expires: session.expiresAt,
         user: {
           ...user,
-          role: 'CUSTOMER',
-          rate: '0',
-          city: '',
-          district: '',
-          providerId: ''
+          role: (user as any).role,
+          rate: (user as any).rate,
+          city: (user as any).city,
+          district: (user as any).district,
+          providerId: (user as any).providerId
         },
-        
       }
     }),
     phoneNumber({

@@ -1,82 +1,97 @@
-import { View, Text, Platform, Pressable, KeyboardAvoidingView, ScrollView, ActivityIndicator } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { createSkill } from '@/lib/zodSchema';
-import { z } from 'zod';
-import { AnimatePresence, MotiView } from 'moti';
-import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@/components/ui/button';
-import { useState, useMemo, useEffect } from 'react';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
-import { Redirect, useRouter, useLocalSearchParams } from 'expo-router';
+import { createSkill } from '@/lib/zodSchema';
+import { useTRPC } from '@/provider/appProvider';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { TRPCClientError } from '@trpc/client';
 import clsx from 'clsx';
-import { useQueryClient, useMutation, QueryClient } from '@tanstack/react-query';
-import { useTRPC, useTRPCClient } from '@/provider/appProvider';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { MotiView } from 'moti';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
+import { z } from 'zod';
 
 type FormData = z.infer<typeof createSkill>;
 
+export default function AddSkills() {
+  const queryClient = useQueryClient();
+  const trpc = useTRPC();
+  const { data: session } = authClient.useSession();
+  const router = useRouter();
+  const { providerId } = useLocalSearchParams();
+  if (!providerId) {
+    router.push('/(tabs)/settings/provider');
+  }
+  const [success, setSuccess] = useState<{ message: string; type: 'success' | 'error' }>({
+    message: '',
+    type: 'success',
+  });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(createSkill),
+  });
 
-const LandingView = ({ onNext }: { onNext: () => void }) => (
-  <MotiView
-    key="landing"
-    from={{ opacity: 0, scale: 0.9, translateY: 30 }}
-    animate={{ opacity: 1, scale: 1, translateY: 0 }}
-    exit={{ opacity: 0, scale: 0.9, translateY: -20 }}
-    transition={{
-      type: 'timing',
-      duration: 300, // Un peu plus lent pour la fluidité
-    }}
-    className="flex-1 justify-between bg-white px-6 py-10" // bg-white important pour la perf
-  >
-    {/* Header */}
-    <View>
-      <Text className="text-center text-2xl font-extrabold">
-        🎯 Bienvenue sur <Text className="text-primary">BTPpro</Text>
-      </Text>
-      <Text className="mt-2 text-center text-base text-gray-600">
-        La plateforme de toutes les opportunités pour les pros du BTP.
-      </Text>
-    </View>
+  const {
+    mutateAsync: addSkills,
+    isPending,
+    error,
+  } = useMutation({
+    ...trpc.providers.addSkill.mutationOptions(),
+    onSuccess: () => {
+         queryClient.invalidateQueries(
+           trpc.user.getUserWithProviderData.queryOptions({ userId: session?.user.id as string })
+         );
+      }
+  });
 
-    {/* Illustration */}
-    <View className="items-center">
-      <Ionicons name="construct-outline" size={120} color="#FDBA74" />
-    </View>
+  const onSubmit = async (data: FormData) => {
+    try {
+      await addSkills(data);
 
-    {/* Call-to-action */}
-    <View className="gap-4">
-      <Text className="text-center text-lg font-semibold text-gray-700">
-        Complétons votre profil pour commencer
-      </Text>
+      setSuccess({ message: 'Votre services a été enregistré', type: 'success' });
+      router.back()
+    } catch (error: any) {
+      if (error instanceof TRPCClientError) {
+        if (error?.data?.code === 'UNAUTHORIZED') {
+          setSuccess({
+            message: "Erreur d'authentification, veuillez vous reconnecter",
+            type: 'error',
+          });
+          return;
+        }
+        setSuccess({ message: error.message, type: 'error' });
+      }
+    } finally {
+      setTimeout(() => {
+        setSuccess({ message: '', type: 'success' });
+        router.back()
+      }, 2000);
+    }
+  };
 
-      <Pressable
-        onPress={onNext}
-        className="flex-row items-center justify-center gap-2 rounded-full bg-primary py-3 active:opacity-80">
-        <Ionicons name="checkmark-circle" size={22} color="#fff" />
-        <Text className="text-base font-medium text-white">Je complète mon profil !</Text>
-      </Pressable>
-    </View>
-  </MotiView>
-);
+  useEffect(() => {
+    if (!session) {
+      router.replace('/auth');
+    }
 
-const FormView = ({
-  control,
-  errors,
-  onSubmit,
-  isPending,
-  success,
-  handleSubmit,
-}: {
-  control: any;
-  errors: any;
-  onSubmit: (data: FormData) => void;
-  isPending: boolean;
-  success: { message: string | undefined; status: number | null };
-  handleSubmit: any;
-}) => {
+    return;
+  }, [session]);
+
   return (
     <MotiView
       key="form"
@@ -155,7 +170,7 @@ const FormView = ({
                   onChangeText={onChange}
                   onBlur={onBlur}
                 />
-                <Text className="mt-1 text-xs text-gray-500 ">
+                <Text className="mt-1 text-xs text-gray-500">
                   *le prix de base est le cout pour un travail standard
                 </Text>
                 {errors.averagePrice && (
@@ -168,15 +183,15 @@ const FormView = ({
           {/* Submit Button */}
           <Button onPress={handleSubmit(onSubmit)} disabled={isPending} className="mt-4">
             <Text className="font-bold text-white">
-              {isPending ? <ActivityIndicator size={24} color={"white"}  /> : 'Ajouter le service'}
+              {isPending ? <ActivityIndicator size={24} color={'white'} /> : 'Ajouter le service'}
             </Text>
           </Button>
 
           {success.message && (
             <Text
               className={clsx('mt-4 text-center font-bold', {
-                'text-green-600': success.status === 201,
-                'text-destructive': success.status !== 201,
+                'text-green-600': success.type === 'success',
+                'text-destructive': success.type === 'error',
               })}>
               {success.message}
             </Text>
@@ -184,86 +199,5 @@ const FormView = ({
         </ScrollView>
       </KeyboardAvoidingView>
     </MotiView>
-  );
-};
-
-export default function AddSkills() {
-  const queryClient = useQueryClient();
-  const trpc = useTRPC()
-  const { data: session } = authClient.useSession();
-  const router = useRouter();
-  const { providerId } = useLocalSearchParams();
-  if(!providerId){
-    router.push("/(tabs)/settings/provider")
-  }
-  const [success, setSuccess] = useState<{ message: string | undefined; status: number | null }>({
-    message: '',
-    status: 201,
-  });
-
-  const [showForm, setShowForm] = useState(false); 
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(createSkill),
-  });
-
-  const handleNext = () => {
-    setShowForm(true);
-  };
-   const { mutateAsync: addSkillMutation, isPending } = useMutation(trpc.user.addSkill.mutationOptions())
-
-
-  const onSubmit = async (data: FormData) => {
-    try {
-      await addSkillMutation(data)
-
-      setSuccess({message: "Votre services a été enregistré", status: 201 })
-    } catch (error: any) {
-      if(error?.data?.code === "UNAUTHORIZED"){
-        setSuccess({ message: "Erreur d'authentification, veuillez vous reconnecter", status: 401 });
-        return
-      }
-    } finally {
-      setTimeout(() => {
-        setSuccess({message: "", status: null })
-      }, 2000)
-    }
-  };  
-
-
-  useEffect(() => {
-    if (!session) {
-      router.replace('/auth');
-    }
-
-    return;
-  }, [session]);
-
-
-  return (
-    <View className="flex-1 bg-white">
-      <AnimatePresence exitBeforeEnter>
-        {showForm ? (
-          <FormView
-            key="form-view" // Key unique nécessaire
-            control={control}
-            errors={errors}
-            onSubmit={(data) => onSubmit(data)}
-            isPending={isPending}
-            success={success}
-            handleSubmit={handleSubmit}
-          />
-        ) : (
-          <LandingView
-            key="landing-view" // Key unique nécessaire
-            onNext={handleNext}
-          />
-        )}
-      </AnimatePresence>
-    </View>
   );
 }
