@@ -863,10 +863,6 @@ export type ServiceUncheckedUpdateOneWithoutPostNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ServiceUpdateToOneWithWhereWithoutPostInput, Prisma.ServiceUpdateWithoutPostInput>, Prisma.ServiceUncheckedUpdateWithoutPostInput>
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type EnumSTATUSSERVICEFieldUpdateOperationsInput = {
   set?: $Enums.STATUSSERVICE
 }

@@ -1397,7 +1397,8 @@ export const StoreMessageScalarFieldEnum = {
   conversationId: 'conversationId',
   senderId: 'senderId',
   content: 'content',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  readAt: 'readAt'
 } as const
 
 export type StoreMessageScalarFieldEnum = (typeof StoreMessageScalarFieldEnum)[keyof typeof StoreMessageScalarFieldEnum]

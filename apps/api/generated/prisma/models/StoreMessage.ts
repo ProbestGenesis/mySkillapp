@@ -30,6 +30,7 @@ export type StoreMessageMinAggregateOutputType = {
   senderId: string | null
   content: string | null
   createdAt: Date | null
+  readAt: Date | null
 }
 
 export type StoreMessageMaxAggregateOutputType = {
@@ -38,6 +39,7 @@ export type StoreMessageMaxAggregateOutputType = {
   senderId: string | null
   content: string | null
   createdAt: Date | null
+  readAt: Date | null
 }
 
 export type StoreMessageCountAggregateOutputType = {
@@ -46,6 +48,7 @@ export type StoreMessageCountAggregateOutputType = {
   senderId: number
   content: number
   createdAt: number
+  readAt: number
   _all: number
 }
 
@@ -56,6 +59,7 @@ export type StoreMessageMinAggregateInputType = {
   senderId?: true
   content?: true
   createdAt?: true
+  readAt?: true
 }
 
 export type StoreMessageMaxAggregateInputType = {
@@ -64,6 +68,7 @@ export type StoreMessageMaxAggregateInputType = {
   senderId?: true
   content?: true
   createdAt?: true
+  readAt?: true
 }
 
 export type StoreMessageCountAggregateInputType = {
@@ -72,6 +77,7 @@ export type StoreMessageCountAggregateInputType = {
   senderId?: true
   content?: true
   createdAt?: true
+  readAt?: true
   _all?: true
 }
 
@@ -153,6 +159,7 @@ export type StoreMessageGroupByOutputType = {
   senderId: string
   content: string
   createdAt: Date
+  readAt: Date | null
   _count: StoreMessageCountAggregateOutputType | null
   _min: StoreMessageMinAggregateOutputType | null
   _max: StoreMessageMaxAggregateOutputType | null
@@ -182,6 +189,7 @@ export type StoreMessageWhereInput = {
   senderId?: Prisma.StringFilter<"StoreMessage"> | string
   content?: Prisma.StringFilter<"StoreMessage"> | string
   createdAt?: Prisma.DateTimeFilter<"StoreMessage"> | Date | string
+  readAt?: Prisma.DateTimeNullableFilter<"StoreMessage"> | Date | string | null
   conversation?: Prisma.XOR<Prisma.StoreConversationScalarRelationFilter, Prisma.StoreConversationWhereInput>
   sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -192,6 +200,7 @@ export type StoreMessageOrderByWithRelationInput = {
   senderId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   conversation?: Prisma.StoreConversationOrderByWithRelationInput
   sender?: Prisma.UserOrderByWithRelationInput
 }
@@ -205,6 +214,7 @@ export type StoreMessageWhereUniqueInput = Prisma.AtLeast<{
   senderId?: Prisma.StringFilter<"StoreMessage"> | string
   content?: Prisma.StringFilter<"StoreMessage"> | string
   createdAt?: Prisma.DateTimeFilter<"StoreMessage"> | Date | string
+  readAt?: Prisma.DateTimeNullableFilter<"StoreMessage"> | Date | string | null
   conversation?: Prisma.XOR<Prisma.StoreConversationScalarRelationFilter, Prisma.StoreConversationWhereInput>
   sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -215,6 +225,7 @@ export type StoreMessageOrderByWithAggregationInput = {
   senderId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.StoreMessageCountOrderByAggregateInput
   _max?: Prisma.StoreMessageMaxOrderByAggregateInput
   _min?: Prisma.StoreMessageMinOrderByAggregateInput
@@ -229,12 +240,14 @@ export type StoreMessageScalarWhereWithAggregatesInput = {
   senderId?: Prisma.StringWithAggregatesFilter<"StoreMessage"> | string
   content?: Prisma.StringWithAggregatesFilter<"StoreMessage"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StoreMessage"> | Date | string
+  readAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StoreMessage"> | Date | string | null
 }
 
 export type StoreMessageCreateInput = {
   id?: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
   conversation: Prisma.StoreConversationCreateNestedOneWithoutMessagesInput
   sender: Prisma.UserCreateNestedOneWithoutStoreMessagesInput
 }
@@ -245,12 +258,14 @@ export type StoreMessageUncheckedCreateInput = {
   senderId: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type StoreMessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   conversation?: Prisma.StoreConversationUpdateOneRequiredWithoutMessagesNestedInput
   sender?: Prisma.UserUpdateOneRequiredWithoutStoreMessagesNestedInput
 }
@@ -261,6 +276,7 @@ export type StoreMessageUncheckedUpdateInput = {
   senderId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StoreMessageCreateManyInput = {
@@ -269,12 +285,14 @@ export type StoreMessageCreateManyInput = {
   senderId: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type StoreMessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StoreMessageUncheckedUpdateManyInput = {
@@ -283,6 +301,7 @@ export type StoreMessageUncheckedUpdateManyInput = {
   senderId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StoreMessageListRelationFilter = {
@@ -301,6 +320,7 @@ export type StoreMessageCountOrderByAggregateInput = {
   senderId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
 }
 
 export type StoreMessageMaxOrderByAggregateInput = {
@@ -309,6 +329,7 @@ export type StoreMessageMaxOrderByAggregateInput = {
   senderId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
 }
 
 export type StoreMessageMinOrderByAggregateInput = {
@@ -317,6 +338,7 @@ export type StoreMessageMinOrderByAggregateInput = {
   senderId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
 }
 
 export type StoreMessageCreateNestedManyWithoutSenderInput = {
@@ -403,10 +425,15 @@ export type StoreMessageUncheckedUpdateManyWithoutConversationNestedInput = {
   deleteMany?: Prisma.StoreMessageScalarWhereInput | Prisma.StoreMessageScalarWhereInput[]
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type StoreMessageCreateWithoutSenderInput = {
   id?: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
   conversation: Prisma.StoreConversationCreateNestedOneWithoutMessagesInput
 }
 
@@ -415,6 +442,7 @@ export type StoreMessageUncheckedCreateWithoutSenderInput = {
   conversationId: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type StoreMessageCreateOrConnectWithoutSenderInput = {
@@ -452,12 +480,14 @@ export type StoreMessageScalarWhereInput = {
   senderId?: Prisma.StringFilter<"StoreMessage"> | string
   content?: Prisma.StringFilter<"StoreMessage"> | string
   createdAt?: Prisma.DateTimeFilter<"StoreMessage"> | Date | string
+  readAt?: Prisma.DateTimeNullableFilter<"StoreMessage"> | Date | string | null
 }
 
 export type StoreMessageCreateWithoutConversationInput = {
   id?: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
   sender: Prisma.UserCreateNestedOneWithoutStoreMessagesInput
 }
 
@@ -466,6 +496,7 @@ export type StoreMessageUncheckedCreateWithoutConversationInput = {
   senderId: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type StoreMessageCreateOrConnectWithoutConversationInput = {
@@ -499,12 +530,14 @@ export type StoreMessageCreateManySenderInput = {
   conversationId: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type StoreMessageUpdateWithoutSenderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   conversation?: Prisma.StoreConversationUpdateOneRequiredWithoutMessagesNestedInput
 }
 
@@ -513,6 +546,7 @@ export type StoreMessageUncheckedUpdateWithoutSenderInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StoreMessageUncheckedUpdateManyWithoutSenderInput = {
@@ -520,6 +554,7 @@ export type StoreMessageUncheckedUpdateManyWithoutSenderInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StoreMessageCreateManyConversationInput = {
@@ -527,12 +562,14 @@ export type StoreMessageCreateManyConversationInput = {
   senderId: string
   content: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type StoreMessageUpdateWithoutConversationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sender?: Prisma.UserUpdateOneRequiredWithoutStoreMessagesNestedInput
 }
 
@@ -541,6 +578,7 @@ export type StoreMessageUncheckedUpdateWithoutConversationInput = {
   senderId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StoreMessageUncheckedUpdateManyWithoutConversationInput = {
@@ -548,6 +586,7 @@ export type StoreMessageUncheckedUpdateManyWithoutConversationInput = {
   senderId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -558,6 +597,7 @@ export type StoreMessageSelect<ExtArgs extends runtime.Types.Extensions.Internal
   senderId?: boolean
   content?: boolean
   createdAt?: boolean
+  readAt?: boolean
   conversation?: boolean | Prisma.StoreConversationDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["storeMessage"]>
@@ -568,6 +608,7 @@ export type StoreMessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   senderId?: boolean
   content?: boolean
   createdAt?: boolean
+  readAt?: boolean
   conversation?: boolean | Prisma.StoreConversationDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["storeMessage"]>
@@ -578,6 +619,7 @@ export type StoreMessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   senderId?: boolean
   content?: boolean
   createdAt?: boolean
+  readAt?: boolean
   conversation?: boolean | Prisma.StoreConversationDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["storeMessage"]>
@@ -588,9 +630,10 @@ export type StoreMessageSelectScalar = {
   senderId?: boolean
   content?: boolean
   createdAt?: boolean
+  readAt?: boolean
 }
 
-export type StoreMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "senderId" | "content" | "createdAt", ExtArgs["result"]["storeMessage"]>
+export type StoreMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "senderId" | "content" | "createdAt" | "readAt", ExtArgs["result"]["storeMessage"]>
 export type StoreMessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   conversation?: boolean | Prisma.StoreConversationDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -616,6 +659,7 @@ export type $StoreMessagePayload<ExtArgs extends runtime.Types.Extensions.Intern
     senderId: string
     content: string
     createdAt: Date
+    readAt: Date | null
   }, ExtArgs["result"]["storeMessage"]>
   composites: {}
 }
@@ -1046,6 +1090,7 @@ export interface StoreMessageFieldRefs {
   readonly senderId: Prisma.FieldRef<"StoreMessage", 'String'>
   readonly content: Prisma.FieldRef<"StoreMessage", 'String'>
   readonly createdAt: Prisma.FieldRef<"StoreMessage", 'DateTime'>
+  readonly readAt: Prisma.FieldRef<"StoreMessage", 'DateTime'>
 }
     
 

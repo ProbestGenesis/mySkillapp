@@ -1,7 +1,11 @@
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
 import { protectedProcedure, t } from '../trpc.ts'
-import { notifyStoreConversationMessage } from '../../ws/storeWs.ts'
+import {
+  isStoreUserOnline,
+  notifyStoreConversationMessage,
+  notifyStoreConversationRead,
+} from '../../ws/storeWs.ts'
 
 const storeItemInput = z.object({
   title: z.string().min(3),
@@ -218,6 +222,43 @@ export const storeRouter = t.router({
       return message
     }),
 
+  markConversationRead: protectedProcedure
+    .input(z.object({ conversationId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const conversation = await ctx.prisma.storeConversation.findUnique({
+        where: { id: input.conversationId },
+      })
+      if (!conversation) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Conversation introuvable' })
+      }
+
+      const userId = ctx.session!.user.id
+      const allowed = conversation.ownerId === userId || conversation.customerId === userId
+      if (!allowed) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Action non autorisée' })
+      }
+
+      const updated = await ctx.prisma.storeMessage.updateMany({
+        where: {
+          conversationId: input.conversationId,
+          senderId: { not: userId },
+          readAt: null,
+        },
+        data: {
+          readAt: new Date(),
+        },
+      })
+
+      if (updated.count > 0) {
+        notifyStoreConversationRead(input.conversationId, [
+          conversation.ownerId,
+          conversation.customerId,
+        ])
+      }
+
+      return { updated: updated.count }
+    }),
+
   getConversation: protectedProcedure
     .input(
       z.object({
@@ -256,6 +297,31 @@ export const storeRouter = t.router({
       }
       conversation.messages.reverse()
       return conversation
+    }),
+
+  getConversationPresence: protectedProcedure
+    .input(z.object({ conversationId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const conversation = await ctx.prisma.storeConversation.findUnique({
+        where: { id: input.conversationId },
+      })
+      if (!conversation) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Conversation introuvable' })
+      }
+      const userId = ctx.session!.user.id
+      const allowed = conversation.ownerId === userId || conversation.customerId === userId
+      if (!allowed) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Action non autorisée' })
+      }
+
+      const otherUserId =
+        conversation.ownerId === userId ? conversation.customerId : conversation.ownerId
+
+      return {
+        myUserId: userId,
+        otherUserId,
+        isOtherUserOnline: isStoreUserOnline(otherUserId),
+      }
     }),
 
   listMyConversations: protectedProcedure.query(async ({ ctx }) => {

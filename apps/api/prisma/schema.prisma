@@ -97,6 +97,7 @@ model StoreMessage {
   senderId        String
   content         String
   createdAt       DateTime          @default(now())
+  readAt          DateTime?
 }
 
 model Location {

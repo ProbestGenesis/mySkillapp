@@ -4,7 +4,7 @@ import type { IncomingMessage } from 'http'
 import { URL } from 'url'
 
 type StoreWsMessage = {
-  type: 'message_created'
+  type: 'message_created' | 'presence_changed' | 'message_read'
   conversationId: string
 }
 
@@ -49,6 +49,9 @@ export function setupStoreWsServer(server: Server) {
     }
 
     clients.set(ws, { userId, conversationIds })
+    for (const conversationId of conversationIds) {
+      notifyStoreConversationPresence(conversationId, userId)
+    }
 
     ws.on('message', (raw) => {
       try {
@@ -68,7 +71,13 @@ export function setupStoreWsServer(server: Server) {
     })
 
     ws.on('close', () => {
+      const meta = clients.get(ws)
       clients.delete(ws)
+      if (meta) {
+        for (const conversationId of meta.conversationIds) {
+          notifyStoreConversationPresence(conversationId, meta.userId)
+        }
+      }
     })
   })
 }
@@ -84,4 +93,35 @@ export function notifyStoreConversationMessage(conversationId: string, participa
       })
     }
   }
+}
+
+export function notifyStoreConversationRead(conversationId: string, participantIds: string[]) {
+  for (const [socket, meta] of clients.entries()) {
+    const canReceive =
+      participantIds.includes(meta.userId) && meta.conversationIds.has(conversationId)
+    if (canReceive) {
+      safeSend(socket, {
+        type: 'message_read',
+        conversationId,
+      })
+    }
+  }
+}
+
+export function notifyStoreConversationPresence(conversationId: string, changedUserId: string) {
+  for (const [socket, meta] of clients.entries()) {
+    if (meta.conversationIds.has(conversationId) && meta.userId !== changedUserId) {
+      safeSend(socket, {
+        type: 'presence_changed',
+        conversationId,
+      })
+    }
+  }
+}
+
+export function isStoreUserOnline(userId: string) {
+  for (const meta of clients.values()) {
+    if (meta.userId === userId) return true
+  }
+  return false
 }
