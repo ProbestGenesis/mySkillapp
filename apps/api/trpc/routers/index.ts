@@ -4,6 +4,7 @@ import { serviceRouter } from "./service.ts";
 import { providersRouter } from "./providers.ts";
 import { customersRouter } from "./customers.ts";
 import { postRouter } from "./post.ts";
+import { storeRouter } from "./store.ts";
 
 export const appRouter = t.router({
     user: userRouter,
@@ -11,4 +12,5 @@ export const appRouter = t.router({
     providers: providersRouter,
     customers: customersRouter,
     post: postRouter,
+    store: storeRouter,
 })

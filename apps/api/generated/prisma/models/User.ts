@@ -253,6 +253,10 @@ export type UserWhereInput = {
   postViewed?: Prisma.PostListRelationFilter
   provider?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
   customer?: Prisma.ServiceListRelationFilter
+  storeItems?: Prisma.StoreItemListRelationFilter
+  storeConversationsAsOwner?: Prisma.StoreConversationListRelationFilter
+  storeConversationsAsCustomer?: Prisma.StoreConversationListRelationFilter
+  storeMessages?: Prisma.StoreMessageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -276,6 +280,10 @@ export type UserOrderByWithRelationInput = {
   postViewed?: Prisma.PostOrderByRelationAggregateInput
   provider?: Prisma.ProviderOrderByWithRelationInput
   customer?: Prisma.ServiceOrderByRelationAggregateInput
+  storeItems?: Prisma.StoreItemOrderByRelationAggregateInput
+  storeConversationsAsOwner?: Prisma.StoreConversationOrderByRelationAggregateInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationOrderByRelationAggregateInput
+  storeMessages?: Prisma.StoreMessageOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -302,6 +310,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   postViewed?: Prisma.PostListRelationFilter
   provider?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
   customer?: Prisma.ServiceListRelationFilter
+  storeItems?: Prisma.StoreItemListRelationFilter
+  storeConversationsAsOwner?: Prisma.StoreConversationListRelationFilter
+  storeConversationsAsCustomer?: Prisma.StoreConversationListRelationFilter
+  storeMessages?: Prisma.StoreMessageListRelationFilter
 }, "id" | "email" | "phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
@@ -363,6 +375,10 @@ export type UserCreateInput = {
   postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -386,6 +402,10 @@ export type UserUncheckedCreateInput = {
   postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserUpdateInput = {
@@ -409,6 +429,10 @@ export type UserUpdateInput = {
   postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -432,6 +456,10 @@ export type UserUncheckedUpdateInput = {
   postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -565,6 +593,62 @@ export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
 
+export type UserCreateNestedOneWithoutStoreItemsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreItemsInput, Prisma.UserUncheckedCreateWithoutStoreItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStoreItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreItemsInput, Prisma.UserUncheckedCreateWithoutStoreItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreItemsInput
+  upsert?: Prisma.UserUpsertWithoutStoreItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoreItemsInput, Prisma.UserUpdateWithoutStoreItemsInput>, Prisma.UserUncheckedUpdateWithoutStoreItemsInput>
+}
+
+export type UserCreateNestedOneWithoutStoreConversationsAsOwnerInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsOwnerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsOwnerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreConversationsAsOwnerInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutStoreConversationsAsCustomerInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsCustomerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsCustomerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreConversationsAsCustomerInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStoreConversationsAsOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsOwnerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsOwnerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreConversationsAsOwnerInput
+  upsert?: Prisma.UserUpsertWithoutStoreConversationsAsOwnerInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoreConversationsAsOwnerInput, Prisma.UserUpdateWithoutStoreConversationsAsOwnerInput>, Prisma.UserUncheckedUpdateWithoutStoreConversationsAsOwnerInput>
+}
+
+export type UserUpdateOneRequiredWithoutStoreConversationsAsCustomerNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsCustomerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsCustomerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreConversationsAsCustomerInput
+  upsert?: Prisma.UserUpsertWithoutStoreConversationsAsCustomerInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoreConversationsAsCustomerInput, Prisma.UserUpdateWithoutStoreConversationsAsCustomerInput>, Prisma.UserUncheckedUpdateWithoutStoreConversationsAsCustomerInput>
+}
+
+export type UserCreateNestedOneWithoutStoreMessagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreMessagesInput, Prisma.UserUncheckedCreateWithoutStoreMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStoreMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStoreMessagesInput, Prisma.UserUncheckedCreateWithoutStoreMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoreMessagesInput
+  upsert?: Prisma.UserUpsertWithoutStoreMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoreMessagesInput, Prisma.UserUpdateWithoutStoreMessagesInput>, Prisma.UserUncheckedUpdateWithoutStoreMessagesInput>
+}
+
 export type UserCreateNestedOneWithoutLocationInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutLocationInput, Prisma.UserUncheckedCreateWithoutLocationInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutLocationInput
@@ -687,6 +771,486 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
+export type UserCreateWithoutStoreItemsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationCreateNestedManyWithoutUserInput
+  post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutStoreItemsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutStoreItemsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreItemsInput, Prisma.UserUncheckedCreateWithoutStoreItemsInput>
+}
+
+export type UserUpsertWithoutStoreItemsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStoreItemsInput, Prisma.UserUncheckedUpdateWithoutStoreItemsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreItemsInput, Prisma.UserUncheckedCreateWithoutStoreItemsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStoreItemsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStoreItemsInput, Prisma.UserUncheckedUpdateWithoutStoreItemsInput>
+}
+
+export type UserUpdateWithoutStoreItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStoreItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutStoreConversationsAsOwnerInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationCreateNestedManyWithoutUserInput
+  post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutStoreConversationsAsOwnerInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutStoreConversationsAsOwnerInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsOwnerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsOwnerInput>
+}
+
+export type UserCreateWithoutStoreConversationsAsCustomerInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationCreateNestedManyWithoutUserInput
+  post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutStoreConversationsAsCustomerInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutStoreConversationsAsCustomerInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsCustomerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsCustomerInput>
+}
+
+export type UserUpsertWithoutStoreConversationsAsOwnerInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStoreConversationsAsOwnerInput, Prisma.UserUncheckedUpdateWithoutStoreConversationsAsOwnerInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsOwnerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsOwnerInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStoreConversationsAsOwnerInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStoreConversationsAsOwnerInput, Prisma.UserUncheckedUpdateWithoutStoreConversationsAsOwnerInput>
+}
+
+export type UserUpdateWithoutStoreConversationsAsOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStoreConversationsAsOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUpsertWithoutStoreConversationsAsCustomerInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStoreConversationsAsCustomerInput, Prisma.UserUncheckedUpdateWithoutStoreConversationsAsCustomerInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreConversationsAsCustomerInput, Prisma.UserUncheckedCreateWithoutStoreConversationsAsCustomerInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStoreConversationsAsCustomerInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStoreConversationsAsCustomerInput, Prisma.UserUncheckedUpdateWithoutStoreConversationsAsCustomerInput>
+}
+
+export type UserUpdateWithoutStoreConversationsAsCustomerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStoreConversationsAsCustomerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutStoreMessagesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationCreateNestedManyWithoutUserInput
+  post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+}
+
+export type UserUncheckedCreateWithoutStoreMessagesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+}
+
+export type UserCreateOrConnectWithoutStoreMessagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreMessagesInput, Prisma.UserUncheckedCreateWithoutStoreMessagesInput>
+}
+
+export type UserUpsertWithoutStoreMessagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStoreMessagesInput, Prisma.UserUncheckedUpdateWithoutStoreMessagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStoreMessagesInput, Prisma.UserUncheckedCreateWithoutStoreMessagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStoreMessagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStoreMessagesInput, Prisma.UserUncheckedUpdateWithoutStoreMessagesInput>
+}
+
+export type UserUpdateWithoutStoreMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStoreMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+}
+
 export type UserCreateWithoutLocationInput = {
   id: string
   name: string
@@ -707,6 +1271,10 @@ export type UserCreateWithoutLocationInput = {
   postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutLocationInput = {
@@ -729,6 +1297,10 @@ export type UserUncheckedCreateWithoutLocationInput = {
   postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutLocationInput = {
@@ -767,6 +1339,10 @@ export type UserUpdateWithoutLocationInput = {
   postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLocationInput = {
@@ -789,6 +1365,10 @@ export type UserUncheckedUpdateWithoutLocationInput = {
   postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutProviderInput = {
@@ -811,6 +1391,10 @@ export type UserCreateWithoutProviderInput = {
   post?: Prisma.PostCreateNestedManyWithoutUserInput
   postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutProviderInput = {
@@ -833,6 +1417,10 @@ export type UserUncheckedCreateWithoutProviderInput = {
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
   postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutProviderInput = {
@@ -871,6 +1459,10 @@ export type UserUpdateWithoutProviderInput = {
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
   postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProviderInput = {
@@ -893,6 +1485,10 @@ export type UserUncheckedUpdateWithoutProviderInput = {
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
   postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutPostInput = {
@@ -915,6 +1511,10 @@ export type UserCreateWithoutPostInput = {
   postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutPostInput = {
@@ -937,6 +1537,10 @@ export type UserUncheckedCreateWithoutPostInput = {
   postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutPostInput = {
@@ -964,6 +1568,10 @@ export type UserCreateWithoutPostViewedInput = {
   post?: Prisma.PostCreateNestedManyWithoutUserInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutPostViewedInput = {
@@ -986,6 +1594,10 @@ export type UserUncheckedCreateWithoutPostViewedInput = {
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutPostViewedInput = {
@@ -1024,6 +1636,10 @@ export type UserUpdateWithoutPostInput = {
   postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostInput = {
@@ -1046,6 +1662,10 @@ export type UserUncheckedUpdateWithoutPostInput = {
   postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutPostViewedInput = {
@@ -1103,6 +1723,10 @@ export type UserCreateWithoutCustomerInput = {
   post?: Prisma.PostCreateNestedManyWithoutUserInput
   postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutCustomerInput = {
@@ -1125,6 +1749,10 @@ export type UserUncheckedCreateWithoutCustomerInput = {
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
   postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutCustomerInput = {
@@ -1163,6 +1791,10 @@ export type UserUpdateWithoutCustomerInput = {
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
   postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCustomerInput = {
@@ -1185,6 +1817,10 @@ export type UserUncheckedUpdateWithoutCustomerInput = {
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
   postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1207,6 +1843,10 @@ export type UserCreateWithoutSessionsInput = {
   postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1229,6 +1869,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1267,6 +1911,10 @@ export type UserUpdateWithoutSessionsInput = {
   postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1289,6 +1937,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1311,6 +1963,10 @@ export type UserCreateWithoutAccountsInput = {
   postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1333,6 +1989,10 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
   provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
   customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1371,6 +2031,10 @@ export type UserUpdateWithoutAccountsInput = {
   postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1393,6 +2057,10 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUpdateWithoutPostViewedInput = {
@@ -1415,6 +2083,10 @@ export type UserUpdateWithoutPostViewedInput = {
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
   provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostViewedInput = {
@@ -1437,6 +2109,10 @@ export type UserUncheckedUpdateWithoutPostViewedInput = {
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
   provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
   customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutPostViewedInput = {
@@ -1467,6 +2143,10 @@ export type UserCountOutputType = {
   post: number
   postViewed: number
   customer: number
+  storeItems: number
+  storeConversationsAsOwner: number
+  storeConversationsAsCustomer: number
+  storeMessages: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1476,6 +2156,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   post?: boolean | UserCountOutputTypeCountPostArgs
   postViewed?: boolean | UserCountOutputTypeCountPostViewedArgs
   customer?: boolean | UserCountOutputTypeCountCustomerArgs
+  storeItems?: boolean | UserCountOutputTypeCountStoreItemsArgs
+  storeConversationsAsOwner?: boolean | UserCountOutputTypeCountStoreConversationsAsOwnerArgs
+  storeConversationsAsCustomer?: boolean | UserCountOutputTypeCountStoreConversationsAsCustomerArgs
+  storeMessages?: boolean | UserCountOutputTypeCountStoreMessagesArgs
 }
 
 /**
@@ -1530,6 +2214,34 @@ export type UserCountOutputTypeCountCustomerArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.ServiceWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStoreItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StoreItemWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStoreConversationsAsOwnerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StoreConversationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStoreConversationsAsCustomerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StoreConversationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStoreMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StoreMessageWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1552,6 +2264,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   postViewed?: boolean | Prisma.User$postViewedArgs<ExtArgs>
   provider?: boolean | Prisma.User$providerArgs<ExtArgs>
   customer?: boolean | Prisma.User$customerArgs<ExtArgs>
+  storeItems?: boolean | Prisma.User$storeItemsArgs<ExtArgs>
+  storeConversationsAsOwner?: boolean | Prisma.User$storeConversationsAsOwnerArgs<ExtArgs>
+  storeConversationsAsCustomer?: boolean | Prisma.User$storeConversationsAsCustomerArgs<ExtArgs>
+  storeMessages?: boolean | Prisma.User$storeMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1612,6 +2328,10 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   postViewed?: boolean | Prisma.User$postViewedArgs<ExtArgs>
   provider?: boolean | Prisma.User$providerArgs<ExtArgs>
   customer?: boolean | Prisma.User$customerArgs<ExtArgs>
+  storeItems?: boolean | Prisma.User$storeItemsArgs<ExtArgs>
+  storeConversationsAsOwner?: boolean | Prisma.User$storeConversationsAsOwnerArgs<ExtArgs>
+  storeConversationsAsCustomer?: boolean | Prisma.User$storeConversationsAsCustomerArgs<ExtArgs>
+  storeMessages?: boolean | Prisma.User$storeMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1627,6 +2347,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     postViewed: Prisma.$PostPayload<ExtArgs>[]
     provider: Prisma.$ProviderPayload<ExtArgs> | null
     customer: Prisma.$ServicePayload<ExtArgs>[]
+    storeItems: Prisma.$StoreItemPayload<ExtArgs>[]
+    storeConversationsAsOwner: Prisma.$StoreConversationPayload<ExtArgs>[]
+    storeConversationsAsCustomer: Prisma.$StoreConversationPayload<ExtArgs>[]
+    storeMessages: Prisma.$StoreMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2043,6 +2767,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   postViewed<T extends Prisma.User$postViewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postViewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   provider<T extends Prisma.User$providerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$providerArgs<ExtArgs>>): Prisma.Prisma__ProviderClient<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   customer<T extends Prisma.User$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  storeItems<T extends Prisma.User$storeItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  storeConversationsAsOwner<T extends Prisma.User$storeConversationsAsOwnerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeConversationsAsOwnerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  storeConversationsAsCustomer<T extends Prisma.User$storeConversationsAsCustomerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeConversationsAsCustomerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  storeMessages<T extends Prisma.User$storeMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2638,6 +3366,102 @@ export type User$customerArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.ServiceScalarFieldEnum | Prisma.ServiceScalarFieldEnum[]
+}
+
+/**
+ * User.storeItems
+ */
+export type User$storeItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StoreItem
+   */
+  select?: Prisma.StoreItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StoreItem
+   */
+  omit?: Prisma.StoreItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoreItemInclude<ExtArgs> | null
+  where?: Prisma.StoreItemWhereInput
+  orderBy?: Prisma.StoreItemOrderByWithRelationInput | Prisma.StoreItemOrderByWithRelationInput[]
+  cursor?: Prisma.StoreItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StoreItemScalarFieldEnum | Prisma.StoreItemScalarFieldEnum[]
+}
+
+/**
+ * User.storeConversationsAsOwner
+ */
+export type User$storeConversationsAsOwnerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StoreConversation
+   */
+  select?: Prisma.StoreConversationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StoreConversation
+   */
+  omit?: Prisma.StoreConversationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoreConversationInclude<ExtArgs> | null
+  where?: Prisma.StoreConversationWhereInput
+  orderBy?: Prisma.StoreConversationOrderByWithRelationInput | Prisma.StoreConversationOrderByWithRelationInput[]
+  cursor?: Prisma.StoreConversationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StoreConversationScalarFieldEnum | Prisma.StoreConversationScalarFieldEnum[]
+}
+
+/**
+ * User.storeConversationsAsCustomer
+ */
+export type User$storeConversationsAsCustomerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StoreConversation
+   */
+  select?: Prisma.StoreConversationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StoreConversation
+   */
+  omit?: Prisma.StoreConversationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoreConversationInclude<ExtArgs> | null
+  where?: Prisma.StoreConversationWhereInput
+  orderBy?: Prisma.StoreConversationOrderByWithRelationInput | Prisma.StoreConversationOrderByWithRelationInput[]
+  cursor?: Prisma.StoreConversationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StoreConversationScalarFieldEnum | Prisma.StoreConversationScalarFieldEnum[]
+}
+
+/**
+ * User.storeMessages
+ */
+export type User$storeMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StoreMessage
+   */
+  select?: Prisma.StoreMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StoreMessage
+   */
+  omit?: Prisma.StoreMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoreMessageInclude<ExtArgs> | null
+  where?: Prisma.StoreMessageWhereInput
+  orderBy?: Prisma.StoreMessageOrderByWithRelationInput | Prisma.StoreMessageOrderByWithRelationInput[]
+  cursor?: Prisma.StoreMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StoreMessageScalarFieldEnum | Prisma.StoreMessageScalarFieldEnum[]
 }
 
 /**

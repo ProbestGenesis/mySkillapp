@@ -46,10 +46,57 @@ model User {
 
   role String?
   rate String?
+  storeItems StoreItem[] @relation("StoreItemOwner")
+  storeConversationsAsOwner StoreConversation[] @relation("StoreConversationOwner")
+  storeConversationsAsCustomer StoreConversation[] @relation("StoreConversationCustomer")
+  storeMessages StoreMessage[]
 
   @@unique([email])
   @@map("user")
   @@unique([phoneNumber])
+}
+
+model StoreItem {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  price           Float
+  city            String?
+  district        String?
+  phoneNumber     String?
+  whatsappNumber  String?
+  contactEmail    String?
+  isActive        Boolean  @default(true)
+  owner           User     @relation("StoreItemOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId         String
+  conversations   StoreConversation[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model StoreConversation {
+  id          String         @id @default(uuid())
+  item        StoreItem      @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId      String
+  owner       User           @relation("StoreConversationOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String
+  customer    User           @relation("StoreConversationCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  customerId  String
+  messages    StoreMessage[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([itemId, customerId])
+}
+
+model StoreMessage {
+  id              String            @id @default(uuid())
+  conversation    StoreConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId  String
+  sender          User              @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderId        String
+  content         String
+  createdAt       DateTime          @default(now())
 }
 
 model Location {
@@ -115,6 +162,7 @@ model Service {
   price       Float?
   location    Json?
   district    String?
+  city        String?
   code        String    @default(nanoid(5)) @unique
   role        String?
   provider    Provider      @relation(fields: [providerId], references: [id])

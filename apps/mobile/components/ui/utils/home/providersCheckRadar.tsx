@@ -247,8 +247,9 @@ function ProviderCheckRadar({ selectedService }: Props) {
                   userPosts?.map((item: any) => (
                     <MyPostInfo key={item.id} postId={item.id}>
                       <Avatar alt="posts" className="size-12">
+                        <AvatarImage   />
                         <AvatarFallback>
-                          <Text className="text-xs">{item?.title?.slice(0, 2)}</Text>
+                          <Text className="text-xs">{item?.profession?.slice(0, 2)}</Text>
                         </AvatarFallback>
                       </Avatar>
                     </MyPostInfo>

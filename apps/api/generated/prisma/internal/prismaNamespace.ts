@@ -385,6 +385,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  StoreItem: 'StoreItem',
+  StoreConversation: 'StoreConversation',
+  StoreMessage: 'StoreMessage',
   Location: 'Location',
   Provider: 'Provider',
   Post: 'Post',
@@ -408,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "location" | "provider" | "post" | "service" | "skills" | "session" | "account" | "verification"
+    modelProps: "user" | "storeItem" | "storeConversation" | "storeMessage" | "location" | "provider" | "post" | "service" | "skills" | "session" | "account" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -483,6 +486,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    StoreItem: {
+      payload: Prisma.$StoreItemPayload<ExtArgs>
+      fields: Prisma.StoreItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StoreItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StoreItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>
+        }
+        findFirst: {
+          args: Prisma.StoreItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StoreItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>
+        }
+        findMany: {
+          args: Prisma.StoreItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>[]
+        }
+        create: {
+          args: Prisma.StoreItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>
+        }
+        createMany: {
+          args: Prisma.StoreItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StoreItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>[]
+        }
+        delete: {
+          args: Prisma.StoreItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>
+        }
+        update: {
+          args: Prisma.StoreItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.StoreItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StoreItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StoreItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.StoreItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreItemPayload>
+        }
+        aggregate: {
+          args: Prisma.StoreItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStoreItem>
+        }
+        groupBy: {
+          args: Prisma.StoreItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoreItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StoreItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoreItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    StoreConversation: {
+      payload: Prisma.$StoreConversationPayload<ExtArgs>
+      fields: Prisma.StoreConversationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StoreConversationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StoreConversationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>
+        }
+        findFirst: {
+          args: Prisma.StoreConversationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StoreConversationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>
+        }
+        findMany: {
+          args: Prisma.StoreConversationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>[]
+        }
+        create: {
+          args: Prisma.StoreConversationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>
+        }
+        createMany: {
+          args: Prisma.StoreConversationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StoreConversationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>[]
+        }
+        delete: {
+          args: Prisma.StoreConversationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>
+        }
+        update: {
+          args: Prisma.StoreConversationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>
+        }
+        deleteMany: {
+          args: Prisma.StoreConversationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StoreConversationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StoreConversationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>[]
+        }
+        upsert: {
+          args: Prisma.StoreConversationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreConversationPayload>
+        }
+        aggregate: {
+          args: Prisma.StoreConversationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStoreConversation>
+        }
+        groupBy: {
+          args: Prisma.StoreConversationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoreConversationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StoreConversationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoreConversationCountAggregateOutputType> | number
+        }
+      }
+    }
+    StoreMessage: {
+      payload: Prisma.$StoreMessagePayload<ExtArgs>
+      fields: Prisma.StoreMessageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StoreMessageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StoreMessageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>
+        }
+        findFirst: {
+          args: Prisma.StoreMessageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StoreMessageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>
+        }
+        findMany: {
+          args: Prisma.StoreMessageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>[]
+        }
+        create: {
+          args: Prisma.StoreMessageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>
+        }
+        createMany: {
+          args: Prisma.StoreMessageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StoreMessageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>[]
+        }
+        delete: {
+          args: Prisma.StoreMessageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>
+        }
+        update: {
+          args: Prisma.StoreMessageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>
+        }
+        deleteMany: {
+          args: Prisma.StoreMessageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StoreMessageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StoreMessageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>[]
+        }
+        upsert: {
+          args: Prisma.StoreMessageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StoreMessagePayload>
+        }
+        aggregate: {
+          args: Prisma.StoreMessageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStoreMessage>
+        }
+        groupBy: {
+          args: Prisma.StoreMessageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoreMessageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StoreMessageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StoreMessageCountAggregateOutputType> | number
         }
       }
     }
@@ -1136,6 +1361,48 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const StoreItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  price: 'price',
+  city: 'city',
+  district: 'district',
+  phoneNumber: 'phoneNumber',
+  whatsappNumber: 'whatsappNumber',
+  contactEmail: 'contactEmail',
+  isActive: 'isActive',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StoreItemScalarFieldEnum = (typeof StoreItemScalarFieldEnum)[keyof typeof StoreItemScalarFieldEnum]
+
+
+export const StoreConversationScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  ownerId: 'ownerId',
+  customerId: 'customerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StoreConversationScalarFieldEnum = (typeof StoreConversationScalarFieldEnum)[keyof typeof StoreConversationScalarFieldEnum]
+
+
+export const StoreMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type StoreMessageScalarFieldEnum = (typeof StoreMessageScalarFieldEnum)[keyof typeof StoreMessageScalarFieldEnum]
+
+
 export const LocationScalarFieldEnum = {
   id: 'id',
   userId: 'userId'
@@ -1191,6 +1458,7 @@ export const ServiceScalarFieldEnum = {
   price: 'price',
   location: 'location',
   district: 'district',
+  city: 'city',
   code: 'code',
   role: 'role',
   isViewed: 'isViewed',
@@ -1513,6 +1781,9 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  storeItem?: Prisma.StoreItemOmit
+  storeConversation?: Prisma.StoreConversationOmit
+  storeMessage?: Prisma.StoreMessageOmit
   location?: Prisma.LocationOmit
   provider?: Prisma.ProviderOmit
   post?: Prisma.PostOmit

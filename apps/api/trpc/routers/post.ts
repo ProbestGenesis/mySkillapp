@@ -63,7 +63,7 @@ export const postRouter = t.router({
     try {
       return ctx.prisma.post.findMany({
         where: { userId: ctx.session!.user.id, status: 'WAITING_FOR_PROVIDER' },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { updatedAt: 'desc' },
         take: 2,
       })
     } catch (error: any) {

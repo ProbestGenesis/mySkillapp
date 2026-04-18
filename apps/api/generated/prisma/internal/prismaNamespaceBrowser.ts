@@ -52,6 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  StoreItem: 'StoreItem',
+  StoreConversation: 'StoreConversation',
+  StoreMessage: 'StoreMessage',
   Location: 'Location',
   Provider: 'Provider',
   Post: 'Post',
@@ -95,6 +98,48 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const StoreItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  price: 'price',
+  city: 'city',
+  district: 'district',
+  phoneNumber: 'phoneNumber',
+  whatsappNumber: 'whatsappNumber',
+  contactEmail: 'contactEmail',
+  isActive: 'isActive',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StoreItemScalarFieldEnum = (typeof StoreItemScalarFieldEnum)[keyof typeof StoreItemScalarFieldEnum]
+
+
+export const StoreConversationScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  ownerId: 'ownerId',
+  customerId: 'customerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StoreConversationScalarFieldEnum = (typeof StoreConversationScalarFieldEnum)[keyof typeof StoreConversationScalarFieldEnum]
+
+
+export const StoreMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type StoreMessageScalarFieldEnum = (typeof StoreMessageScalarFieldEnum)[keyof typeof StoreMessageScalarFieldEnum]
 
 
 export const LocationScalarFieldEnum = {
@@ -152,6 +197,7 @@ export const ServiceScalarFieldEnum = {
   price: 'price',
   location: 'location',
   district: 'district',
+  city: 'city',
   code: 'code',
   role: 'role',
   isViewed: 'isViewed',

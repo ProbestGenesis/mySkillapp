@@ -23,6 +23,21 @@ export * from './enums.ts';
  */
 export type User = Prisma.UserModel
 /**
+ * Model StoreItem
+ * 
+ */
+export type StoreItem = Prisma.StoreItemModel
+/**
+ * Model StoreConversation
+ * 
+ */
+export type StoreConversation = Prisma.StoreConversationModel
+/**
+ * Model StoreMessage
+ * 
+ */
+export type StoreMessage = Prisma.StoreMessageModel
+/**
  * Model Location
  * 
  */

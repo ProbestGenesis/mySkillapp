@@ -41,6 +41,7 @@ export type ServiceMinAggregateOutputType = {
   description: string | null
   price: number | null
   district: string | null
+  city: string | null
   code: string | null
   role: string | null
   isViewed: boolean | null
@@ -64,6 +65,7 @@ export type ServiceMaxAggregateOutputType = {
   description: string | null
   price: number | null
   district: string | null
+  city: string | null
   code: string | null
   role: string | null
   isViewed: boolean | null
@@ -88,6 +90,7 @@ export type ServiceCountAggregateOutputType = {
   price: number
   location: number
   district: number
+  city: number
   code: number
   role: number
   isViewed: number
@@ -121,6 +124,7 @@ export type ServiceMinAggregateInputType = {
   description?: true
   price?: true
   district?: true
+  city?: true
   code?: true
   role?: true
   isViewed?: true
@@ -144,6 +148,7 @@ export type ServiceMaxAggregateInputType = {
   description?: true
   price?: true
   district?: true
+  city?: true
   code?: true
   role?: true
   isViewed?: true
@@ -168,6 +173,7 @@ export type ServiceCountAggregateInputType = {
   price?: true
   location?: true
   district?: true
+  city?: true
   code?: true
   role?: true
   isViewed?: true
@@ -279,6 +285,7 @@ export type ServiceGroupByOutputType = {
   price: number | null
   location: runtime.JsonValue | null
   district: string | null
+  city: string | null
   code: string
   role: string | null
   isViewed: boolean
@@ -326,6 +333,7 @@ export type ServiceWhereInput = {
   price?: Prisma.FloatNullableFilter<"Service"> | number | null
   location?: Prisma.JsonNullableFilter<"Service">
   district?: Prisma.StringNullableFilter<"Service"> | string | null
+  city?: Prisma.StringNullableFilter<"Service"> | string | null
   code?: Prisma.StringFilter<"Service"> | string
   role?: Prisma.StringNullableFilter<"Service"> | string | null
   isViewed?: Prisma.BoolFilter<"Service"> | boolean
@@ -354,6 +362,7 @@ export type ServiceOrderByWithRelationInput = {
   price?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
   isViewed?: Prisma.SortOrder
@@ -387,6 +396,7 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.FloatNullableFilter<"Service"> | number | null
   location?: Prisma.JsonNullableFilter<"Service">
   district?: Prisma.StringNullableFilter<"Service"> | string | null
+  city?: Prisma.StringNullableFilter<"Service"> | string | null
   role?: Prisma.StringNullableFilter<"Service"> | string | null
   isViewed?: Prisma.BoolFilter<"Service"> | boolean
   isViewedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
@@ -414,6 +424,7 @@ export type ServiceOrderByWithAggregationInput = {
   price?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
   isViewed?: Prisma.SortOrder
@@ -446,6 +457,7 @@ export type ServiceScalarWhereWithAggregatesInput = {
   price?: Prisma.FloatNullableWithAggregatesFilter<"Service"> | number | null
   location?: Prisma.JsonNullableWithAggregatesFilter<"Service">
   district?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   code?: Prisma.StringWithAggregatesFilter<"Service"> | string
   role?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   isViewed?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
@@ -469,6 +481,7 @@ export type ServiceCreateInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -494,6 +507,7 @@ export type ServiceUncheckedCreateInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -517,6 +531,7 @@ export type ServiceUpdateInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -542,6 +557,7 @@ export type ServiceUncheckedUpdateInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -566,6 +582,7 @@ export type ServiceCreateManyInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -589,6 +606,7 @@ export type ServiceUpdateManyMutationInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -610,6 +628,7 @@ export type ServiceUncheckedUpdateManyInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -655,6 +674,7 @@ export type ServiceCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   location?: Prisma.SortOrder
   district?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isViewed?: Prisma.SortOrder
@@ -682,6 +702,7 @@ export type ServiceMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   district?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isViewed?: Prisma.SortOrder
@@ -705,6 +726,7 @@ export type ServiceMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   district?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   code?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isViewed?: Prisma.SortOrder
@@ -898,6 +920,7 @@ export type ServiceCreateWithoutCustomerInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -922,6 +945,7 @@ export type ServiceUncheckedCreateWithoutCustomerInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -974,6 +998,7 @@ export type ServiceScalarWhereInput = {
   price?: Prisma.FloatNullableFilter<"Service"> | number | null
   location?: Prisma.JsonNullableFilter<"Service">
   district?: Prisma.StringNullableFilter<"Service"> | string | null
+  city?: Prisma.StringNullableFilter<"Service"> | string | null
   code?: Prisma.StringFilter<"Service"> | string
   role?: Prisma.StringNullableFilter<"Service"> | string | null
   isViewed?: Prisma.BoolFilter<"Service"> | boolean
@@ -997,6 +1022,7 @@ export type ServiceCreateWithoutProviderInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1021,6 +1047,7 @@ export type ServiceUncheckedCreateWithoutProviderInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1069,6 +1096,7 @@ export type ServiceCreateWithoutPostInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1092,6 +1120,7 @@ export type ServiceUncheckedCreateWithoutPostInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1131,6 +1160,7 @@ export type ServiceUpdateWithoutPostInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1154,6 +1184,7 @@ export type ServiceUncheckedUpdateWithoutPostInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1177,6 +1208,7 @@ export type ServiceCreateWithoutSkillsInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1201,6 +1233,7 @@ export type ServiceUncheckedCreateWithoutSkillsInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1250,6 +1283,7 @@ export type ServiceCreateManyCustomerInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1272,6 +1306,7 @@ export type ServiceUpdateWithoutCustomerInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1296,6 +1331,7 @@ export type ServiceUncheckedUpdateWithoutCustomerInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1319,6 +1355,7 @@ export type ServiceUncheckedUpdateManyWithoutCustomerInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1342,6 +1379,7 @@ export type ServiceCreateManyProviderInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1364,6 +1402,7 @@ export type ServiceUpdateWithoutProviderInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1388,6 +1427,7 @@ export type ServiceUncheckedUpdateWithoutProviderInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1411,6 +1451,7 @@ export type ServiceUncheckedUpdateManyWithoutProviderInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1434,6 +1475,7 @@ export type ServiceCreateManySkillsInput = {
   price?: number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: string | null
+  city?: string | null
   code?: string
   role?: string | null
   isViewed?: boolean
@@ -1456,6 +1498,7 @@ export type ServiceUpdateWithoutSkillsInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1480,6 +1523,7 @@ export type ServiceUncheckedUpdateWithoutSkillsInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1503,6 +1547,7 @@ export type ServiceUncheckedUpdateManyWithoutSkillsInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1528,6 +1573,7 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   price?: boolean
   location?: boolean
   district?: boolean
+  city?: boolean
   code?: boolean
   role?: boolean
   isViewed?: boolean
@@ -1556,6 +1602,7 @@ export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   price?: boolean
   location?: boolean
   district?: boolean
+  city?: boolean
   code?: boolean
   role?: boolean
   isViewed?: boolean
@@ -1584,6 +1631,7 @@ export type ServiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   price?: boolean
   location?: boolean
   district?: boolean
+  city?: boolean
   code?: boolean
   role?: boolean
   isViewed?: boolean
@@ -1612,6 +1660,7 @@ export type ServiceSelectScalar = {
   price?: boolean
   location?: boolean
   district?: boolean
+  city?: boolean
   code?: boolean
   role?: boolean
   isViewed?: boolean
@@ -1628,7 +1677,7 @@ export type ServiceSelectScalar = {
   completedAt?: boolean
 }
 
-export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "postId" | "title" | "description" | "price" | "location" | "district" | "code" | "role" | "isViewed" | "isViewedAt" | "appointmentTime" | "appointmentTimeIsAccepted" | "providerId" | "skillId" | "customerId" | "status" | "createdAt" | "updatedAt" | "startedAt" | "completedAt", ExtArgs["result"]["service"]>
+export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "postId" | "title" | "description" | "price" | "location" | "district" | "city" | "code" | "role" | "isViewed" | "isViewedAt" | "appointmentTime" | "appointmentTimeIsAccepted" | "providerId" | "skillId" | "customerId" | "status" | "createdAt" | "updatedAt" | "startedAt" | "completedAt", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.Service$postArgs<ExtArgs>
   provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
@@ -1664,6 +1713,7 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     price: number | null
     location: runtime.JsonValue | null
     district: string | null
+    city: string | null
     code: string
     role: string | null
     isViewed: boolean
@@ -2112,6 +2162,7 @@ export interface ServiceFieldRefs {
   readonly price: Prisma.FieldRef<"Service", 'Float'>
   readonly location: Prisma.FieldRef<"Service", 'Json'>
   readonly district: Prisma.FieldRef<"Service", 'String'>
+  readonly city: Prisma.FieldRef<"Service", 'String'>
   readonly code: Prisma.FieldRef<"Service", 'String'>
   readonly role: Prisma.FieldRef<"Service", 'String'>
   readonly isViewed: Prisma.FieldRef<"Service", 'Boolean'>

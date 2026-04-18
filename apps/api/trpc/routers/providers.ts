@@ -1,8 +1,8 @@
-import z from 'zod'
-import { findNearbyProviderUserIds } from '../lib/geoNearby.ts'
-import { t, protectedProcedure } from '../trpc.ts'
-import { createSkill } from '../../../../packages/lib/zodSchema.ts'
 import { TRPCError } from '@trpc/server'
+import z from 'zod'
+import { createSkill } from '../../../../packages/lib/zodSchema.ts'
+import { findNearbyProviderUserIds } from '../lib/geoNearby.ts'
+import { protectedProcedure, t } from '../trpc.ts'
 
 const nearByInput = z.object({
   latitude: z.number().min(-90).max(90),
@@ -118,10 +118,61 @@ export const providersRouter = t.router({
       .filter((x): x is NonNullable<typeof x> => x !== null)
   }),
 
-  getProvider: t.procedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
-    return ctx.prisma.provider.findUnique({
-      where: { id: input.id },
-      include: { user: true, skills: true },
-    })
-  }),
+  getProvider: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      return ctx.prisma.provider.findUnique({
+        where: { id: input.id },
+        include: { user: true, skills: true },
+      })
+    }),
+
+  contactProvider: protectedProcedure
+    .input(
+      z.object({ providerId: z.string(), skillId: z.string().optional(), description: z.string() })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        await ctx.prisma.service.create({
+          data: {
+            description: input.description,
+            provider: {
+              connect: {
+                id: input.providerId,
+              },
+            },
+            skills: input.skillId
+              ? {
+                  connect: {
+                    id: input.skillId,
+                  },
+                }
+              : undefined,
+            customer: {
+              connect: {
+                id: ctx.session!.user.id,
+              },
+            },
+            district: ctx.session!.user.district,
+            city: ctx.session!.user.city,
+          },
+        })
+
+        return {
+          message: 'Le prestataire a été contacté avec succès',
+          code: 'SUCCESS',
+        }
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          return {
+            message: error.message,
+            code: error.code,
+          }
+        }
+        return {
+          message: 'une erreur est survenue',
+          code: 'INTERNAL_SERVER_ERROR',
+        }
+      }
+    }),
 })
