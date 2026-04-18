@@ -13,9 +13,11 @@ export default function StoreIndexScreen() {
   const router = useRouter()
   const { data: session } = authClient.useSession()
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const pageSize = 10
 
   const { data, isLoading, refetch, isRefetching } = useQuery(
-    trpc.store.listItems.queryOptions({ search })
+    trpc.store.listItems.queryOptions({ search, page, pageSize })
   )
 
   const { data: myItems } = useQuery({
@@ -71,6 +73,9 @@ export default function StoreIndexScreen() {
             <Link key={item.id} href={`/(tabs)/store/${item.id}`} asChild>
               <Card>
                 <CardContent className="gap-1 pt-4">
+                  <Text className="text-xs font-semibold">
+                    {session?.user?.id === item.ownerId ? 'Mes annonces' : 'Autres annonces'}
+                  </Text>
                   <Text className="text-base font-semibold">{item.title}</Text>
                   <Text numberOfLines={2} className="text-muted-foreground">
                     {item.description}
@@ -86,6 +91,20 @@ export default function StoreIndexScreen() {
         ) : (
           <Text className="text-muted-foreground">Aucune annonce disponible.</Text>
         )}
+        <View className="flex-row gap-2">
+          <Button
+            variant="outline"
+            disabled={page <= 1}
+            onPress={() => setPage((p) => Math.max(1, p - 1))}>
+            <Text>Page précédente</Text>
+          </Button>
+          <Button
+            variant="outline"
+            disabled={(data?.length ?? 0) < pageSize}
+            onPress={() => setPage((p) => p + 1)}>
+            <Text>Page suivante</Text>
+          </Button>
+        </View>
       </View>
     </ScrollView>
   )

@@ -4,7 +4,7 @@ import { authClient } from '@/lib/auth-client'
 import { useTRPC } from '@/provider/appProvider'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
 
 export default function StoreConversationDetailScreen() {
@@ -14,9 +14,16 @@ export default function StoreConversationDetailScreen() {
   const router = useRouter()
   const queryClient = useQueryClient()
   const [content, setContent] = useState('')
+  const [page, setPage] = useState(1)
+  const pageSize = 25
+
+  const wsUrl = useMemo(() => {
+    if (!session?.user?.id) return null
+    return `ws://192.168.201.16:4000/ws/store?userId=${encodeURIComponent(session.user.id)}&conversations=${encodeURIComponent(conversationId)}`
+  }, [session?.user?.id, conversationId])
 
   const { data, isLoading } = useQuery({
-    ...trpc.store.getConversation.queryOptions({ conversationId }),
+    ...trpc.store.getConversation.queryOptions({ conversationId, page, pageSize }),
     enabled: !!conversationId && !!session?.user?.id,
   })
 
@@ -25,7 +32,7 @@ export default function StoreConversationDetailScreen() {
       onSuccess: () => {
         setContent('')
         queryClient.invalidateQueries({
-          queryKey: trpc.store.getConversation.queryKey({ conversationId }),
+          queryKey: trpc.store.getConversation.queryKey({ conversationId, page, pageSize }),
         })
         queryClient.invalidateQueries({
           queryKey: trpc.store.listMyConversations.queryKey(),
@@ -33,6 +40,33 @@ export default function StoreConversationDetailScreen() {
       },
     })
   )
+
+  useEffect(() => {
+    if (!wsUrl) return
+    const socket = new WebSocket(wsUrl)
+    socket.onopen = () => {
+      socket.send(JSON.stringify({ type: 'subscribe', conversationId }))
+    }
+    socket.onmessage = (event) => {
+      try {
+        const payload = JSON.parse(event.data) as {
+          type?: string
+          conversationId?: string
+        }
+        if (payload.type === 'message_created' && payload.conversationId === conversationId) {
+          queryClient.invalidateQueries({
+            queryKey: trpc.store.getConversation.queryKey({ conversationId, page, pageSize }),
+          })
+          queryClient.invalidateQueries({
+            queryKey: trpc.store.listMyConversations.queryKey(),
+          })
+        }
+      } catch {
+        // Ignore malformed ws payload
+      }
+    }
+    return () => socket.close()
+  }, [wsUrl, conversationId, queryClient, trpc, page, pageSize])
 
   if (!session) {
     router.replace('/auth')
@@ -84,9 +118,20 @@ export default function StoreConversationDetailScreen() {
           onChangeText={setContent}
         />
         <Button
-          onPress={() => sendMutation.mutate({ conversationId, content })}
+          onPress={() => sendMutation.mutate({ conversationId, content: content.trim() })}
           disabled={sendMutation.isPending || !content.trim()}>
           <Text className="font-bold text-white">Envoyer</Text>
+        </Button>
+      </View>
+      <View className="flex-row gap-2 pb-2">
+        <Button variant="outline" disabled={page <= 1} onPress={() => setPage((p) => p - 1)}>
+          <Text>Messages récents</Text>
+        </Button>
+        <Button
+          variant="outline"
+          disabled={(data?.messages.length ?? 0) < pageSize}
+          onPress={() => setPage((p) => p + 1)}>
+          <Text>Messages plus anciens</Text>
         </Button>
       </View>
     </View>

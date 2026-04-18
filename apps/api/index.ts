@@ -1,4 +1,5 @@
 import express from "express"
+import { createServer } from "http";
 
 import { toNodeHandler } from "better-auth/node";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -7,6 +8,7 @@ import { env } from "./lib/env.ts";
 import cors from "cors"
 import { appRouter } from "./trpc/routers/index.ts";
 import { createContext } from "./trpc/context.ts";
+import { setupStoreWsServer } from "./ws/storeWs.ts";
 
 
 const app = express()
@@ -32,7 +34,10 @@ app.use(
     })
   );
 
-app.listen(port, () => {
+const server = createServer(app);
+setupStoreWsServer(server);
+
+server.listen(port, () => {
     console.log(`le serveur a bien demarée sur le port ${port}`)
 }) 
 

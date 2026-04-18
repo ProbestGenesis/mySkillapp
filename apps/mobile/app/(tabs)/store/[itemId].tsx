@@ -174,7 +174,8 @@ export default function StoreItemDetailsScreen() {
               onPress={() =>
                 startConversationMutation.mutate({
                   itemId,
-                  message: firstMessage || 'Bonjour, votre annonce est-elle toujours disponible ?',
+                  message:
+                    firstMessage.trim() || 'Bonjour, votre annonce est-elle toujours disponible ?',
                 })
               }
               disabled={startConversationMutation.isPending}>

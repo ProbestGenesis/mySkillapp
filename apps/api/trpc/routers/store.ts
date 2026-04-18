@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
 import { protectedProcedure, t } from '../trpc.ts'
+import { notifyStoreConversationMessage } from '../../ws/storeWs.ts'
 
 const storeItemInput = z.object({
   title: z.string().min(3),
@@ -19,10 +20,15 @@ export const storeRouter = t.router({
       z
         .object({
           search: z.string().optional(),
+          page: z.number().int().positive().default(1),
+          pageSize: z.number().int().positive().max(50).default(10),
         })
         .optional()
     )
     .query(async ({ ctx, input }) => {
+      const page = input?.page ?? 1
+      const pageSize = input?.pageSize ?? 10
+      const skip = (page - 1) * pageSize
       return ctx.prisma.storeItem.findMany({
         where: {
           isActive: true,
@@ -41,6 +47,8 @@ export const storeRouter = t.router({
         orderBy: {
           createdAt: 'desc',
         },
+        skip,
+        take: pageSize,
       })
     }),
 
@@ -124,6 +132,10 @@ export const storeRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const normalized = input.message.trim()
+      if (!normalized) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Message vide interdit' })
+      }
       const item = await ctx.prisma.storeItem.findUnique({
         where: { id: input.itemId },
       })
@@ -156,9 +168,11 @@ export const storeRouter = t.router({
         data: {
           conversationId: conversation.id,
           senderId: ctx.session!.user.id,
-          content: input.message,
+          content: normalized,
         },
       })
+
+      notifyStoreConversationMessage(conversation.id, [item.ownerId, ctx.session!.user.id])
 
       return conversation
     }),
@@ -171,6 +185,10 @@ export const storeRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const normalized = input.content.trim()
+      if (!normalized) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Message vide interdit' })
+      }
       const conversation = await ctx.prisma.storeConversation.findUnique({
         where: { id: input.conversationId },
       })
@@ -183,18 +201,35 @@ export const storeRouter = t.router({
         throw new TRPCError({ code: 'FORBIDDEN', message: 'Action non autorisée' })
       }
 
-      return ctx.prisma.storeMessage.create({
+      const message = await ctx.prisma.storeMessage.create({
         data: {
           conversationId: input.conversationId,
           senderId: userId,
-          content: input.content,
+          content: normalized,
+        },
+        include: {
+          sender: { select: { id: true, name: true } },
         },
       })
+      notifyStoreConversationMessage(input.conversationId, [
+        conversation.ownerId,
+        conversation.customerId,
+      ])
+      return message
     }),
 
   getConversation: protectedProcedure
-    .input(z.object({ conversationId: z.string() }))
+    .input(
+      z.object({
+        conversationId: z.string(),
+        page: z.number().int().positive().default(1),
+        pageSize: z.number().int().positive().max(100).default(25),
+      })
+    )
     .query(async ({ ctx, input }) => {
+      const page = input.page
+      const pageSize = input.pageSize
+      const skip = (page - 1) * pageSize
       const conversation = await ctx.prisma.storeConversation.findUnique({
         where: { id: input.conversationId },
         include: {
@@ -205,7 +240,9 @@ export const storeRouter = t.router({
             include: {
               sender: { select: { id: true, name: true } },
             },
-            orderBy: { createdAt: 'asc' },
+            orderBy: { createdAt: 'desc' },
+            skip,
+            take: pageSize,
           },
         },
       })
@@ -217,6 +254,7 @@ export const storeRouter = t.router({
       if (!allowed) {
         throw new TRPCError({ code: 'FORBIDDEN', message: 'Action non autorisée' })
       }
+      conversation.messages.reverse()
       return conversation
     }),
 
