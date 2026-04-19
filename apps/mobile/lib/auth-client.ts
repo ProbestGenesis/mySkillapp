@@ -18,7 +18,7 @@ const secureStoreWrapper = {
 
 
 export const authClient = createAuthClient({
-    baseURL:  "http://192.168.201.16:4000", // Base URL of your Better Auth backend.
+    baseURL:  "https://skillmapapp.netlify.app", // Base URL of your Better Auth backend.
     plugins: [
         expoClient({
             scheme: process.env.EXPO_SCHEME ?? "skillmap",

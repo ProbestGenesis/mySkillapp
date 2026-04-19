@@ -28,7 +28,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          url: 'http://192.168.201.16:4000/trpc/',
+          url: 'https://skillmapapp.netlify.app/trpc/',
           headers() {
             const headers = new Map<string, string>();
             const cookies = authClient.getCookie();
