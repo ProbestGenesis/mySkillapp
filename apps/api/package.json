@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "nodemon index.ts"
+    "dev": "index.ts",
+    "postinstall": "bun x prisma generate"
   },
   "devDependencies": {
     "@types/bun": "latest",

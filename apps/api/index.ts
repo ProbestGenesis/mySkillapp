@@ -12,11 +12,11 @@ import { setupStoreWsServer } from "./ws/storeWs.ts";
 
 
 const app = express()
-const port = 4000
+const port = process.env.PORT || 4000
 
 app.use(
   cors({
-    origin: [env.CORS_ORIGIN, "exp://192.168.201.16:8081", "http://192.168.201.16:8081", "exp+skillmap:\expo-development-client\?url=http%3A%2F%2F192.168.201.16%3A8081"],
+    origin: [env.CORS_ORIGIN, "exp://192.168.201.16:8081", "http://192.168.201.16:8081", "exp+skillmap:\expo-development-client\?url=http%3A%2F%2F192.168.201.16%3A8081", "exp://skillmap"],
     credentials: true,
   })
 );
