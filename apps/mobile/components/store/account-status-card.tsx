@@ -33,10 +33,10 @@ export function AccountStatusCard({
             <Text>{isPartner ? 'Partenaire' : 'Particulier'}</Text>
           </Badge>
         </View>
-        <CardDescription>
+       {!isPartner && <CardDescription>
           Vous ne pouvez publier que 2 articles chaque 2 semaine, devez un partenaire pour pourvoir
           en publier d'avantage.
-        </CardDescription>
+        </CardDescription>}
       </CardHeader>
 
       <CardContent className="gap-3">

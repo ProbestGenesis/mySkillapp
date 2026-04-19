@@ -39,6 +39,8 @@ function CustomerCheckRadar({ selectedService }: Props) {
     };
   }, [location?.latitude, location?.longitude]);
 
+  
+
   const nearQuery = useQuery({
     ...trpc.customers.listNearDemands.queryOptions({
       latitude: stableLoc?.lat ?? 0,
@@ -169,7 +171,7 @@ function CustomerCheckRadar({ selectedService }: Props) {
           <View className="flex-col gap-1.5">
             {!stableLoc ? (
               <Text className="text-muted-foreground text-center text-sm">
-                Activez la localisation pour voir les clients à proximité.
+                Activez la localisation et relancer l'application pour voir les clients à proximité.
               </Text>
             ) : null}
 

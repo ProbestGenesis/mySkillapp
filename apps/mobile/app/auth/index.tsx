@@ -2,18 +2,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
+import { signIn, useSession } from '@/lib/auth-client';
 import { signInForm } from '@/lib/zodSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
+import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { z } from 'zod';
-import { signIn, useSession } from '@/lib/auth-client';
-
 
 type FormSchema = z.infer<typeof signInForm>;
 type Props = {};
@@ -56,19 +56,19 @@ function index({}: Props) {
       setIsLoading(false);
     }
 
-    if(error && error.code === "PHONE_NUMBER_NOT_VERIFIED"){
-      router.push(`/auth/verify/phoneNumber?phoneNumber=${data.phone}`)
+    if (error && error.code === 'PHONE_NUMBER_NOT_VERIFIED') {
+      router.push(`/auth/verify/phoneNumber?phoneNumber=${data.phone}`);
     }
-    if (error && error?.status !== 404) {
-      console.log(error);
+    if (error && error.code === "INVALID_CREDENTIALS") {
       setIsSuccess({
         type: 'signIn',
-        message: error?.message,
+        message: 'Numéro ou mot de passe incorrect',
         status: error.status,
         error: true,
       });
       setIsLoading(false);
     }
+    
 
     if (!error) {
       setIsSuccess({
@@ -84,6 +84,7 @@ function index({}: Props) {
         router.push('/');
       }, 1500);
     }
+    setIsLoading(false);
   };
   return (
     <SafeAreaView className="h-screen flex-1">
@@ -92,7 +93,9 @@ function index({}: Props) {
           keyboardVerticalOffset={Platform.OS == 'ios' ? 60 : 40}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           className="h-screen flex-1 flex-col bg-blue-900">
-          <View className="flex-1"></View>
+          <View className="flex-1">
+            <Image source={require('@/assets/images/splash.png')} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+          </View>
 
           <View className="max-h-[60%] flex-auto flex-col gap-6 rounded-t-3xl bg-white p-2 py-6">
             <View className="flex-col gap-0.5">

@@ -157,8 +157,6 @@ export default function StoreNewScreen() {
 
         <Text className="text-base font-semibold">Options de contact annonceur</Text>
         <Input placeholder="Téléphone" value={phoneNumber} onChangeText={setPhoneNumber} />
-        <Input placeholder="WhatsApp" value={whatsappNumber} onChangeText={setWhatsappNumber} />
-        <Input placeholder="Email" value={contactEmail} onChangeText={setContactEmail} />
 
         {error ? <Text className="text-destructive">{error}</Text> : null}
         {createMutation.isError ? (
@@ -172,6 +170,11 @@ export default function StoreNewScreen() {
             <Text className="font-bold text-white">Publier</Text>
           )}
         </Button>
+
+
+        <Text className='text-muted '>
+          Bien que la vente de tout articles légales soit authorisé sur Skillmap; Les outils de travail seront mieux référencés.
+        </Text>
       </View>
     </ScrollView>
   )

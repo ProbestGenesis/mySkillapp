@@ -104,7 +104,7 @@ function ProfilPicture({}: Props) {
           className="rounded-full"
           onPress={handleUpload}
           disabled={profilMutation.isPending || !image?.base64}>
-          {profilMutation.isPending ? <ActivityIndicator size={24} color={"white"} />  : <Text className="text-lg font-bold text-white"> Continuer</Text>}
+          {profilMutation.isPending ? <ActivityIndicator size={24} color={"white"} />  : <Text className="text-lg font-bold text-white">Enregistrer</Text>}
         </Button>
       </View>
 

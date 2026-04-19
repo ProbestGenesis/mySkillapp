@@ -11,6 +11,7 @@ import Ripple from '../../radar';
 import { Skeleton } from '../../skeleton';
 import MyPostInfo from './myPostsInfo';
 import { ProviderCard } from './providersCard';
+import { Link } from 'expo-router';
 
 /** Aligné sur `providers.listNear` (Provider + user + skills + distance). */
 type NearProviderRow = {
@@ -55,7 +56,7 @@ function ProviderCheckRadar({ selectedService }: Props) {
       setLocationAlert(true);
       setLocationMessageError({
         title: 'Erreur de localisation',
-        description: 'Veuillez activer votre localisation pour voir les prestataires à proximité',
+        description: "Veuillez activer votre localisation et relancer l'application pour voir les prestataires à proximité",
         type: undefined,
       });
     }
@@ -104,12 +105,21 @@ function ProviderCheckRadar({ selectedService }: Props) {
         {' '}
         <Ripple />
         <View className="absolute top-[53%] left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 items-center">
-          <Avatar
+         {session?.user.image ?  <Avatar
             alt="user-avatar"
             style={{ width: CENTRAL_AVATAR_SIZE, height: CENTRAL_AVATAR_SIZE }}>
             <AvatarImage source={{ uri: session?.user?.image ?? undefined }} />
             <AvatarFallback />
+          </Avatar>  : <Link href={"/(tabs)/settings/profilPicture"} >
+          <Avatar
+            alt="user-avatar"
+            style={{ width: CENTRAL_AVATAR_SIZE, height: CENTRAL_AVATAR_SIZE }}>
+           
+            <AvatarFallback>
+              <Text className="text-center">Ajouter une photo</Text>
+            </AvatarFallback>
           </Avatar>
+          </Link> }
           <Text className="mt-2 text-sm font-medium">{session?.user?.name ?? 'Vous'}</Text>
         </View>
         <AnimatePresence>

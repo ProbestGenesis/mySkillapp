@@ -41,7 +41,12 @@ export const serviceRouter = t.router({
             select: {
               name: true,
               image: true,
+              district: true,
+              city: true,
             },
+            include: {
+              Location: true,
+            }
           },
         },
       })
@@ -373,6 +378,50 @@ export const serviceRouter = t.router({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error.message || 'Erreur lors de la définition du rendez-vous',
+        })
+      }
+    }),
+
+  updateServiceLocation: protectedProcedure
+    .input(
+      z.object({
+        serviceId: z.string(),
+        location: z.object({ lat: z.number(), long: z.number() }),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const { serviceId, location } = input
+        const session = ctx.session
+
+        const service = await ctx.prisma.service.findUnique({
+          where: { id: serviceId },
+        })
+
+        if (!service) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Service non trouvé',
+          })
+        }
+
+        if (service.customerId !== session?.user.id) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: "Vous n'êtes pas autorisé à modifier ce service",
+          })
+        }
+
+        return await ctx.prisma.service.update({
+          where: { id: serviceId },
+          data: {
+            location,
+          },
+        })
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message || 'Erreur lors de la mise à jour de la localisation',
         })
       }
     }),

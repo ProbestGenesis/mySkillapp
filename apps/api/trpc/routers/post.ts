@@ -1,8 +1,8 @@
 import { TRPCError } from '@trpc/server'
+import { customAlphabet } from 'nanoid'
 import z from 'zod'
 import { postsSchema as createPostSchema } from '../../../../packages/lib/zodSchema.ts'
 import { protectedProcedure, t } from '../trpc.ts'
-import { customAlphabet } from 'nanoid'
 
 export const postRouter = t.router({
   getPosts: t.procedure.query(async ({ ctx }) => {
@@ -75,7 +75,7 @@ export const postRouter = t.router({
   }),
 
   getMyPost: protectedProcedure
-    .input(z.object({ postId: z.string()}))
+    .input(z.object({ postId: z.string() }))
     .query(async ({ input, ctx }) => {
       try {
         const data = await ctx.prisma.post.findFirst({
@@ -92,7 +92,6 @@ export const postRouter = t.router({
                     phoneNumberVerified: true,
                     emailVerified: true,
                   },
-                  
                 },
               },
             },
@@ -150,36 +149,48 @@ export const postRouter = t.router({
       }
     }),
 
-  createPost: protectedProcedure.input(createPostSchema).mutation(async ({ input, ctx }) => {
-    try {
-      const post = await ctx.prisma.post.create({
-        data: {
-          body: input.body,
-          user: {
-            connect: {
-              id: ctx.session!.user.id,
-            },
-          },
-          notification: false,
-          profession: input.profession.value,
-        },
+  createPost: protectedProcedure
+    .input(
+      z.object({
+        ...createPostSchema.shape,
+        lat: z.number().optional(),
+        long: z.number().optional(),
       })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const post = await ctx.prisma.post.create({
+          data: {
+            body: input.body,
+            user: {
+              connect: {
+                id: ctx.session!.user.id,
+              },
+            },
+            location: {
+              lat: input.lat,
+              long: input.long,
+            },
+            notification: false,
+            profession: input.profession.value,
+          },
+        })
 
-      if (!post) {
+        if (!post) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Erreur lors de la création de la publication',
+          })
+        }
+        return post
+      } catch (error: any) {
+        if (error instanceof TRPCError) throw error
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Erreur lors de la création de la publication',
+          message: error.message || 'Erreur lors de la création de la publication',
         })
       }
-      return post
-    } catch (error: any) {
-      if (error instanceof TRPCError) throw error
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: error.message || 'Erreur lors de la création de la publication',
-      })
-    }
-  }),
+    }),
 
   applyForPost: protectedProcedure
     .input(z.object({ postId: z.string(), offeredPrice: z.number() }))
@@ -228,10 +239,10 @@ export const postRouter = t.router({
         const user = await ctx.prisma.user.findFirst({
           where: { id: ctx.session!.user.id },
           select: {
-            id: true, 
+            id: true,
             district: true,
             city: true,
-          }
+          },
         })
         const post = await ctx.prisma.post.update({
           where: {
@@ -241,21 +252,25 @@ export const postRouter = t.router({
             providerId: input.providerId,
           },
         })
-        const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 5)
+        const nanoid = customAlphabet(
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+          5
+        )
         const code = nanoid()
 
         await ctx.prisma.service.create({
           data: {
             provider: {
               connect: {
-                id: input.providerId
-              }
+                id: input.providerId,
+              },
             },
             customer: {
               connect: {
-                id: ctx.session!.user.id
-              }
+                id: ctx.session!.user.id,
+              },
             },
+            location: post.location as any,
             title: `Recherche de ${post.profession}`,
             status: 'ACCEPTED',
             description: post.body,
@@ -263,7 +278,7 @@ export const postRouter = t.router({
             district: user?.district,
           },
         })
-        return { ok: true, message: "Prestataire contacté avec succès" }
+        return { ok: true, message: 'Prestataire contacté avec succès' }
       } catch (error: any) {
         if (error instanceof TRPCError) throw error
         throw new TRPCError({

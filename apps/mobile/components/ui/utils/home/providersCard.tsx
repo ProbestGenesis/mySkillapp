@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter } from '@/components/ui/dialog';
 import { Star } from 'lucide-react-native';
 import { Text } from '../../text';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { Link } from 'expo-router';
 
 /** Aligné sur `providers.getProvider`. */
@@ -79,14 +79,22 @@ export function ProviderCard({
             <ScrollView className="max-h-36 mt-2" showsVerticalScrollIndicator={false}>
               {provider.skills.length > 0 ? (
                 <View className="gap-1">
-                  <Text className="text-foreground text-sm font-bold mb-0.5">Compétences</Text>
+                  <Text className="text-foreground text-sm font-bold mb-0.5">Compétences particuliers</Text>
                   {provider.skills.map((s) => (
-                    <View key={s.id} className="bg-muted/50 rounded-lg px-3 py-1">
+                   <Link href={{
+                    pathname: "/provider/[providerId]/contact",
+                    params: {
+                      providerId: provider.id,
+                      skillId: s.id
+                    }
+                   }} key={s.id}  asChild >
+                   
+                    <Pressable onPress={onClose} style={{}}  className="bg-muted/50 rounded-lg px-3 py-1">
                       <Text className="text-sm font-medium">{s.title}</Text>
                       <Text className="text-primary text-xs font-semibold">
                         À partir de {s.average_price} fcfa
                       </Text>
-                    </View>
+                    </Pressable></Link>
                   ))}
                 </View>
               ) : (

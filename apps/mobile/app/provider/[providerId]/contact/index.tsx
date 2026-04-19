@@ -20,7 +20,6 @@ import { createSerciveDemand } from '@/lib/zodSchema';
 import { useTRPC } from '@/provider/appProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import * as Location from 'expo-location';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { Check, XCircle } from 'lucide-react-native';
 import { useEffect, useState, useMemo } from 'react';
@@ -36,9 +35,8 @@ function Contact({}: Props) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const [selectedSkill, setSelectedSkill]  = useState('')
   const { providerId, skillname, skillId, offeredPrice } = useLocalSearchParams();
-
+  const [selectedSkill, setSelectedSkill]  = useState(skillId as string)
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<{
@@ -99,7 +97,7 @@ function Contact({}: Props) {
       skillId: selectedSkill,
     });
     if (code === 'SUCCESS') {
-      setSuccess({ message, status: 200 });
+      setSuccess({ message, status: 201 });
     } else {
       setError({ message, status: 400 });
     }
@@ -164,7 +162,7 @@ function Contact({}: Props) {
                           </Badge>
                         ))
                       ) : (
-                        <Text>Aucune compétence</Text>
+                        <Text>Aucune compétence particulier enregistré</Text>
                       )}
                     </View>
                   </View>
@@ -244,12 +242,7 @@ function Contact({}: Props) {
                   <Separator />
                   <View>
                     <Text className="text-muted">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta dolores quam,
-                      ullam facilis sint earum a harum error aperiam! Debitis, quisquam. Repudiandae
-                      ut nihil modi consequatur sequi, animi eaque facilis? Lorem ipsum dolor sit
-                      amet consectetur adipisicing elit. Vel eius, animi a libero totam illo
-                      mollitia maiores magnam. Minus odio sint distinctio consequatur repellat
-                      expedita eum ipsa optio molestias consequuntur.
+                    Votre description aide le prestataire à mieux comprendre vos besoins.
                     </Text>
                   </View>
                 </View>

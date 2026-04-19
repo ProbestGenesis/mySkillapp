@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function StoreConversationDetailScreen() {
   const { conversationId } = useLocalSearchParams<{ conversationId: string }>()
@@ -123,9 +124,11 @@ export default function StoreConversationDetailScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator />
-      </View>
+      <SafeAreaView className='flex-1 h-full'>
+      <View className="h-full w-full flex-row items-center justify-center">
+          <ActivityIndicator size={64} color={'orange'} />
+        </View>
+      </SafeAreaView>
     )
   }
 
@@ -162,7 +165,7 @@ export default function StoreConversationDetailScreen() {
         </View>
       </ScrollView>
 
-      <View className="flex-row items-center gap-2 pb-3">
+      <View className="flex-row items-center gap-2 pb-0.5">
         <Input
           className="flex-1"
           placeholder="Votre message"

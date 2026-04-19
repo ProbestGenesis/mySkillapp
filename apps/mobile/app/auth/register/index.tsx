@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -21,6 +20,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { z } from 'zod';
+import { Image } from 'expo-image';
 
 type FormSchema = z.infer<typeof registerForm>;
 
@@ -126,25 +126,18 @@ function RegisterPage() {
 
   // --- ETAPE 2 : Gestion OTP ---
 
-  // Gestion de la saisie OTP avec Focus automatique
   const handleOtpChange = (text: string, idx: number) => {
     const newOtp = [...otpInput];
     newOtp[idx] = text;
     setOtpInput(newOtp);
 
-    // Si l'utilisateur tape un chiffre, on passe au suivant
     if (text && idx < 3) {
       inputRefs.current[idx + 1]?.focus();
-    }
-    // Si l'utilisateur efface, on reste sur le focus actuel (ou précédent si besoin)
-    if (!text && idx > 0) {
-      // Optionnel : inputRefs.current[idx - 1]?.focus();
     }
   };
 
   const sendOtp = async () => {
     clearStatus();
-    // Priorité au numéro du state local, sinon celui de la session
     const phoneToSend = currentPhone || session?.user.phoneNumber;
 
     if (!phoneToSend) {
@@ -208,7 +201,9 @@ function RegisterPage() {
           keyboardVerticalOffset={Platform.OS == 'ios' ? 60 : 40}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           className="h-screen flex-1 flex-col bg-blue-900">
-          <View className="flex-1"/>
+          <View className="flex-1">
+            <Image source={require('@/assets/images/splash.png')} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+          </View>
           <View className="min-h-[70%] w-full rounded-t-3xl bg-white p-2 pb-10">
             {step === 1 && (
               <View className="gap-6">
@@ -297,7 +292,7 @@ function RegisterPage() {
                   <Button
                     variant="link"
                     className="h-auto p-0"
-                    onPress={() => router.push('/auth/register')}>
+                    onPress={() => router.push('/auth')}>
                     <Text className="font-bold">Se connecter</Text>
                   </Button>
                 </View>

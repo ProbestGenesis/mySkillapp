@@ -40,7 +40,6 @@ function ServicesBulles({ selectedService, onSelectService }: Props) {
                 </Pressable>
               </Badge>
               {services_btp.map((item, idx) => {
-                if (idx <= 3) {
                   return (
                     <Badge key={idx.toString()}>
                       <Pressable
@@ -55,13 +54,12 @@ function ServicesBulles({ selectedService, onSelectService }: Props) {
                       </Pressable>
                     </Badge>
                   );
-                }
               })}
 
-              <Button variant="ghost" size={'sm'} onPress={() => setShowAll(true)}>
+            {/*  <Button variant="ghost" size={'sm'} onPress={() => setShowAll(true)}>
                 <Search />
                 <Text>Plus</Text>
-              </Button>
+              </Button>*/}
             </MotiView>
           </ScrollView>
     </MotiView>

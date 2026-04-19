@@ -32,6 +32,19 @@ export const providersRouter = t.router({
       })
     }
 
+    const skills = await ctx.prisma.skills.findMany({
+      where: {
+        providerId: userWithProvider.provider.id,
+      },
+    })
+
+    if (skills.length >= 3) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Vous ne pouvez enregistrer que 3 compétences pour le moment',
+      })
+    }
+
     const skill = await ctx.prisma.skills.create({
       data: {
         providerId: userWithProvider.provider.id,

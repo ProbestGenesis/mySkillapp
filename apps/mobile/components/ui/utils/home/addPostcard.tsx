@@ -7,7 +7,7 @@ import { postsSchema as formSchema } from '@/lib/zodSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TRPCClientError } from '@trpc/client';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Platform, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,6 +26,7 @@ import { profession } from '@/data/selectProfessionData';
 import { useTRPC } from '@/provider/appProvider';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MotiView } from 'moti';
+import { usePreciseLocation } from '@/lib/geolocation';
 
 type Props = {
   onClose: () => void;
@@ -33,6 +34,7 @@ type Props = {
 function AddPostCard({ onClose }: Props) {
   const { data: session } = authClient.useSession();
   const queryClient = useQueryClient();
+  const { location , error: locationError } = usePreciseLocation()
 
   const [success, setSuccess] = useState<{
     message?: string;
@@ -42,6 +44,15 @@ function AddPostCard({ onClose }: Props) {
   const { handleSubmit, control } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  
+  const stableLoc = useMemo(() => {
+        if (!location) return null;
+        return {
+          lat: location.latitude,
+          long: location.longitude,
+        };
+    }, [location?.latitude, location?.longitude]);
+    
 
   const {
     mutateAsync: createPost,
@@ -190,7 +201,7 @@ function AddPostCard({ onClose }: Props) {
               <Button
                 className="rounded-full"
                 onPress={handleSubmit((data) => {
-                  createPost(data);
+                  createPost({...data, lat: stableLoc?.lat, long: stableLoc?.long});
                 })}>
                 {isPending ? (
                   <ActivityIndicator />

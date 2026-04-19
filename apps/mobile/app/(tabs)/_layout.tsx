@@ -150,7 +150,7 @@ function GateAwareTabsLayout() {
 
   return (
     <View className="flex-1">
-      <Tabs screenOptions={{ headerShown: false }}>
+      <Tabs screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true }}>
         <Tabs.Screen
           name="index"
           options={{
@@ -182,7 +182,7 @@ function GateAwareTabsLayout() {
         <Tabs.Screen
           name="store"
           options={{
-            title: 'Store',
+            title: 'Marketplace',
             tabBarIcon: ({ size, focused }) => (
               <Ionicons
                 name={focused ? 'storefront' : 'storefront-outline'}

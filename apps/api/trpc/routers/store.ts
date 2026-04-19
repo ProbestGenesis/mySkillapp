@@ -356,7 +356,7 @@ export const storeRouter = t.router({
       z.object({
         conversationId: z.string(),
         page: z.number().int().positive().default(1),
-        pageSize: z.number().int().positive().max(100).default(25),
+        pageSize: z.number().int().positive().max(100).default(35),
       })
     )
     .query(async ({ ctx, input }) => {

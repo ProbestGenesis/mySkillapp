@@ -13,6 +13,7 @@ import { authClient } from '@/lib/auth-client';
 import { secretCode } from '@/lib/zodSchema';
 
 import { useTRPC } from '@/provider/appProvider';
+import { usePreciseLocation } from '@/lib/geolocation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clsx } from 'clsx';
@@ -20,7 +21,7 @@ import { useRouter } from 'expo-router';
 import { AlertCircle, CalendarClock, Check, Locate, QrCode, UserIcon } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, Linking, Text, View } from 'react-native';
 
 import { Star } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
@@ -88,6 +89,17 @@ export default function ServiceListScreen() {
   const [rating, setRating] = useState(5);
   const [timeStr, setTimeStr] = useState('');
 
+  const { location: currentLocation } = usePreciseLocation();
+
+  const updateLocationMutation = useMutation(
+    trpc.service.updateServiceLocation.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+        Alert.alert('Succès', 'Votre position a été enregistrée pour ce service.');
+      },
+    })
+  );
+
   const { data, isLoading, refetch, isRefetching } = useQuery({
     ...trpc.service.getYoursServices.queryOptions(),
     enabled: !!session?.user.id,
@@ -142,12 +154,12 @@ export default function ServiceListScreen() {
       },
     })
   );
-  
+
   const markAsViewedMutation = useMutation(
     trpc.service.markServiceAsViewed.mutationOptions({
       onSuccess: () => {
-         // Silently update cache or just invalidate if needed
-         // queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+        // Silently update cache or just invalidate if needed
+        // queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
       },
     })
   );
@@ -177,9 +189,7 @@ export default function ServiceListScreen() {
     if (data && session?.user?.id) {
       // @ts-ignore
       const providerId = session.user?.providerId;
-      const unviewedServices = data.filter(
-        (s: any) => s.providerId === providerId && !s.isViewed
-      );
+      const unviewedServices = data.filter((s: any) => s.providerId === providerId && !s.isViewed);
       unviewedServices.forEach((s: any) => {
         markAsViewedMutation.mutate({ serviceId: s.id });
       });
@@ -196,7 +206,7 @@ export default function ServiceListScreen() {
     const partnerRoleLabel = isCustomer ? 'Prestataire' : 'Client';
 
     return (
-      <Card className="mx-2 my-2 overflow-hidden border-none gap-0 shadow-sm">
+      <Card className="mx-2 my-2 gap-0 overflow-hidden border-none shadow-sm">
         <View
           className={clsx('h-1 w-full', {
             'bg-destructive': item.status === 'PENDING',
@@ -232,12 +242,99 @@ export default function ServiceListScreen() {
             </View>
           </View>
 
-          <View className="flex-row items-center gap-2">
+         <View className="flex-row items-center flex-wrap gap-1.5">
+           <View className="flex-row items-center gap-2">
             <Locate size={14} className="text-muted-foreground" />
             <Text className="text-muted-foreground text-sm">
-              {item.district || 'Quartier non renseigné'}
+              {item.district ??  item.customer.district ?? 'Quartier non renseigné'}
             </Text>
           </View>
+
+      {!isCustomer && item.status === 'IN_PROGRESS' && (
+            <Button
+              className='rounded-full w-fit px-2'
+              size={'iconSm'}
+              onPress={() => {
+                let lat, long;
+                
+                // 1. Localisation enregistrée avec le service
+                if (item.location && typeof item.location === 'object') {
+                  if ('lat' in item.location && 'long' in item.location) {
+                    lat = item.location.lat;
+                    long = item.location.long;
+                  } else if ('latitude' in item.location && 'longitude' in item.location) {
+                    lat = item.location.latitude;
+                    long = item.location.longitude;
+                  }
+                }
+            
+                // 2. Localisation en relation avec le client
+                if (lat === undefined || long === undefined) {
+                  if (item.customer?.location && typeof item.customer.location === 'object') {
+                    lat = item.customer.location.lat ?? item.customer.location.latitude;
+                    long = item.customer.location.long ?? item.customer.location.longitude;
+                  } else if (item.customer?.Location && Array.isArray(item.customer.Location) && item.customer.Location.length > 0) {
+                    const locInfo = item.customer.Location[0];
+                    if (locInfo?.position?.coordinates) {
+                      long = locInfo.position.coordinates[0];
+                      lat = locInfo.position.coordinates[1];
+                    } else if (locInfo?.lat !== undefined && locInfo?.long !== undefined) {
+                      lat = locInfo.lat;
+                      long = locInfo.long;
+                    } else if (locInfo?.latitude !== undefined && locInfo?.longitude !== undefined) {
+                      lat = locInfo.latitude;
+                      long = locInfo.longitude;
+                    }
+                  }
+                }
+            
+                if (lat !== undefined && long !== undefined) {
+                  const url = `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+                  Linking.openURL(url);
+                } else {
+                  // Fallback: Recherche par adresse
+                  const searchQuery = item.district || item.customer?.district || item.city || item.customer?.city;
+                  if (searchQuery) {
+                    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+                    Linking.openURL(url);
+                  } else {
+                    Alert.alert('Information', 'Aucune localisation précise enregistrée pour ce client.');
+                  }
+                }
+              }}
+            >
+              <Text className='text-white'>Voir la localisation precise</Text>
+            </Button>
+          )}
+
+          {isCustomer && item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (!item.location || typeof item.location !== 'object' || (!('lat' in item.location) && !('latitude' in item.location))) && (
+            <Button
+              className="rounded-full w-fit px-2 ml-2"
+              size={'iconSm'}
+              variant="outline"
+              disabled={updateLocationMutation.isPending}
+              onPress={() => {
+                if (!currentLocation) {
+                  Alert.alert('Erreur', 'Impossible de récupérer votre position. Vérifiez que la localisation est activée.');
+                  return;
+                }
+                updateLocationMutation.mutate({
+                  serviceId: item.id,
+                  location: {
+                    lat: currentLocation.latitude,
+                    long: currentLocation.longitude,
+                  }
+                });
+              }}
+            >
+              {updateLocationMutation.isPending ? (
+                <ActivityIndicator size="small" color="orange" />
+              ) : (
+                <Text className="text-xs font-bold text-primary">Renseigner ma position GPS</Text>
+              )}
+            </Button>
+          )}
+         </View>
 
           {isCustomer && item.code && item.status !== 'COMPLETED' && (
             <View className="bg-primary/5 border-primary/20 mt-1 flex-row items-center justify-between rounded-xl border p-3">
@@ -252,16 +349,16 @@ export default function ServiceListScreen() {
           )}
 
           {item.appointmentTime && (
-            <View className="bg-yellow-50 border-yellow-200 mt-2 flex-row items-center gap-2 rounded-xl border p-2">
+            <View className="mt-2 flex-row items-center gap-2 rounded-xl border border-yellow-200 bg-yellow-50 p-2">
               <CalendarClock size={16} className="text-yellow-600" />
               <View>
                 <Text className="text-[10px] font-bold text-yellow-600 uppercase">RDV Prévu</Text>
-                <Text className="text-yellow-700 text-sm font-semibold">
+                <Text className="text-sm font-semibold text-yellow-700">
                   {item.appointmentTime}
                 </Text>
               </View>
               {!item.appointmentTimeIsAccepted && (
-                 <Text className="ml-auto text-[10px] italic text-yellow-600">En attente...</Text>
+                <Text className="ml-auto text-[10px] text-yellow-600 italic">En attente...</Text>
               )}
             </View>
           )}
@@ -306,15 +403,18 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {!item.appointmentTime && !isCustomer && item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (
-            <Button
-              size="sm"
-              variant="secondary"
-              className="rounded-full px-4"
-              onPress={() => openDialog(item, 'APPOINTMENT')}>
-              <Text className="text-xs font-bold">RDV</Text>
-            </Button>
-          )}
+          {!item.appointmentTime &&
+            !isCustomer &&
+            item.status !== 'COMPLETED' &&
+            item.status !== 'REJECTED' && (
+              <Button
+                size="sm"
+                variant="secondary"
+                className="rounded-full px-4"
+                onPress={() => openDialog(item, 'APPOINTMENT')}>
+                <Text className="text-xs font-bold">RDV</Text>
+              </Button>
+            )}
         </CardFooter>
       </Card>
     );
@@ -501,15 +601,15 @@ export default function ServiceListScreen() {
 
     // 5. APPOINTMENT
     if (activeDialog === 'APPOINTMENT') {
-
       const handleSetAppointment = () => {
         if (!timeStr) return;
-       {/* const [hours, minutes] = timeStr.split(':').map(Number);
+        {
+          /* const [hours, minutes] = timeStr.split(':').map(Number);
         if (isNaN(hours) || isNaN(minutes)) {
           alert('Format invalide. Utilisez HH:MM');
           return;
-        }*/}
-        
+        }*/
+        }
 
         setAppointmentMutation.mutate({
           serviceId: selectedItem.id,
@@ -568,47 +668,63 @@ export default function ServiceListScreen() {
     return null;
   };
 
-  return (
-    <SafeAreaView className='flex-1'>
-    <View className="bg-background h-screen">
-      {isLoading ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#F97316" />
+  if(!session){
+    return (
+      <SafeAreaView className="flex-1">
+        <View className="bg-background h-screen">
+          <View className="flex-1 items-center justify-center gap-6">
+            <Text className="font-lg text-muted-foreground text-xl">
+             Vous devez être connecté pour accéder à cette page
+            </Text>
+            <Button variant="outline" onPress={() => router.push('/auth')} className="rounded-full">
+              <Text>Se connecter</Text>
+            </Button>
+          </View>
         </View>
-      ) : (
-        <>
-          {data && data?.length > 0 ? (
-            <View className="flex-1 p-2">
-              <FlatList
-                data={data as unknown as any[]}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-                contentContainerStyle={{ paddingBottom: 100 }}
-                showsVerticalScrollIndicator={false}
-                refreshing={isRefetching}
-                onRefresh={refetch}
-              />
-            </View>
-          ) : (
-            <View className="flex-1 items-center justify-center gap-6">
-              <Text className="font-lg text-muted-foreground text-xl">
-                Vous n'avez aucun service en cours
-              </Text>
-              <Button variant="outline" onPress={() => refetch()} className="rounded-full">
-                <Text>Actualiser</Text>
-              </Button>
-            </View>
-          )}
+      </SafeAreaView>
+    )
+  }
 
-          {/* --- LE DIALOGUE GLOBAL --- */}
-          {/* Il est rendu HORS de la liste, une seule fois */}
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogContent className="w-full rounded-2xl">{renderDialogContent()}</DialogContent>
-          </Dialog>
-        </>
-      )}
-    </View>
+  return (
+    <SafeAreaView className="flex-1">
+      <View className="bg-background h-screen">
+        {isLoading ? (
+          <View className="h-full w-full flex-row items-center justify-center">
+            <ActivityIndicator size={64} color={'orange'} />
+          </View>
+        ) : (
+          <>
+            {data && data?.length > 0 ? (
+              <View className="flex-1 p-2">
+                <FlatList
+                  data={data as unknown as any[]}
+                  keyExtractor={(item) => item.id}
+                  renderItem={renderItem}
+                  contentContainerStyle={{ paddingBottom: 100 }}
+                  showsVerticalScrollIndicator={false}
+                  refreshing={isRefetching}
+                  onRefresh={refetch}
+                />
+              </View>
+            ) : (
+              <View className="flex-1 items-center justify-center gap-6">
+                <Text className="font-lg text-muted-foreground text-xl">
+                  Vous n'avez aucun service en cours
+                </Text>
+                <Button variant="outline" onPress={() => refetch()} className="rounded-full">
+                  <Text>Actualiser</Text>
+                </Button>
+              </View>
+            )}
+
+            {/* --- LE DIALOGUE GLOBAL --- */}
+            {/* Il est rendu HORS de la liste, une seule fois */}
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogContent className="w-full rounded-2xl">{renderDialogContent()}</DialogContent>
+            </Dialog>
+          </>
+        )}
+      </View>
     </SafeAreaView>
-    
   );
 }

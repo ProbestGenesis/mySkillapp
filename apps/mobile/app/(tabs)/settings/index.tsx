@@ -15,7 +15,7 @@ import { Preference } from '@/components/ui/utils/settings/preference';
 import { Skills } from '@/components/ui/utils/settings/skills';
 import { authClient } from '@/lib/auth-client';
 import { useTRPC } from '@/provider/appProvider';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Link, useRouter } from 'expo-router';
 import {
@@ -48,6 +48,7 @@ type Props = {};
 function SettingScreen({}: Props) {
   const { data: session, isPending } = authClient.useSession();
   const trpc = useTRPC();
+  const queryClient = useQueryClient()
   const router = useRouter();
 
   const { data, isLoading, error } = useQuery(
@@ -55,6 +56,7 @@ function SettingScreen({}: Props) {
   );
   const handleSignOut = async () => {
     try {
+      queryClient.invalidateQueries()
       await authClient.signOut();
     } catch (error) {
       console.log(error);
@@ -119,9 +121,11 @@ function SettingScreen({}: Props) {
                   </Button>
                 </Link>
               ) : (
+               <Link asChild href={"/(tabs)/settings/editProfil"} >
                 <Button size={'sm'} variant={'outline'} className="rounded-full">
                   <Text className="font-bold">Modifier votre profil</Text>
                 </Button>
+               </Link>
               )}
             </View>
 
@@ -179,7 +183,7 @@ function SettingScreen({}: Props) {
           </View>
 
           <View className="flex-col gap-8">
-            <Card className="rounded-3xl">
+           {/* <Card className="rounded-3xl">
               <CardHeader>
                 <CardTitle>
                   <Text className="text-primary">Votre solde: </Text>
@@ -195,7 +199,7 @@ function SettingScreen({}: Props) {
                   <Text className="text-white">Recharger</Text>
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {isLoading ? (
               <Skeleton className="h-32 w-full rounded-lg" />
@@ -320,7 +324,7 @@ function SettingScreen({}: Props) {
               </Card>
             )}
 
-            <Card className="rounded-3xl">
+           {/* <Card className="rounded-3xl">
               <CardHeader>
                 <CardTitle className="text-primary text-xl font-bold">
                   Confirmation de service terminé
@@ -362,7 +366,7 @@ function SettingScreen({}: Props) {
                   <Text className="text-white">Confirmer </Text>
                 </Button>
               </CardFooter>
-            </Card>
+            </Card>*/}
 
             <Skills data={data} isLoading={isLoading} session={session} />
            

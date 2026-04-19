@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { authClient } from '@/lib/auth-client'
@@ -9,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { Image } from 'expo-image'
 import { Link, useLocalSearchParams, useRouter } from 'expo-router'
 import {
+  AlertCircle,
   Edit,
   Mail,
   MapPin,
@@ -52,6 +54,7 @@ export default function StoreItemDetailsScreen() {
   const [imageUrls, setImageUrls] = useState<string[]>([])
   const [uploadingImages, setUploadingImages] = useState(false)
   const [firstMessage, setFirstMessage] = useState('')
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
     const insets = useSafeAreaInsets();
     const contentInsets = {
@@ -406,22 +409,9 @@ export default function StoreItemDetailsScreen() {
               {/* Delete Button */}
               <Button
                 variant="destructive"
-                onPress={() =>
-                  Alert.alert(
-                    'Supprimer l\'annonce',
-                    'Êtes-vous sûr de vouloir supprimer cette annonce ?',
-                    [
-                      { text: 'Annuler', style: 'cancel' },
-                      {
-                        text: 'Supprimer',
-                        onPress: () => deleteMutation.mutate({ itemId }),
-                        style: 'destructive',
-                      },
-                    ]
-                  )
-                }
+                onPress={() => setDeleteDialogOpen(true)}
                 disabled={deleteMutation.isPending}
-                className="flex-row">
+                className="flex-row rounded-full">
                 <Trash2 size={18} color="white" strokeWidth={2} />
                 <Text className="font-bold text-white">
                   {deleteMutation.isPending ? 'Suppression…' : 'Supprimer l\'annonce'}
@@ -499,7 +489,6 @@ export default function StoreItemDetailsScreen() {
             </View>
           )}
 
-          {/* Messages Link */}
           <Link href="/(tabs)/store/messages" asChild>
             <Button variant="outline" className="flex-row">
               <MessageCircle size={18} strokeWidth={2} />
@@ -509,6 +498,44 @@ export default function StoreItemDetailsScreen() {
         </View>
       </View>
     </ScrollView>
+
+    <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+      <DialogContent className="w-full rounded-2xl">
+        <View className="gap-4 py-4">
+          <View className="items-center">
+            <View className="bg-destructive/10 rounded-full p-4">
+              <AlertCircle size={32} className="text-destructive" />
+            </View>
+            <Text className="text-destructive mt-4 text-center text-xl font-bold">
+              Supprimer l'annonce ?
+            </Text>
+            <Text className="text-muted-foreground mt-2 text-center">
+              Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.
+            </Text>
+          </View>
+
+          {deleteMutation.isError && (
+            <Text className="text-destructive text-center">{deleteMutation.error?.message}</Text>
+          )}
+
+          <View className="flex-row gap-3">
+            <Button variant="ghost" className="flex-1" onPress={() => setDeleteDialogOpen(false)}>
+              <Text>Annuler</Text>
+            </Button>
+            <Button
+              variant="destructive"
+              className="flex-1 rounded-full"
+              disabled={deleteMutation.isPending}
+              onPress={() => deleteMutation.mutate({ itemId })}>
+              <Text className="font-bold text-white">
+                {deleteMutation.isPending ? <ActivityIndicator color="white" /> : 'Supprimer'}
+              </Text>
+            </Button>
+          </View>
+        </View>
+      </DialogContent>
+    </Dialog>
+
     </KeyboardAvoidingView>
   )
 }
