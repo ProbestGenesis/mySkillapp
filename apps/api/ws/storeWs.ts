@@ -25,7 +25,7 @@ export function setupStoreWsServer(server: Server) {
   const wss = new WebSocketServer({ noServer: true })
 
   server.on('upgrade', (request, socket, head) => {
-    const url = new URL(request.url || '', 'http://localhost')
+    const url = new URL(request.url || '', 'http://192.168.201.16')
     if (url.pathname !== '/ws/store') return
     wss.handleUpgrade(request, socket, head, (ws) => {
       wss.emit('connection', ws, request)
@@ -33,7 +33,7 @@ export function setupStoreWsServer(server: Server) {
   })
 
   wss.on('connection', (ws: WebSocket, request: IncomingMessage) => {
-    const url = new URL(request.url || '', 'http://localhost')
+    const url = new URL(request.url || '', 'http://192.168.201.16')
     const userId = url.searchParams.get('userId')
     const conversations = url.searchParams.get('conversations')
     const conversationIds = new Set(
