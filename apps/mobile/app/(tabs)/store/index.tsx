@@ -1,10 +1,12 @@
+import { AccountStatusCard } from '@/components/store/account-status-card'
+import { ProductCard } from '@/components/store/product-card'
+import { SearchHeader } from '@/components/store/search-header'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { authClient } from '@/lib/auth-client'
 import { useTRPC } from '@/provider/appProvider'
 import { useQuery } from '@tanstack/react-query'
-import { Link, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
+import { ArrowLeft, ArrowRight } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
 
@@ -13,9 +15,11 @@ export default function StoreIndexScreen() {
   const router = useRouter()
   const { data: session } = authClient.useSession()
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const pageSize = 10
 
   const { data, isLoading, refetch, isRefetching } = useQuery(
-    trpc.store.listItems.queryOptions({ search })
+    trpc.store.listItems.queryOptions({ search, page, pageSize })
   )
 
   const { data: myItems } = useQuery({
@@ -23,68 +27,105 @@ export default function StoreIndexScreen() {
     enabled: !!session?.user?.id,
   })
 
+  const { data: publishingStatus } = useQuery({
+    ...trpc.store.getPublishingStatus.queryOptions(),
+    enabled: !!session?.user?.id,
+  })
+
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator />
+      <View className="flex-1 items-center justify-center bg-background">
+        <ActivityIndicator size="large" color="currentColor" />
       </View>
     )
   }
 
-  return (
-    <ScrollView className="flex-1 px-4 py-3">
-      <View className="gap-3 pb-10">
-        <Text className="text-2xl font-bold">Boutique</Text>
-        <Input placeholder="Rechercher une annonce" value={search} onChangeText={setSearch} />
-        <View className="flex-row gap-2">
-          <Button variant="outline" onPress={() => refetch()} disabled={isRefetching}>
-            <Text>Actualiser</Text>
-          </Button>
-          {session ? (
-            <Link href="/(tabs)/store/new" asChild>
-              <Button>
-                <Text className="font-bold text-white">Créer annonce</Text>
-              </Button>
-            </Link>
-          ) : (
-            <Button variant="outline" onPress={() => router.push('/auth')}>
-              <Text>Se connecter</Text>
-            </Button>
-          )}
-          {session ? (
-            <Link href="/(tabs)/store/messages" asChild>
-              <Button variant="outline">
-                <Text>Messagerie</Text>
-              </Button>
-            </Link>
-          ) : null}
-        </View>
+  const hasProducts = (data?.length ?? 0) > 0
+  const hasNextPage = (data?.length ?? 0) >= pageSize
 
+  return (
+    <ScrollView className="flex-1 bg-background" showsVerticalScrollIndicator={false}>
+      <View className="gap-6 px-1.5 py-6 pb-12">
+        {/* Header Section */}
+        <SearchHeader
+          search={search}
+          onSearchChange={setSearch}
+          onRefresh={() => refetch()}
+          isRefetching={isRefetching}
+          session={session}
+        />
+
+        {/* Account Status Card */}
         {session ? (
-          <View className="rounded-xl border border-border p-3">
-            <Text className="font-semibold">Mes annonces: {myItems?.length ?? 0}</Text>
-          </View>
+          <AccountStatusCard
+            myItemsCount={myItems?.length ?? 0}
+            isPartner={publishingStatus?.isPartner ?? false}
+            freeLimit={publishingStatus?.freeLimit ?? 2}
+            freeWindowDays={publishingStatus?.freeWindowDays ?? 14}
+            remainingFreePublications={publishingStatus?.remainingFreePublications ?? 0}
+            partnerUntil={publishingStatus?.partnerUntil}
+          />
         ) : null}
 
-        {data?.length ? (
-          data.map((item) => (
-            <Link key={item.id} href={`/(tabs)/store/${item.id}`} asChild>
-              <Card>
-                <CardContent className="gap-1 pt-4">
-                  <Text className="text-base font-semibold">{item.title}</Text>
-                  <Text numberOfLines={2} className="text-muted-foreground">
-                    {item.description}
-                  </Text>
-                  <Text className="font-bold">{item.price} FCFA</Text>
-                  <Text className="text-xs text-muted-foreground">
-                    {item.owner.name} - {item.city || 'Ville N/A'}
-                  </Text>
-                </CardContent>
-              </Card>
-            </Link>
-          ))
+        {/* Products Grid */}
+        {hasProducts ? (
+          <View className="gap-3">
+            <Text className="text-sm font-semibold text-foreground">
+              {data?.length} annonces trouvées
+            </Text>
+
+            <View className="flex-row flex-wrap justify-between gap-2">
+              {data?.map((item) => (
+                <ProductCard
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  price={item.price}
+                  imageUrl={item.imageUrls?.[0]}
+                  ownerName={item.owner.name}
+                  ownerId={item.ownerId}
+                  currentUserId={session?.user?.id}
+                />
+              ))}
+            </View>
+          </View>
         ) : (
-          <Text className="text-muted-foreground">Aucune annonce disponible.</Text>
+          <View className="gap-4 rounded-lg bg-secondary/20 p-6">
+            <Text className="text-center text-lg font-semibold text-foreground">
+              Aucune annonce disponible
+            </Text>
+            <Text className="text-center text-sm text-muted-foreground">
+              Essayez de modifier votre recherche ou revenez plus tard
+            </Text>
+          </View>
+        )}
+
+        {/* Pagination */}
+        {hasProducts && (
+          <View className="flex-row justify-end gap-3 pt-2">
+            <Button
+              variant="outline"
+              size={"iconSm"}
+              disabled={page <= 1}
+              onPress={() => setPage((p) => Math.max(1, p - 1))}
+              className=" rounded-full">
+              <ArrowLeft />
+            </Button>
+
+         {/*   <View className="flex-1 items-center justify-center rounded-md border border-border bg-secondary/30 py-2.5">
+              <Text className="text-sm font-semibold text-foreground">Page {page}</Text>
+            </View>*/}
+
+            <Button
+              variant="outline"
+              size={"iconSm"}
+              disabled={!hasNextPage}
+              onPress={() => setPage((p) => p + 1)}
+              className="rounded-full w-fit px-1">
+                <Text>Plus</Text>
+               <ArrowRight />
+            </Button>
+          </View>
         )}
       </View>
     </ScrollView>

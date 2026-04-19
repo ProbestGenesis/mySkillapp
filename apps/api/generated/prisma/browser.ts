@@ -38,6 +38,11 @@ export type StoreConversation = Prisma.StoreConversationModel
  */
 export type StoreMessage = Prisma.StoreMessageModel
 /**
+ * Model StorePartnerSubscription
+ * 
+ */
+export type StorePartnerSubscription = Prisma.StorePartnerSubscriptionModel
+/**
  * Model Location
  * 
  */

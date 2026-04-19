@@ -46,10 +46,13 @@ model User {
 
   role String?
   rate String?
+  storePartnerUntil DateTime?
+  storePartnerStartedAt DateTime?
   storeItems StoreItem[] @relation("StoreItemOwner")
   storeConversationsAsOwner StoreConversation[] @relation("StoreConversationOwner")
   storeConversationsAsCustomer StoreConversation[] @relation("StoreConversationCustomer")
   storeMessages StoreMessage[]
+  storePartnerSubscriptions StorePartnerSubscription[]
 
   @@unique([email])
   @@map("user")
@@ -61,6 +64,7 @@ model StoreItem {
   title           String
   description     String
   price           Float
+  imageUrls       String[] @default([])
   city            String?
   district        String?
   phoneNumber     String?
@@ -97,12 +101,27 @@ model StoreMessage {
   senderId        String
   content         String
   createdAt       DateTime          @default(now())
+  readAt          DateTime?
+}
+
+model StorePartnerSubscription {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  amountFcfa  Int
+  durationDays Int
+  startsAt    DateTime
+  endsAt      DateTime
+  status      String   @default("PAID")
+  createdAt   DateTime @default(now())
 }
 
 model Location {
   id       String                               @id
   user     User                                 @relation(fields: [userId], references: id)
   userId   String
+  service Service? @relation(fields: [serviceId], references: [id])
+  serviceId String?
   position Unsupported("Geometry(Point,4326)")?
 }
 
@@ -161,6 +180,7 @@ model Service {
   description String
   price       Float?
   location    Json?
+  Location    Location[]
   district    String?
   city        String?
   code        String    @default(nanoid(5)) @unique

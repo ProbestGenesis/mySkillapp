@@ -388,6 +388,7 @@ export const ModelName = {
   StoreItem: 'StoreItem',
   StoreConversation: 'StoreConversation',
   StoreMessage: 'StoreMessage',
+  StorePartnerSubscription: 'StorePartnerSubscription',
   Location: 'Location',
   Provider: 'Provider',
   Post: 'Post',
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "storeItem" | "storeConversation" | "storeMessage" | "location" | "provider" | "post" | "service" | "skills" | "session" | "account" | "verification"
+    modelProps: "user" | "storeItem" | "storeConversation" | "storeMessage" | "storePartnerSubscription" | "location" | "provider" | "post" | "service" | "skills" | "session" | "account" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -708,6 +709,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StoreMessageCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StoreMessageCountAggregateOutputType> | number
+        }
+      }
+    }
+    StorePartnerSubscription: {
+      payload: Prisma.$StorePartnerSubscriptionPayload<ExtArgs>
+      fields: Prisma.StorePartnerSubscriptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StorePartnerSubscriptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StorePartnerSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>
+        }
+        findFirst: {
+          args: Prisma.StorePartnerSubscriptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StorePartnerSubscriptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>
+        }
+        findMany: {
+          args: Prisma.StorePartnerSubscriptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>[]
+        }
+        create: {
+          args: Prisma.StorePartnerSubscriptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>
+        }
+        createMany: {
+          args: Prisma.StorePartnerSubscriptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StorePartnerSubscriptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>[]
+        }
+        delete: {
+          args: Prisma.StorePartnerSubscriptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>
+        }
+        update: {
+          args: Prisma.StorePartnerSubscriptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.StorePartnerSubscriptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StorePartnerSubscriptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StorePartnerSubscriptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.StorePartnerSubscriptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StorePartnerSubscriptionPayload>
+        }
+        aggregate: {
+          args: Prisma.StorePartnerSubscriptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStorePartnerSubscription>
+        }
+        groupBy: {
+          args: Prisma.StorePartnerSubscriptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StorePartnerSubscriptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StorePartnerSubscriptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StorePartnerSubscriptionCountAggregateOutputType> | number
         }
       }
     }
@@ -1355,7 +1430,9 @@ export const UserScalarFieldEnum = {
   phoneNumber: 'phoneNumber',
   phoneNumberVerified: 'phoneNumberVerified',
   role: 'role',
-  rate: 'rate'
+  rate: 'rate',
+  storePartnerUntil: 'storePartnerUntil',
+  storePartnerStartedAt: 'storePartnerStartedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1366,6 +1443,7 @@ export const StoreItemScalarFieldEnum = {
   title: 'title',
   description: 'description',
   price: 'price',
+  imageUrls: 'imageUrls',
   city: 'city',
   district: 'district',
   phoneNumber: 'phoneNumber',
@@ -1397,15 +1475,31 @@ export const StoreMessageScalarFieldEnum = {
   conversationId: 'conversationId',
   senderId: 'senderId',
   content: 'content',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  readAt: 'readAt'
 } as const
 
 export type StoreMessageScalarFieldEnum = (typeof StoreMessageScalarFieldEnum)[keyof typeof StoreMessageScalarFieldEnum]
 
 
+export const StorePartnerSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amountFcfa: 'amountFcfa',
+  durationDays: 'durationDays',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type StorePartnerSubscriptionScalarFieldEnum = (typeof StorePartnerSubscriptionScalarFieldEnum)[keyof typeof StorePartnerSubscriptionScalarFieldEnum]
+
+
 export const LocationScalarFieldEnum = {
   id: 'id',
-  userId: 'userId'
+  userId: 'userId',
+  serviceId: 'serviceId'
 } as const
 
 export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
@@ -1784,6 +1878,7 @@ export type GlobalOmitConfig = {
   storeItem?: Prisma.StoreItemOmit
   storeConversation?: Prisma.StoreConversationOmit
   storeMessage?: Prisma.StoreMessageOmit
+  storePartnerSubscription?: Prisma.StorePartnerSubscriptionOmit
   location?: Prisma.LocationOmit
   provider?: Prisma.ProviderOmit
   post?: Prisma.PostOmit

@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogFooter } from '@/components/ui/dialog';
 import { Star } from 'lucide-react-native';
 import { Text } from '../../text';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { Link } from 'expo-router';
 
 /** Aligné sur `providers.getProvider`. */
 export type ProviderDetail = {
@@ -98,9 +99,16 @@ export function ProviderCard({
               <Button className="rounded-full" variant="outline" onPress={onClose}>
                 <Text>Fermer</Text>
               </Button>
-              <Button className="rounded-full">
+             <Link href={{
+              pathname: "/provider/[providerId]/contact",
+              params: {
+                providerId: provider.id
+              }
+             }} asChild>
+              <Button className="rounded-full" onPress={onClose}>
                 <Text className="text-white">Contacter</Text>
               </Button>
+             </Link>
             </DialogFooter>
           </>
         )}
