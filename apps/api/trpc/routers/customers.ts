@@ -16,6 +16,7 @@ export const customersRouter = t.router({
    * Demandes (`Post`) dont l’auteur a une `Location` proche du point (PostGIS).
    */
   listNearDemands: t.procedure.input(nearDemandsInput).query(async ({ input, ctx }) => {
+    console.log(input)
     const { excludeUserId, service, ...point } = input
 
     const rows = await findNearbyDemandPostIds(ctx.prisma, {
