@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,26 +17,28 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { authClient } from '@/lib/auth-client';
 import { createSerciveDemand } from '@/lib/zodSchema';
+import { useTRPC } from '@/provider/appProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import * as Location from 'expo-location';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { Check, XCircle } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
-import { useTRPC } from '@/provider/appProvider';
-
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
+import { usePreciseLocation } from '@/lib/geolocation';
+import clsx from 'clsx';
 
 type Props = {};
 
 function Contact({}: Props) {
   const { data: session } = authClient.useSession();
-  const trpc = useTRPC()
+  const trpc = useTRPC();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const {  providerId, skillname, price } = useLocalSearchParams();
- 
+  const [selectedSkill, setSelectedSkill]  = useState('')
+  const { providerId, skillname, skillId, offeredPrice } = useLocalSearchParams();
+
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<{
@@ -46,8 +49,16 @@ function Contact({}: Props) {
     message: string;
     status: number | null;
   }>({ message: '', status: 400 });
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+   const { location, error: locationError } = usePreciseLocation();
+
+  const stableLoc = useMemo(() => {
+      if (!location) return null;
+      return {
+        lat: location.latitude,
+        long: location.longitude,
+      };
+  }, [location?.latitude, location?.longitude]);
+  
 
   const closeDialog = () => {
     setDialogIsOpen(false);
@@ -57,34 +68,22 @@ function Contact({}: Props) {
     setDialogIsOpen(true);
   };
 
-  useEffect(() => {
-    async function getCurrentLocation() {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    }
-
-    getCurrentLocation();
-  }, []);
 
   const { data, isPending } = useQuery({
     ...trpc.providers.getProvider.queryOptions({
       id: providerId as string,
     }),
     enabled: !!providerId,
-  })
+  });
 
-  const { mutateAsync: contactProvider, isLoading, error } = useMutation({
+  const { mutateAsync: contactProvider } = useMutation({
     ...trpc.providers.contactProvider.mutationOptions(),
     onSuccess: () => {
-      queryClient.invalidateQueries(trpc.providers.getProvider.queryOptions({id: providerId as string}))
-    }
-  })
+      queryClient.invalidateQueries(
+        trpc.providers.getProvider.queryOptions({ id: providerId as string })
+      );
+    },
+  });
 
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(createSerciveDemand),
@@ -93,13 +92,18 @@ function Contact({}: Props) {
   const onSubmit = async (data: { description: string; district?: string }) => {
     setLoading(true);
     if (!session) return null;
-    const { message, code } = await contactProvider({ providerId: providerId as string, description: data.description})
-    if(code === "SUCCESS"){
-      setSuccess({ message, status: 200 })
-    }else{
-      setError({ message, status: 400 })
+    const { message, code } = await contactProvider({
+      providerId: providerId as string,
+      description: data.description,
+      location: stableLoc as {lat: number, long: number},
+      skillId: selectedSkill,
+    });
+    if (code === 'SUCCESS') {
+      setSuccess({ message, status: 200 });
+    } else {
+      setError({ message, status: 400 });
     }
-    control._reset()
+    control._reset();
   };
 
   if (!session) {
@@ -136,15 +140,33 @@ function Contact({}: Props) {
                       <Text className="text-lg font-bold">{`${data?.user.name}`}</Text>
                       <Text className="text-sm text-gray-500">{data?.profession}</Text>
                     </View>
-                    <View className="flex-row items-center me-2">
+                    <View className="me-2 flex-row items-center">
                       <Text className="mr-1 text-yellow-500">★</Text>
                       <Text className="text-sm font-medium">{data?.rate.toFixed(1)}</Text>
                     </View>
                   </View>
-                  
-                  <View className='items-center w-full'>
-                    <Text className=' text-gray-800 text-sm'>Bio</Text>
-                    <Text className="text-sm max-auto w-fit text-center">{data?.bio}</Text>
+
+                  <View className="w-full items-center">
+                    <Text className="text-sm text-accent">Bio</Text>
+                    <Text className="max-auto w-fit text-center text-sm">{data?.bio}</Text>
+                  </View>
+
+                  <View className="flex flex-col gap-2.5">
+                    <Text className="text-lg text-accent">{`Selectionner une competence`}</Text>
+                    <View className="flex flex-row  flex-wrap gap-2.5">
+                      {data.skills.length > 0 ? (
+                        data?.skills.map((skill) => (
+                          <Badge key={skill.id} variant={selectedSkill === skill.id ? 'default' : 'outline'} >
+                            <Pressable  onPress={() => setSelectedSkill(skill.id)}>
+                              <Text className={clsx("text-xs max-h-8", selectedSkill === skill.id ? "text-white" : "text-black")}>{skill.title.toString()}</Text>
+                            </Pressable>
+                            
+                          </Badge>
+                        ))
+                      ) : (
+                        <Text>Aucune compétence</Text>
+                      )}
+                    </View>
                   </View>
 
                   {/*  <View className="mt-2">
@@ -160,20 +182,18 @@ function Contact({}: Props) {
                     </View>*/}
                 </View>
 
-                <View className=" flex-col gap-8">
-                   {
-                    skillname && (
-                      <View className="flex-col gap-2">
-                    <View className="flex-row flex-wrap items-center gap-0.5">
-                      <Text className="text-muted-foreground text-xl font-bold">Travaux recherché: {skillname}</Text>
-                    </View>
+                <View className="flex-col gap-8">
+                  {skillname && (
+                    <View className="flex-col gap-2">
+                      <View className="flex-row flex-wrap items-center gap-0.5">
+                        <Text className="text-muted-foreground text-xl font-bold">
+                          Travaux recherché: {skillname}
+                        </Text>
+                      </View>
 
-                    <Text className="text-lg">
-                      Prix de base: {price} fcfa
-                    </Text>
-                  </View>
-                    )
-                   } 
+                      <Text className="text-lg">Prix de base: {offeredPrice} fcfa</Text>
+                    </View>
+                  )}
 
                   <Separator />
 
@@ -239,10 +259,6 @@ function Contact({}: Props) {
             <View className="absolute bottom-2 w-full">
               <View className="">
                 <View className="flex-row items-center justify-end gap-2">
-                  <Button size={'lg'} className="rounded-full" variant={'outline'}>
-                    <Text className="text-lg font-bold">Reserver</Text>
-                  </Button>
-
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button size={'lg'} className="rounded-full">
@@ -264,7 +280,7 @@ function Contact({}: Props) {
 
                         {!success.status ? (
                           <DialogDescription>
-                            <Text className="text-lg leading-tight tracking-widest">
+                            <Text className="text-lg ">
                               Votre localisation actuelle sera envoyé au prestataire de service
                             </Text>
                           </DialogDescription>
@@ -303,10 +319,14 @@ function Contact({}: Props) {
                             </DialogClose>
 
                             <Button
-                              className="rounded-full"
+                              className="rounded-full flex-1"
                               disabled={loading}
                               onPress={handleSubmit(onSubmit)}>
-                              { loading? <ActivityIndicator color="white" size={24} />  : <Text className="font-bold text-white">Continue</Text>}
+                              {loading ? (
+                                <ActivityIndicator color="white" size={24} />
+                              ) : (
+                                <Text className="font-bold text-white">Continue</Text>
+                              )}
                             </Button>
                           </View>
                         ) : (

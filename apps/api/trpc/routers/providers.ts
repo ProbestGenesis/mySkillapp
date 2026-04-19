@@ -123,13 +123,20 @@ export const providersRouter = t.router({
     .query(async ({ input, ctx }) => {
       return ctx.prisma.provider.findUnique({
         where: { id: input.id },
-        include: { user: true, skills: true },
+        include: { user: true, skills: {
+          select: {
+            id: true, 
+            title: true,
+            description: true,
+            average_price: true,
+          }
+        } },
       })
     }),
 
   contactProvider: protectedProcedure
     .input(
-      z.object({ providerId: z.string(), skillId: z.string().optional(), description: z.string() })
+      z.object({ providerId: z.string(), skillId: z.string().optional(), description: z.string(), location: z.object({lat: z.number(), long: z.number()}) })
     )
     .mutation(async ({ input, ctx }) => {
       try {
@@ -153,6 +160,7 @@ export const providersRouter = t.router({
                 id: ctx.session!.user.id,
               },
             },
+            location: input.location,
             district: ctx.session!.user.district,
             city: ctx.session!.user.city,
           },

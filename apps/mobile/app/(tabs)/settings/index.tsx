@@ -327,10 +327,7 @@ function SettingScreen({}: Props) {
                 </CardTitle>
 
                 <CardDescription>
-                  <Text>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi et, eveniet atque
-                    aliquid molestiae{' '}
-                  </Text>
+                  <Text>Saisir ou scanner le code de confirmation du service terminé</Text>
                 </CardDescription>
               </CardHeader>
 

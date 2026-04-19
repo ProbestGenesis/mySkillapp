@@ -55,7 +55,7 @@ export function Skills({data, isLoading, session}: Props) {
                                 <View className="mb-1 flex-col gap-2" key={service.id}>
                                   <View className="flex-row items-center gap-0.5">
                                       <Pressable className="flex-col gap-0 p-0.5 rounded-2xl bg-accent " >
-                                        <Text className="text-sm font-semibold">
+                                        <Text className="text-sm font-semibold max-h-8">
                                           {service.title}
                                         </Text>
                                       </Pressable>

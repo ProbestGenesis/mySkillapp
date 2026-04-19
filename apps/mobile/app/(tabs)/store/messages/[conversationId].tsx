@@ -175,17 +175,6 @@ export default function StoreConversationDetailScreen() {
           <Text className="font-bold text-white">Envoyer</Text>
         </Button>
       </View>
-      <View className="flex-row gap-2 pb-2">
-        <Button variant="outline" disabled={page <= 1} onPress={() => setPage((p) => p - 1)}>
-          <Text>Messages récents</Text>
-        </Button>
-        <Button
-          variant="outline"
-          disabled={(data?.messages.length ?? 0) < pageSize}
-          onPress={() => setPage((p) => p + 1)}>
-          <Text>Messages plus anciens</Text>
-        </Button>
-      </View>
     </View>
   )
 }

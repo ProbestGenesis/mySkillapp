@@ -27,16 +27,19 @@ export type AggregateLocation = {
 export type LocationMinAggregateOutputType = {
   id: string | null
   userId: string | null
+  serviceId: string | null
 }
 
 export type LocationMaxAggregateOutputType = {
   id: string | null
   userId: string | null
+  serviceId: string | null
 }
 
 export type LocationCountAggregateOutputType = {
   id: number
   userId: number
+  serviceId: number
   _all: number
 }
 
@@ -44,16 +47,19 @@ export type LocationCountAggregateOutputType = {
 export type LocationMinAggregateInputType = {
   id?: true
   userId?: true
+  serviceId?: true
 }
 
 export type LocationMaxAggregateInputType = {
   id?: true
   userId?: true
+  serviceId?: true
 }
 
 export type LocationCountAggregateInputType = {
   id?: true
   userId?: true
+  serviceId?: true
   _all?: true
 }
 
@@ -132,6 +138,7 @@ export type LocationGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type LocationGroupByOutputType = {
   id: string
   userId: string
+  serviceId: string | null
   _count: LocationCountAggregateOutputType | null
   _min: LocationMinAggregateOutputType | null
   _max: LocationMaxAggregateOutputType | null
@@ -158,13 +165,17 @@ export type LocationWhereInput = {
   NOT?: Prisma.LocationWhereInput | Prisma.LocationWhereInput[]
   id?: Prisma.StringFilter<"Location"> | string
   userId?: Prisma.StringFilter<"Location"> | string
+  serviceId?: Prisma.StringNullableFilter<"Location"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  service?: Prisma.XOR<Prisma.ServiceNullableScalarRelationFilter, Prisma.ServiceWhereInput> | null
 }
 
 export type LocationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  service?: Prisma.ServiceOrderByWithRelationInput
 }
 
 export type LocationWhereUniqueInput = Prisma.AtLeast<{
@@ -173,12 +184,15 @@ export type LocationWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.LocationWhereInput[]
   NOT?: Prisma.LocationWhereInput | Prisma.LocationWhereInput[]
   userId?: Prisma.StringFilter<"Location"> | string
+  serviceId?: Prisma.StringNullableFilter<"Location"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  service?: Prisma.XOR<Prisma.ServiceNullableScalarRelationFilter, Prisma.ServiceWhereInput> | null
 }, "id">
 
 export type LocationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LocationCountOrderByAggregateInput
   _max?: Prisma.LocationMaxOrderByAggregateInput
   _min?: Prisma.LocationMinOrderByAggregateInput
@@ -190,31 +204,37 @@ export type LocationScalarWhereWithAggregatesInput = {
   NOT?: Prisma.LocationScalarWhereWithAggregatesInput | Prisma.LocationScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Location"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Location"> | string
+  serviceId?: Prisma.StringNullableWithAggregatesFilter<"Location"> | string | null
 }
 
 export type LocationCreateInput = {
   id: string
   user: Prisma.UserCreateNestedOneWithoutLocationInput
+  service?: Prisma.ServiceCreateNestedOneWithoutLocationInput
 }
 
 export type LocationUncheckedCreateInput = {
   id: string
   userId: string
+  serviceId?: string | null
 }
 
 export type LocationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutLocationNestedInput
+  service?: Prisma.ServiceUpdateOneWithoutLocationNestedInput
 }
 
 export type LocationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LocationCreateManyInput = {
   id: string
   userId: string
+  serviceId?: string | null
 }
 
 export type LocationUpdateManyMutationInput = {
@@ -224,6 +244,7 @@ export type LocationUpdateManyMutationInput = {
 export type LocationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LocationListRelationFilter = {
@@ -239,16 +260,19 @@ export type LocationOrderByRelationAggregateInput = {
 export type LocationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type LocationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type LocationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  serviceId?: Prisma.SortOrder
 }
 
 export type LocationCreateNestedManyWithoutUserInput = {
@@ -293,12 +317,56 @@ export type LocationUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.LocationScalarWhereInput | Prisma.LocationScalarWhereInput[]
 }
 
+export type LocationCreateNestedManyWithoutServiceInput = {
+  create?: Prisma.XOR<Prisma.LocationCreateWithoutServiceInput, Prisma.LocationUncheckedCreateWithoutServiceInput> | Prisma.LocationCreateWithoutServiceInput[] | Prisma.LocationUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.LocationCreateOrConnectWithoutServiceInput | Prisma.LocationCreateOrConnectWithoutServiceInput[]
+  createMany?: Prisma.LocationCreateManyServiceInputEnvelope
+  connect?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+}
+
+export type LocationUncheckedCreateNestedManyWithoutServiceInput = {
+  create?: Prisma.XOR<Prisma.LocationCreateWithoutServiceInput, Prisma.LocationUncheckedCreateWithoutServiceInput> | Prisma.LocationCreateWithoutServiceInput[] | Prisma.LocationUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.LocationCreateOrConnectWithoutServiceInput | Prisma.LocationCreateOrConnectWithoutServiceInput[]
+  createMany?: Prisma.LocationCreateManyServiceInputEnvelope
+  connect?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+}
+
+export type LocationUpdateManyWithoutServiceNestedInput = {
+  create?: Prisma.XOR<Prisma.LocationCreateWithoutServiceInput, Prisma.LocationUncheckedCreateWithoutServiceInput> | Prisma.LocationCreateWithoutServiceInput[] | Prisma.LocationUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.LocationCreateOrConnectWithoutServiceInput | Prisma.LocationCreateOrConnectWithoutServiceInput[]
+  upsert?: Prisma.LocationUpsertWithWhereUniqueWithoutServiceInput | Prisma.LocationUpsertWithWhereUniqueWithoutServiceInput[]
+  createMany?: Prisma.LocationCreateManyServiceInputEnvelope
+  set?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  disconnect?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  delete?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  connect?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  update?: Prisma.LocationUpdateWithWhereUniqueWithoutServiceInput | Prisma.LocationUpdateWithWhereUniqueWithoutServiceInput[]
+  updateMany?: Prisma.LocationUpdateManyWithWhereWithoutServiceInput | Prisma.LocationUpdateManyWithWhereWithoutServiceInput[]
+  deleteMany?: Prisma.LocationScalarWhereInput | Prisma.LocationScalarWhereInput[]
+}
+
+export type LocationUncheckedUpdateManyWithoutServiceNestedInput = {
+  create?: Prisma.XOR<Prisma.LocationCreateWithoutServiceInput, Prisma.LocationUncheckedCreateWithoutServiceInput> | Prisma.LocationCreateWithoutServiceInput[] | Prisma.LocationUncheckedCreateWithoutServiceInput[]
+  connectOrCreate?: Prisma.LocationCreateOrConnectWithoutServiceInput | Prisma.LocationCreateOrConnectWithoutServiceInput[]
+  upsert?: Prisma.LocationUpsertWithWhereUniqueWithoutServiceInput | Prisma.LocationUpsertWithWhereUniqueWithoutServiceInput[]
+  createMany?: Prisma.LocationCreateManyServiceInputEnvelope
+  set?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  disconnect?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  delete?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  connect?: Prisma.LocationWhereUniqueInput | Prisma.LocationWhereUniqueInput[]
+  update?: Prisma.LocationUpdateWithWhereUniqueWithoutServiceInput | Prisma.LocationUpdateWithWhereUniqueWithoutServiceInput[]
+  updateMany?: Prisma.LocationUpdateManyWithWhereWithoutServiceInput | Prisma.LocationUpdateManyWithWhereWithoutServiceInput[]
+  deleteMany?: Prisma.LocationScalarWhereInput | Prisma.LocationScalarWhereInput[]
+}
+
 export type LocationCreateWithoutUserInput = {
   id: string
+  service?: Prisma.ServiceCreateNestedOneWithoutLocationInput
 }
 
 export type LocationUncheckedCreateWithoutUserInput = {
   id: string
+  serviceId?: string | null
 }
 
 export type LocationCreateOrConnectWithoutUserInput = {
@@ -333,22 +401,83 @@ export type LocationScalarWhereInput = {
   NOT?: Prisma.LocationScalarWhereInput | Prisma.LocationScalarWhereInput[]
   id?: Prisma.StringFilter<"Location"> | string
   userId?: Prisma.StringFilter<"Location"> | string
+  serviceId?: Prisma.StringNullableFilter<"Location"> | string | null
+}
+
+export type LocationCreateWithoutServiceInput = {
+  id: string
+  user: Prisma.UserCreateNestedOneWithoutLocationInput
+}
+
+export type LocationUncheckedCreateWithoutServiceInput = {
+  id: string
+  userId: string
+}
+
+export type LocationCreateOrConnectWithoutServiceInput = {
+  where: Prisma.LocationWhereUniqueInput
+  create: Prisma.XOR<Prisma.LocationCreateWithoutServiceInput, Prisma.LocationUncheckedCreateWithoutServiceInput>
+}
+
+export type LocationCreateManyServiceInputEnvelope = {
+  data: Prisma.LocationCreateManyServiceInput | Prisma.LocationCreateManyServiceInput[]
+  skipDuplicates?: boolean
+}
+
+export type LocationUpsertWithWhereUniqueWithoutServiceInput = {
+  where: Prisma.LocationWhereUniqueInput
+  update: Prisma.XOR<Prisma.LocationUpdateWithoutServiceInput, Prisma.LocationUncheckedUpdateWithoutServiceInput>
+  create: Prisma.XOR<Prisma.LocationCreateWithoutServiceInput, Prisma.LocationUncheckedCreateWithoutServiceInput>
+}
+
+export type LocationUpdateWithWhereUniqueWithoutServiceInput = {
+  where: Prisma.LocationWhereUniqueInput
+  data: Prisma.XOR<Prisma.LocationUpdateWithoutServiceInput, Prisma.LocationUncheckedUpdateWithoutServiceInput>
+}
+
+export type LocationUpdateManyWithWhereWithoutServiceInput = {
+  where: Prisma.LocationScalarWhereInput
+  data: Prisma.XOR<Prisma.LocationUpdateManyMutationInput, Prisma.LocationUncheckedUpdateManyWithoutServiceInput>
 }
 
 export type LocationCreateManyUserInput = {
   id: string
+  serviceId?: string | null
 }
 
 export type LocationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  service?: Prisma.ServiceUpdateOneWithoutLocationNestedInput
 }
 
 export type LocationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LocationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type LocationCreateManyServiceInput = {
+  id: string
+  userId: string
+}
+
+export type LocationUpdateWithoutServiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutLocationNestedInput
+}
+
+export type LocationUncheckedUpdateWithoutServiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type LocationUncheckedUpdateManyWithoutServiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -356,45 +485,57 @@ export type LocationUncheckedUpdateManyWithoutUserInput = {
 export type LocationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  serviceId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.Location$serviceArgs<ExtArgs>
 }, ExtArgs["result"]["location"]>
 
 export type LocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  serviceId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.Location$serviceArgs<ExtArgs>
 }, ExtArgs["result"]["location"]>
 
 export type LocationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  serviceId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.Location$serviceArgs<ExtArgs>
 }, ExtArgs["result"]["location"]>
 
 export type LocationSelectScalar = {
   id?: boolean
   userId?: boolean
+  serviceId?: boolean
 }
 
-export type LocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId", ExtArgs["result"]["location"]>
+export type LocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "serviceId", ExtArgs["result"]["location"]>
 export type LocationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.Location$serviceArgs<ExtArgs>
 }
 export type LocationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.Location$serviceArgs<ExtArgs>
 }
 export type LocationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  service?: boolean | Prisma.Location$serviceArgs<ExtArgs>
 }
 
 export type $LocationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Location"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    service: Prisma.$ServicePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
+    serviceId: string | null
   }, ExtArgs["result"]["location"]>
   composites: {}
 }
@@ -790,6 +931,7 @@ readonly fields: LocationFieldRefs;
 export interface Prisma__LocationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  service<T extends Prisma.Location$serviceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Location$serviceArgs<ExtArgs>>): Prisma.Prisma__ServiceClient<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -821,6 +963,7 @@ export interface Prisma__LocationClient<T, Null = never, ExtArgs extends runtime
 export interface LocationFieldRefs {
   readonly id: Prisma.FieldRef<"Location", 'String'>
   readonly userId: Prisma.FieldRef<"Location", 'String'>
+  readonly serviceId: Prisma.FieldRef<"Location", 'String'>
 }
     
 
@@ -1219,6 +1362,25 @@ export type LocationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Locations to delete.
    */
   limit?: number
+}
+
+/**
+ * Location.service
+ */
+export type Location$serviceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Service
+   */
+  select?: Prisma.ServiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Service
+   */
+  omit?: Prisma.ServiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServiceInclude<ExtArgs> | null
+  where?: Prisma.ServiceWhereInput
 }
 
 /**

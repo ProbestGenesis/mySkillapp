@@ -5,7 +5,7 @@ function ProviderLayout({}: Props) {
   return (
       <Stack>
         <Stack.Screen
-          name="contact"
+          name="contact/index"
           options={{
             title: 'Contacter',
           }}

@@ -1,59 +1,38 @@
-import { Provider, Skills, User } from '@/prisma/generated/prisma';
-import clsx from 'clsx';
-import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
-import { UserIcon, Star } from 'lucide-react-native';
-import { Link, useRouter } from 'expo-router';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardFooter,
-  CardDescription,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTRPC } from '@/provider/appProvider';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
+import { useRouter } from 'expo-router';
 import {
   BriefcaseBusiness,
   Calendar,
   HandCoins,
-  LogOut,
   MapPin,
   MessageCircleQuestion,
-  Pencil,
   Phone,
-  QrCode,
-  ServerIcon,
-  Settings,
-  UserCheck,
+  Star,
 } from 'lucide-react-native';
-import { fetchProviderdata } from '@/lib/fetching/home';
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
+
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { useLocalSearchParams } from 'expo-router';
 
 type Props = {};
-type ProviderData = Provider & { user: User; skills: Skills[] };
+
 function Profil({}: Props) {
   const queryClient = useQueryClient();
   const { providerId } = useLocalSearchParams();
   const router = useRouter();
+  const trpc = useTRPC();
+  const { data, isLoading, isPending } = useQuery({
+    ...trpc.providers.getProvider.queryOptions({ id: providerId as string }),
+    enabled: !!providerId,
+  });
 
-    const { data, isPending } = useQuery({
-      queryKey: ['provider', providerId],
-      queryFn: () => fetchProviderdata(providerId as string),
-    })
-
-  if (isPending) {
-    return (
-      <View className="w-full flex-1 flex-row items-center justify-center">
-        <ActivityIndicator size={48} color="organge" />
-      </View>
-    );
-  }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View className="flex-1 flex-col gap-6 px-2 pb-6">
@@ -70,15 +49,15 @@ function Profil({}: Props) {
             </View>
 */}
             <View className="flex-row gap-2">
-                <Avatar alt="user profil" className="h-24 w-24">
-                  <AvatarImage
-                    //@ts-ignore
-                    source={{ uri: data?.user?.image }}
-                  />
-                  <AvatarFallback>
-                    <Text>Bn </Text>
-                  </AvatarFallback>
-                </Avatar>
+              <Avatar alt="user profil" className="h-24 w-24">
+                <AvatarImage
+                  //@ts-ignore
+                  source={{ uri: data?.user?.image }}
+                />
+                <AvatarFallback>
+                  <Text>Bn </Text>
+                </AvatarFallback>
+              </Avatar>
               <View className="flex-col gap-0.5">
                 <Text className="text-xl font-bold">{data?.user?.name}</Text>
 
@@ -226,7 +205,7 @@ function Profil({}: Props) {
                   <Pressable
                     onPress={() => {
                       router.push({
-                        pathname: '/(tabs)/(home)/(provider)/[providerId]/services/[skillId]',
+                        pathname: "/settings/skills",
                         params: {
                           providerId: data.id,
                           skillId: item.id,

@@ -71,6 +71,7 @@ export type StoreItemCountAggregateOutputType = {
   title: number
   description: number
   price: number
+  imageUrls: number
   city: number
   district: number
   phoneNumber: number
@@ -129,6 +130,7 @@ export type StoreItemCountAggregateInputType = {
   title?: true
   description?: true
   price?: true
+  imageUrls?: true
   city?: true
   district?: true
   phoneNumber?: true
@@ -232,6 +234,7 @@ export type StoreItemGroupByOutputType = {
   title: string
   description: string
   price: number
+  imageUrls: string[]
   city: string | null
   district: string | null
   phoneNumber: string | null
@@ -271,6 +274,7 @@ export type StoreItemWhereInput = {
   title?: Prisma.StringFilter<"StoreItem"> | string
   description?: Prisma.StringFilter<"StoreItem"> | string
   price?: Prisma.FloatFilter<"StoreItem"> | number
+  imageUrls?: Prisma.StringNullableListFilter<"StoreItem">
   city?: Prisma.StringNullableFilter<"StoreItem"> | string | null
   district?: Prisma.StringNullableFilter<"StoreItem"> | string | null
   phoneNumber?: Prisma.StringNullableFilter<"StoreItem"> | string | null
@@ -289,6 +293,7 @@ export type StoreItemOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  imageUrls?: Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -310,6 +315,7 @@ export type StoreItemWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"StoreItem"> | string
   description?: Prisma.StringFilter<"StoreItem"> | string
   price?: Prisma.FloatFilter<"StoreItem"> | number
+  imageUrls?: Prisma.StringNullableListFilter<"StoreItem">
   city?: Prisma.StringNullableFilter<"StoreItem"> | string | null
   district?: Prisma.StringNullableFilter<"StoreItem"> | string | null
   phoneNumber?: Prisma.StringNullableFilter<"StoreItem"> | string | null
@@ -328,6 +334,7 @@ export type StoreItemOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  imageUrls?: Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -352,6 +359,7 @@ export type StoreItemScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"StoreItem"> | string
   description?: Prisma.StringWithAggregatesFilter<"StoreItem"> | string
   price?: Prisma.FloatWithAggregatesFilter<"StoreItem"> | number
+  imageUrls?: Prisma.StringNullableListFilter<"StoreItem">
   city?: Prisma.StringNullableWithAggregatesFilter<"StoreItem"> | string | null
   district?: Prisma.StringNullableWithAggregatesFilter<"StoreItem"> | string | null
   phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"StoreItem"> | string | null
@@ -368,6 +376,7 @@ export type StoreItemCreateInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -385,6 +394,7 @@ export type StoreItemUncheckedCreateInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -402,6 +412,7 @@ export type StoreItemUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -419,6 +430,7 @@ export type StoreItemUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -436,6 +448,7 @@ export type StoreItemCreateManyInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -452,6 +465,7 @@ export type StoreItemUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -467,6 +481,7 @@ export type StoreItemUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -488,11 +503,20 @@ export type StoreItemOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type StoreItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  imageUrls?: Prisma.SortOrder
   city?: Prisma.SortOrder
   district?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
@@ -591,12 +615,21 @@ export type StoreItemUncheckedUpdateManyWithoutOwnerNestedInput = {
   deleteMany?: Prisma.StoreItemScalarWhereInput | Prisma.StoreItemScalarWhereInput[]
 }
 
+export type StoreItemCreateimageUrlsInput = {
+  set: string[]
+}
+
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type StoreItemUpdateimageUrlsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type StoreItemCreateNestedOneWithoutConversationsInput = {
@@ -618,6 +651,7 @@ export type StoreItemCreateWithoutOwnerInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -634,6 +668,7 @@ export type StoreItemUncheckedCreateWithoutOwnerInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -679,6 +714,7 @@ export type StoreItemScalarWhereInput = {
   title?: Prisma.StringFilter<"StoreItem"> | string
   description?: Prisma.StringFilter<"StoreItem"> | string
   price?: Prisma.FloatFilter<"StoreItem"> | number
+  imageUrls?: Prisma.StringNullableListFilter<"StoreItem">
   city?: Prisma.StringNullableFilter<"StoreItem"> | string | null
   district?: Prisma.StringNullableFilter<"StoreItem"> | string | null
   phoneNumber?: Prisma.StringNullableFilter<"StoreItem"> | string | null
@@ -695,6 +731,7 @@ export type StoreItemCreateWithoutConversationsInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -711,6 +748,7 @@ export type StoreItemUncheckedCreateWithoutConversationsInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -743,6 +781,7 @@ export type StoreItemUpdateWithoutConversationsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -759,6 +798,7 @@ export type StoreItemUncheckedUpdateWithoutConversationsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -775,6 +815,7 @@ export type StoreItemCreateManyOwnerInput = {
   title: string
   description: string
   price: number
+  imageUrls?: Prisma.StoreItemCreateimageUrlsInput | string[]
   city?: string | null
   district?: string | null
   phoneNumber?: string | null
@@ -790,6 +831,7 @@ export type StoreItemUpdateWithoutOwnerInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -806,6 +848,7 @@ export type StoreItemUncheckedUpdateWithoutOwnerInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -822,6 +865,7 @@ export type StoreItemUncheckedUpdateManyWithoutOwnerInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.FloatFieldUpdateOperationsInput | number
+  imageUrls?: Prisma.StoreItemUpdateimageUrlsInput | string[]
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -868,6 +912,7 @@ export type StoreItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   title?: boolean
   description?: boolean
   price?: boolean
+  imageUrls?: boolean
   city?: boolean
   district?: boolean
   phoneNumber?: boolean
@@ -887,6 +932,7 @@ export type StoreItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   title?: boolean
   description?: boolean
   price?: boolean
+  imageUrls?: boolean
   city?: boolean
   district?: boolean
   phoneNumber?: boolean
@@ -904,6 +950,7 @@ export type StoreItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   title?: boolean
   description?: boolean
   price?: boolean
+  imageUrls?: boolean
   city?: boolean
   district?: boolean
   phoneNumber?: boolean
@@ -921,6 +968,7 @@ export type StoreItemSelectScalar = {
   title?: boolean
   description?: boolean
   price?: boolean
+  imageUrls?: boolean
   city?: boolean
   district?: boolean
   phoneNumber?: boolean
@@ -932,7 +980,7 @@ export type StoreItemSelectScalar = {
   updatedAt?: boolean
 }
 
-export type StoreItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "price" | "city" | "district" | "phoneNumber" | "whatsappNumber" | "contactEmail" | "isActive" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["storeItem"]>
+export type StoreItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "price" | "imageUrls" | "city" | "district" | "phoneNumber" | "whatsappNumber" | "contactEmail" | "isActive" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["storeItem"]>
 export type StoreItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   conversations?: boolean | Prisma.StoreItem$conversationsArgs<ExtArgs>
@@ -956,6 +1004,7 @@ export type $StoreItemPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     title: string
     description: string
     price: number
+    imageUrls: string[]
     city: string | null
     district: string | null
     phoneNumber: string | null
@@ -1394,6 +1443,7 @@ export interface StoreItemFieldRefs {
   readonly title: Prisma.FieldRef<"StoreItem", 'String'>
   readonly description: Prisma.FieldRef<"StoreItem", 'String'>
   readonly price: Prisma.FieldRef<"StoreItem", 'Float'>
+  readonly imageUrls: Prisma.FieldRef<"StoreItem", 'String[]'>
   readonly city: Prisma.FieldRef<"StoreItem", 'String'>
   readonly district: Prisma.FieldRef<"StoreItem", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"StoreItem", 'String'>

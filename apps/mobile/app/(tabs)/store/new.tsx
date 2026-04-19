@@ -4,9 +4,20 @@ import { Textarea } from '@/components/ui/textarea'
 import { authClient } from '@/lib/auth-client'
 import { useTRPC } from '@/provider/appProvider'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import * as ImagePicker from 'expo-image-picker'
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native'
+
+const MAX_IMAGES = 8
 
 export default function StoreNewScreen() {
   const { data: session } = authClient.useSession()
@@ -22,7 +33,11 @@ export default function StoreNewScreen() {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [whatsappNumber, setWhatsappNumber] = useState('')
   const [contactEmail, setContactEmail] = useState('')
+  const [imageUrls, setImageUrls] = useState<string[]>([])
+  const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
+
+  const uploadMutation = useMutation(trpc.store.uploadStoreItemImage.mutationOptions())
 
   const createMutation = useMutation(
     trpc.store.createItem.mutationOptions({
@@ -33,6 +48,51 @@ export default function StoreNewScreen() {
       },
     })
   )
+
+  const pickImages = async () => {
+    if (imageUrls.length >= MAX_IMAGES) {
+      Alert.alert('Limite', `Maximum ${MAX_IMAGES} images.`)
+      return
+    }
+    const perm = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    if (!perm.granted) {
+      Alert.alert('Permission', "L'accès à la galerie est nécessaire.")
+      return
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsMultipleSelection: true,
+      quality: 0.75,
+      base64: true,
+      selectionLimit: MAX_IMAGES - imageUrls.length,
+    })
+    if (result.canceled || !result.assets.length) return
+
+    setUploading(true)
+    setError('')
+    try {
+      const newUrls: string[] = [...imageUrls]
+      for (const asset of result.assets) {
+        if (newUrls.length >= MAX_IMAGES) break
+        if (!asset.base64) continue
+        const { imageUrl } = await uploadMutation.mutateAsync({
+          base64: asset.base64,
+          mimeType: asset.mimeType || 'image/jpeg',
+          fileName: asset.fileName || 'store.jpg',
+        })
+        newUrls.push(imageUrl)
+      }
+      setImageUrls(newUrls)
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Échec upload image')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const removeImage = (url: string) => {
+    setImageUrls((prev) => prev.filter((u) => u !== url))
+  }
 
   const onSubmit = () => {
     setError('')
@@ -45,6 +105,7 @@ export default function StoreNewScreen() {
       title,
       description,
       price: parsedPrice,
+      imageUrls,
       city: city || undefined,
       district: district || undefined,
       phoneNumber: phoneNumber || undefined,
@@ -72,6 +133,28 @@ export default function StoreNewScreen() {
         <Input placeholder="Prix (FCFA)" value={price} onChangeText={setPrice} keyboardType="numeric" />
         <Input placeholder="Ville (optionnel)" value={city} onChangeText={setCity} />
         <Input placeholder="Quartier (optionnel)" value={district} onChangeText={setDistrict} />
+
+        <Text className="text-base font-semibold">Photos ({imageUrls.length}/{MAX_IMAGES})</Text>
+        <Button variant="outline" onPress={pickImages} disabled={uploading || imageUrls.length >= MAX_IMAGES}>
+          {uploading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text>Ajouter des photos</Text>
+          )}
+        </Button>
+        <View className="flex-row flex-wrap gap-2">
+          {imageUrls.map((url) => (
+            <View key={url} className="relative">
+              <Image source={{ uri: url }} style={{ width: 88, height: 88, borderRadius: 8 }} />
+              <Pressable
+                onPress={() => removeImage(url)}
+                className="absolute -right-1 -top-1 rounded-full bg-destructive px-1.5 py-0.5">
+                <Text className="text-[10px] font-bold text-white">×</Text>
+              </Pressable>
+            </View>
+          ))}
+        </View>
+
         <Text className="text-base font-semibold">Options de contact annonceur</Text>
         <Input placeholder="Téléphone" value={phoneNumber} onChangeText={setPhoneNumber} />
         <Input placeholder="WhatsApp" value={whatsappNumber} onChangeText={setWhatsappNumber} />
@@ -82,7 +165,7 @@ export default function StoreNewScreen() {
           <Text className="text-destructive">{createMutation.error?.message}</Text>
         ) : null}
 
-        <Button onPress={onSubmit} disabled={createMutation.isPending}>
+        <Button onPress={onSubmit} disabled={createMutation.isPending || uploading}>
           {createMutation.isPending ? (
             <ActivityIndicator color="white" />
           ) : (

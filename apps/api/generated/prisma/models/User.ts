@@ -38,6 +38,8 @@ export type UserMinAggregateOutputType = {
   phoneNumberVerified: boolean | null
   role: string | null
   rate: string | null
+  storePartnerUntil: Date | null
+  storePartnerStartedAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -54,6 +56,8 @@ export type UserMaxAggregateOutputType = {
   phoneNumberVerified: boolean | null
   role: string | null
   rate: string | null
+  storePartnerUntil: Date | null
+  storePartnerStartedAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -70,6 +74,8 @@ export type UserCountAggregateOutputType = {
   phoneNumberVerified: number
   role: number
   rate: number
+  storePartnerUntil: number
+  storePartnerStartedAt: number
   _all: number
 }
 
@@ -88,6 +94,8 @@ export type UserMinAggregateInputType = {
   phoneNumberVerified?: true
   role?: true
   rate?: true
+  storePartnerUntil?: true
+  storePartnerStartedAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -104,6 +112,8 @@ export type UserMaxAggregateInputType = {
   phoneNumberVerified?: true
   role?: true
   rate?: true
+  storePartnerUntil?: true
+  storePartnerStartedAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -120,6 +130,8 @@ export type UserCountAggregateInputType = {
   phoneNumberVerified?: true
   role?: true
   rate?: true
+  storePartnerUntil?: true
+  storePartnerStartedAt?: true
   _all?: true
 }
 
@@ -209,6 +221,8 @@ export type UserGroupByOutputType = {
   phoneNumberVerified: boolean | null
   role: string | null
   rate: string | null
+  storePartnerUntil: Date | null
+  storePartnerStartedAt: Date | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -246,6 +260,8 @@ export type UserWhereInput = {
   phoneNumberVerified?: Prisma.BoolNullableFilter<"User"> | boolean | null
   role?: Prisma.StringNullableFilter<"User"> | string | null
   rate?: Prisma.StringNullableFilter<"User"> | string | null
+  storePartnerUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  storePartnerStartedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   Location?: Prisma.LocationListRelationFilter
@@ -257,6 +273,7 @@ export type UserWhereInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationListRelationFilter
   storeConversationsAsCustomer?: Prisma.StoreConversationListRelationFilter
   storeMessages?: Prisma.StoreMessageListRelationFilter
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -273,6 +290,8 @@ export type UserOrderByWithRelationInput = {
   phoneNumberVerified?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
   rate?: Prisma.SortOrderInput | Prisma.SortOrder
+  storePartnerUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  storePartnerStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   Location?: Prisma.LocationOrderByRelationAggregateInput
@@ -284,6 +303,7 @@ export type UserOrderByWithRelationInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationOrderByRelationAggregateInput
   storeConversationsAsCustomer?: Prisma.StoreConversationOrderByRelationAggregateInput
   storeMessages?: Prisma.StoreMessageOrderByRelationAggregateInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -303,6 +323,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   phoneNumberVerified?: Prisma.BoolNullableFilter<"User"> | boolean | null
   role?: Prisma.StringNullableFilter<"User"> | string | null
   rate?: Prisma.StringNullableFilter<"User"> | string | null
+  storePartnerUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  storePartnerStartedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   Location?: Prisma.LocationListRelationFilter
@@ -314,6 +336,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   storeConversationsAsOwner?: Prisma.StoreConversationListRelationFilter
   storeConversationsAsCustomer?: Prisma.StoreConversationListRelationFilter
   storeMessages?: Prisma.StoreMessageListRelationFilter
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionListRelationFilter
 }, "id" | "email" | "phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
@@ -330,6 +353,8 @@ export type UserOrderByWithAggregationInput = {
   phoneNumberVerified?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
   rate?: Prisma.SortOrderInput | Prisma.SortOrder
+  storePartnerUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  storePartnerStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -352,6 +377,8 @@ export type UserScalarWhereWithAggregatesInput = {
   phoneNumberVerified?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
   role?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   rate?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  storePartnerUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  storePartnerStartedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -368,6 +395,8 @@ export type UserCreateInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -379,6 +408,7 @@ export type UserCreateInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -395,6 +425,8 @@ export type UserUncheckedCreateInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -406,6 +438,7 @@ export type UserUncheckedCreateInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -422,6 +455,8 @@ export type UserUpdateInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -433,6 +468,7 @@ export type UserUpdateInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -449,6 +485,8 @@ export type UserUncheckedUpdateInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -460,6 +498,7 @@ export type UserUncheckedUpdateInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -476,6 +515,8 @@ export type UserCreateManyInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -492,6 +533,8 @@ export type UserUpdateManyMutationInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -508,6 +551,8 @@ export type UserUncheckedUpdateManyInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -524,6 +569,8 @@ export type UserCountOrderByAggregateInput = {
   phoneNumberVerified?: Prisma.SortOrder
   role?: Prisma.SortOrder
   rate?: Prisma.SortOrder
+  storePartnerUntil?: Prisma.SortOrder
+  storePartnerStartedAt?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -540,6 +587,8 @@ export type UserMaxOrderByAggregateInput = {
   phoneNumberVerified?: Prisma.SortOrder
   role?: Prisma.SortOrder
   rate?: Prisma.SortOrder
+  storePartnerUntil?: Prisma.SortOrder
+  storePartnerStartedAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -556,6 +605,8 @@ export type UserMinOrderByAggregateInput = {
   phoneNumberVerified?: Prisma.SortOrder
   role?: Prisma.SortOrder
   rate?: Prisma.SortOrder
+  storePartnerUntil?: Prisma.SortOrder
+  storePartnerStartedAt?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -591,6 +642,10 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type UserCreateNestedOneWithoutStoreItemsInput = {
@@ -647,6 +702,20 @@ export type UserUpdateOneRequiredWithoutStoreMessagesNestedInput = {
   upsert?: Prisma.UserUpsertWithoutStoreMessagesInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoreMessagesInput, Prisma.UserUpdateWithoutStoreMessagesInput>, Prisma.UserUncheckedUpdateWithoutStoreMessagesInput>
+}
+
+export type UserCreateNestedOneWithoutStorePartnerSubscriptionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStorePartnerSubscriptionsInput, Prisma.UserUncheckedCreateWithoutStorePartnerSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStorePartnerSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStorePartnerSubscriptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStorePartnerSubscriptionsInput, Prisma.UserUncheckedCreateWithoutStorePartnerSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStorePartnerSubscriptionsInput
+  upsert?: Prisma.UserUpsertWithoutStorePartnerSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStorePartnerSubscriptionsInput, Prisma.UserUpdateWithoutStorePartnerSubscriptionsInput>, Prisma.UserUncheckedUpdateWithoutStorePartnerSubscriptionsInput>
 }
 
 export type UserCreateNestedOneWithoutLocationInput = {
@@ -785,6 +854,8 @@ export type UserCreateWithoutStoreItemsInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -795,6 +866,7 @@ export type UserCreateWithoutStoreItemsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoreItemsInput = {
@@ -811,6 +883,8 @@ export type UserUncheckedCreateWithoutStoreItemsInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -821,6 +895,7 @@ export type UserUncheckedCreateWithoutStoreItemsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoreItemsInput = {
@@ -853,6 +928,8 @@ export type UserUpdateWithoutStoreItemsInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -863,6 +940,7 @@ export type UserUpdateWithoutStoreItemsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoreItemsInput = {
@@ -879,6 +957,8 @@ export type UserUncheckedUpdateWithoutStoreItemsInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -889,6 +969,7 @@ export type UserUncheckedUpdateWithoutStoreItemsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStoreConversationsAsOwnerInput = {
@@ -905,6 +986,8 @@ export type UserCreateWithoutStoreConversationsAsOwnerInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -915,6 +998,7 @@ export type UserCreateWithoutStoreConversationsAsOwnerInput = {
   storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoreConversationsAsOwnerInput = {
@@ -931,6 +1015,8 @@ export type UserUncheckedCreateWithoutStoreConversationsAsOwnerInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -941,6 +1027,7 @@ export type UserUncheckedCreateWithoutStoreConversationsAsOwnerInput = {
   storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoreConversationsAsOwnerInput = {
@@ -962,6 +1049,8 @@ export type UserCreateWithoutStoreConversationsAsCustomerInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -972,6 +1061,7 @@ export type UserCreateWithoutStoreConversationsAsCustomerInput = {
   storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoreConversationsAsCustomerInput = {
@@ -988,6 +1078,8 @@ export type UserUncheckedCreateWithoutStoreConversationsAsCustomerInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -998,6 +1090,7 @@ export type UserUncheckedCreateWithoutStoreConversationsAsCustomerInput = {
   storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoreConversationsAsCustomerInput = {
@@ -1030,6 +1123,8 @@ export type UserUpdateWithoutStoreConversationsAsOwnerInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -1040,6 +1135,7 @@ export type UserUpdateWithoutStoreConversationsAsOwnerInput = {
   storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoreConversationsAsOwnerInput = {
@@ -1056,6 +1152,8 @@ export type UserUncheckedUpdateWithoutStoreConversationsAsOwnerInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -1066,6 +1164,7 @@ export type UserUncheckedUpdateWithoutStoreConversationsAsOwnerInput = {
   storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutStoreConversationsAsCustomerInput = {
@@ -1093,6 +1192,8 @@ export type UserUpdateWithoutStoreConversationsAsCustomerInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -1103,6 +1204,7 @@ export type UserUpdateWithoutStoreConversationsAsCustomerInput = {
   storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoreConversationsAsCustomerInput = {
@@ -1119,6 +1221,8 @@ export type UserUncheckedUpdateWithoutStoreConversationsAsCustomerInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -1129,6 +1233,7 @@ export type UserUncheckedUpdateWithoutStoreConversationsAsCustomerInput = {
   storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStoreMessagesInput = {
@@ -1145,6 +1250,8 @@ export type UserCreateWithoutStoreMessagesInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -1155,6 +1262,7 @@ export type UserCreateWithoutStoreMessagesInput = {
   storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoreMessagesInput = {
@@ -1171,6 +1279,8 @@ export type UserUncheckedCreateWithoutStoreMessagesInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -1181,6 +1291,7 @@ export type UserUncheckedCreateWithoutStoreMessagesInput = {
   storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoreMessagesInput = {
@@ -1213,6 +1324,8 @@ export type UserUpdateWithoutStoreMessagesInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -1223,6 +1336,7 @@ export type UserUpdateWithoutStoreMessagesInput = {
   storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoreMessagesInput = {
@@ -1239,6 +1353,8 @@ export type UserUncheckedUpdateWithoutStoreMessagesInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -1249,6 +1365,139 @@ export type UserUncheckedUpdateWithoutStoreMessagesInput = {
   storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutStorePartnerSubscriptionsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationCreateNestedManyWithoutUserInput
+  post?: Prisma.PostCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutStorePartnerSubscriptionsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  city?: string | null
+  district?: string | null
+  phoneNumber?: string | null
+  phoneNumberVerified?: boolean | null
+  role?: string | null
+  rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  postViewed?: Prisma.PostUncheckedCreateNestedManyWithoutViewedByInput
+  provider?: Prisma.ProviderUncheckedCreateNestedOneWithoutUserInput
+  customer?: Prisma.ServiceUncheckedCreateNestedManyWithoutCustomerInput
+  storeItems?: Prisma.StoreItemUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
+  storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutStorePartnerSubscriptionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStorePartnerSubscriptionsInput, Prisma.UserUncheckedCreateWithoutStorePartnerSubscriptionsInput>
+}
+
+export type UserUpsertWithoutStorePartnerSubscriptionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStorePartnerSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutStorePartnerSubscriptionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStorePartnerSubscriptionsInput, Prisma.UserUncheckedCreateWithoutStorePartnerSubscriptionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStorePartnerSubscriptionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStorePartnerSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutStorePartnerSubscriptionsInput>
+}
+
+export type UserUpdateWithoutStorePartnerSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStorePartnerSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  postViewed?: Prisma.PostUncheckedUpdateManyWithoutViewedByNestedInput
+  provider?: Prisma.ProviderUncheckedUpdateOneWithoutUserNestedInput
+  customer?: Prisma.ServiceUncheckedUpdateManyWithoutCustomerNestedInput
+  storeItems?: Prisma.StoreItemUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
+  storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutLocationInput = {
@@ -1265,6 +1514,8 @@ export type UserCreateWithoutLocationInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
@@ -1275,6 +1526,7 @@ export type UserCreateWithoutLocationInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLocationInput = {
@@ -1291,6 +1543,8 @@ export type UserUncheckedCreateWithoutLocationInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
@@ -1301,6 +1555,7 @@ export type UserUncheckedCreateWithoutLocationInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLocationInput = {
@@ -1333,6 +1588,8 @@ export type UserUpdateWithoutLocationInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
@@ -1343,6 +1600,7 @@ export type UserUpdateWithoutLocationInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLocationInput = {
@@ -1359,6 +1617,8 @@ export type UserUncheckedUpdateWithoutLocationInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
@@ -1369,6 +1629,7 @@ export type UserUncheckedUpdateWithoutLocationInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProviderInput = {
@@ -1385,6 +1646,8 @@ export type UserCreateWithoutProviderInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -1395,6 +1658,7 @@ export type UserCreateWithoutProviderInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProviderInput = {
@@ -1411,6 +1675,8 @@ export type UserUncheckedCreateWithoutProviderInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -1421,6 +1687,7 @@ export type UserUncheckedCreateWithoutProviderInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProviderInput = {
@@ -1453,6 +1720,8 @@ export type UserUpdateWithoutProviderInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -1463,6 +1732,7 @@ export type UserUpdateWithoutProviderInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProviderInput = {
@@ -1479,6 +1749,8 @@ export type UserUncheckedUpdateWithoutProviderInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -1489,6 +1761,7 @@ export type UserUncheckedUpdateWithoutProviderInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPostInput = {
@@ -1505,6 +1778,8 @@ export type UserCreateWithoutPostInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -1515,6 +1790,7 @@ export type UserCreateWithoutPostInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostInput = {
@@ -1531,6 +1807,8 @@ export type UserUncheckedCreateWithoutPostInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -1541,6 +1819,7 @@ export type UserUncheckedCreateWithoutPostInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostInput = {
@@ -1562,6 +1841,8 @@ export type UserCreateWithoutPostViewedInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -1572,6 +1853,7 @@ export type UserCreateWithoutPostViewedInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostViewedInput = {
@@ -1588,6 +1870,8 @@ export type UserUncheckedCreateWithoutPostViewedInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -1598,6 +1882,7 @@ export type UserUncheckedCreateWithoutPostViewedInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostViewedInput = {
@@ -1630,6 +1915,8 @@ export type UserUpdateWithoutPostInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -1640,6 +1927,7 @@ export type UserUpdateWithoutPostInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostInput = {
@@ -1656,6 +1944,8 @@ export type UserUncheckedUpdateWithoutPostInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -1666,6 +1956,7 @@ export type UserUncheckedUpdateWithoutPostInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutPostViewedInput = {
@@ -1701,6 +1992,8 @@ export type UserScalarWhereInput = {
   phoneNumberVerified?: Prisma.BoolNullableFilter<"User"> | boolean | null
   role?: Prisma.StringNullableFilter<"User"> | string | null
   rate?: Prisma.StringNullableFilter<"User"> | string | null
+  storePartnerUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  storePartnerStartedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
 }
 
 export type UserCreateWithoutCustomerInput = {
@@ -1717,6 +2010,8 @@ export type UserCreateWithoutCustomerInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
@@ -1727,6 +2022,7 @@ export type UserCreateWithoutCustomerInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCustomerInput = {
@@ -1743,6 +2039,8 @@ export type UserUncheckedCreateWithoutCustomerInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
@@ -1753,6 +2051,7 @@ export type UserUncheckedCreateWithoutCustomerInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCustomerInput = {
@@ -1785,6 +2084,8 @@ export type UserUpdateWithoutCustomerInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -1795,6 +2096,7 @@ export type UserUpdateWithoutCustomerInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCustomerInput = {
@@ -1811,6 +2113,8 @@ export type UserUncheckedUpdateWithoutCustomerInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -1821,6 +2125,7 @@ export type UserUncheckedUpdateWithoutCustomerInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1837,6 +2142,8 @@ export type UserCreateWithoutSessionsInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
@@ -1847,6 +2154,7 @@ export type UserCreateWithoutSessionsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1863,6 +2171,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
@@ -1873,6 +2183,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1905,6 +2216,8 @@ export type UserUpdateWithoutSessionsInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
@@ -1915,6 +2228,7 @@ export type UserUpdateWithoutSessionsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1931,6 +2245,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
@@ -1941,6 +2257,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1957,6 +2274,8 @@ export type UserCreateWithoutAccountsInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationCreateNestedManyWithoutUserInput
   post?: Prisma.PostCreateNestedManyWithoutUserInput
@@ -1967,6 +2286,7 @@ export type UserCreateWithoutAccountsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1983,6 +2303,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   phoneNumberVerified?: boolean | null
   role?: string | null
   rate?: string | null
+  storePartnerUntil?: Date | string | null
+  storePartnerStartedAt?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   Location?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
   post?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
@@ -1993,6 +2315,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutOwnerInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedCreateNestedManyWithoutCustomerInput
   storeMessages?: Prisma.StoreMessageUncheckedCreateNestedManyWithoutSenderInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -2025,6 +2348,8 @@ export type UserUpdateWithoutAccountsInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUpdateManyWithoutUserNestedInput
@@ -2035,6 +2360,7 @@ export type UserUpdateWithoutAccountsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -2051,6 +2377,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
   post?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
@@ -2061,6 +2389,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpdateWithoutPostViewedInput = {
@@ -2077,6 +2406,8 @@ export type UserUpdateWithoutPostViewedInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUpdateManyWithoutUserNestedInput
@@ -2087,6 +2418,7 @@ export type UserUpdateWithoutPostViewedInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostViewedInput = {
@@ -2103,6 +2435,8 @@ export type UserUncheckedUpdateWithoutPostViewedInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   Location?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
@@ -2113,6 +2447,7 @@ export type UserUncheckedUpdateWithoutPostViewedInput = {
   storeConversationsAsOwner?: Prisma.StoreConversationUncheckedUpdateManyWithoutOwnerNestedInput
   storeConversationsAsCustomer?: Prisma.StoreConversationUncheckedUpdateManyWithoutCustomerNestedInput
   storeMessages?: Prisma.StoreMessageUncheckedUpdateManyWithoutSenderNestedInput
+  storePartnerSubscriptions?: Prisma.StorePartnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutPostViewedInput = {
@@ -2129,6 +2464,8 @@ export type UserUncheckedUpdateManyWithoutPostViewedInput = {
   phoneNumberVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storePartnerUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  storePartnerStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -2147,6 +2484,7 @@ export type UserCountOutputType = {
   storeConversationsAsOwner: number
   storeConversationsAsCustomer: number
   storeMessages: number
+  storePartnerSubscriptions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2160,6 +2498,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   storeConversationsAsOwner?: boolean | UserCountOutputTypeCountStoreConversationsAsOwnerArgs
   storeConversationsAsCustomer?: boolean | UserCountOutputTypeCountStoreConversationsAsCustomerArgs
   storeMessages?: boolean | UserCountOutputTypeCountStoreMessagesArgs
+  storePartnerSubscriptions?: boolean | UserCountOutputTypeCountStorePartnerSubscriptionsArgs
 }
 
 /**
@@ -2242,6 +2581,13 @@ export type UserCountOutputTypeCountStoreMessagesArgs<ExtArgs extends runtime.Ty
   where?: Prisma.StoreMessageWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStorePartnerSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StorePartnerSubscriptionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2257,6 +2603,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   phoneNumberVerified?: boolean
   role?: boolean
   rate?: boolean
+  storePartnerUntil?: boolean
+  storePartnerStartedAt?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   Location?: boolean | Prisma.User$LocationArgs<ExtArgs>
@@ -2268,6 +2616,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   storeConversationsAsOwner?: boolean | Prisma.User$storeConversationsAsOwnerArgs<ExtArgs>
   storeConversationsAsCustomer?: boolean | Prisma.User$storeConversationsAsCustomerArgs<ExtArgs>
   storeMessages?: boolean | Prisma.User$storeMessagesArgs<ExtArgs>
+  storePartnerSubscriptions?: boolean | Prisma.User$storePartnerSubscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2285,6 +2634,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phoneNumberVerified?: boolean
   role?: boolean
   rate?: boolean
+  storePartnerUntil?: boolean
+  storePartnerStartedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2301,6 +2652,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phoneNumberVerified?: boolean
   role?: boolean
   rate?: boolean
+  storePartnerUntil?: boolean
+  storePartnerStartedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -2317,9 +2670,11 @@ export type UserSelectScalar = {
   phoneNumberVerified?: boolean
   role?: boolean
   rate?: boolean
+  storePartnerUntil?: boolean
+  storePartnerStartedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "city" | "district" | "phoneNumber" | "phoneNumberVerified" | "role" | "rate", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "city" | "district" | "phoneNumber" | "phoneNumberVerified" | "role" | "rate" | "storePartnerUntil" | "storePartnerStartedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -2332,6 +2687,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   storeConversationsAsOwner?: boolean | Prisma.User$storeConversationsAsOwnerArgs<ExtArgs>
   storeConversationsAsCustomer?: boolean | Prisma.User$storeConversationsAsCustomerArgs<ExtArgs>
   storeMessages?: boolean | Prisma.User$storeMessagesArgs<ExtArgs>
+  storePartnerSubscriptions?: boolean | Prisma.User$storePartnerSubscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2351,6 +2707,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     storeConversationsAsOwner: Prisma.$StoreConversationPayload<ExtArgs>[]
     storeConversationsAsCustomer: Prisma.$StoreConversationPayload<ExtArgs>[]
     storeMessages: Prisma.$StoreMessagePayload<ExtArgs>[]
+    storePartnerSubscriptions: Prisma.$StorePartnerSubscriptionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2366,6 +2723,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     phoneNumberVerified: boolean | null
     role: string | null
     rate: string | null
+    storePartnerUntil: Date | null
+    storePartnerStartedAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2771,6 +3130,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   storeConversationsAsOwner<T extends Prisma.User$storeConversationsAsOwnerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeConversationsAsOwnerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   storeConversationsAsCustomer<T extends Prisma.User$storeConversationsAsCustomerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeConversationsAsCustomerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   storeMessages<T extends Prisma.User$storeMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  storePartnerSubscriptions<T extends Prisma.User$storePartnerSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storePartnerSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorePartnerSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2813,6 +3173,8 @@ export interface UserFieldRefs {
   readonly phoneNumberVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly role: Prisma.FieldRef<"User", 'String'>
   readonly rate: Prisma.FieldRef<"User", 'String'>
+  readonly storePartnerUntil: Prisma.FieldRef<"User", 'DateTime'>
+  readonly storePartnerStartedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
@@ -3462,6 +3824,30 @@ export type User$storeMessagesArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.StoreMessageScalarFieldEnum | Prisma.StoreMessageScalarFieldEnum[]
+}
+
+/**
+ * User.storePartnerSubscriptions
+ */
+export type User$storePartnerSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StorePartnerSubscription
+   */
+  select?: Prisma.StorePartnerSubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StorePartnerSubscription
+   */
+  omit?: Prisma.StorePartnerSubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StorePartnerSubscriptionInclude<ExtArgs> | null
+  where?: Prisma.StorePartnerSubscriptionWhereInput
+  orderBy?: Prisma.StorePartnerSubscriptionOrderByWithRelationInput | Prisma.StorePartnerSubscriptionOrderByWithRelationInput[]
+  cursor?: Prisma.StorePartnerSubscriptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StorePartnerSubscriptionScalarFieldEnum | Prisma.StorePartnerSubscriptionScalarFieldEnum[]
 }
 
 /**

@@ -55,6 +55,7 @@ export const ModelName = {
   StoreItem: 'StoreItem',
   StoreConversation: 'StoreConversation',
   StoreMessage: 'StoreMessage',
+  StorePartnerSubscription: 'StorePartnerSubscription',
   Location: 'Location',
   Provider: 'Provider',
   Post: 'Post',
@@ -94,7 +95,9 @@ export const UserScalarFieldEnum = {
   phoneNumber: 'phoneNumber',
   phoneNumberVerified: 'phoneNumberVerified',
   role: 'role',
-  rate: 'rate'
+  rate: 'rate',
+  storePartnerUntil: 'storePartnerUntil',
+  storePartnerStartedAt: 'storePartnerStartedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -105,6 +108,7 @@ export const StoreItemScalarFieldEnum = {
   title: 'title',
   description: 'description',
   price: 'price',
+  imageUrls: 'imageUrls',
   city: 'city',
   district: 'district',
   phoneNumber: 'phoneNumber',
@@ -143,9 +147,24 @@ export const StoreMessageScalarFieldEnum = {
 export type StoreMessageScalarFieldEnum = (typeof StoreMessageScalarFieldEnum)[keyof typeof StoreMessageScalarFieldEnum]
 
 
+export const StorePartnerSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amountFcfa: 'amountFcfa',
+  durationDays: 'durationDays',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type StorePartnerSubscriptionScalarFieldEnum = (typeof StorePartnerSubscriptionScalarFieldEnum)[keyof typeof StorePartnerSubscriptionScalarFieldEnum]
+
+
 export const LocationScalarFieldEnum = {
   id: 'id',
-  userId: 'userId'
+  userId: 'userId',
+  serviceId: 'serviceId'
 } as const
 
 export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]

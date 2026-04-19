@@ -349,6 +349,7 @@ export type ServiceWhereInput = {
   startedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
   post?: Prisma.XOR<Prisma.PostNullableScalarRelationFilter, Prisma.PostWhereInput> | null
+  Location?: Prisma.LocationListRelationFilter
   provider?: Prisma.XOR<Prisma.ProviderScalarRelationFilter, Prisma.ProviderWhereInput>
   skills?: Prisma.XOR<Prisma.SkillsNullableScalarRelationFilter, Prisma.SkillsWhereInput> | null
   customer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -378,6 +379,7 @@ export type ServiceOrderByWithRelationInput = {
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   post?: Prisma.PostOrderByWithRelationInput
+  Location?: Prisma.LocationOrderByRelationAggregateInput
   provider?: Prisma.ProviderOrderByWithRelationInput
   skills?: Prisma.SkillsOrderByWithRelationInput
   customer?: Prisma.UserOrderByWithRelationInput
@@ -411,6 +413,7 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   startedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
   post?: Prisma.XOR<Prisma.PostNullableScalarRelationFilter, Prisma.PostWhereInput> | null
+  Location?: Prisma.LocationListRelationFilter
   provider?: Prisma.XOR<Prisma.ProviderScalarRelationFilter, Prisma.ProviderWhereInput>
   skills?: Prisma.XOR<Prisma.SkillsNullableScalarRelationFilter, Prisma.SkillsWhereInput> | null
   customer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -494,6 +497,7 @@ export type ServiceCreateInput = {
   startedAt?: Date | string | null
   completedAt?: Date | string | null
   post?: Prisma.PostCreateNestedOneWithoutServiceInput
+  Location?: Prisma.LocationCreateNestedManyWithoutServiceInput
   provider: Prisma.ProviderCreateNestedOneWithoutServiceInput
   skills?: Prisma.SkillsCreateNestedOneWithoutServiceInput
   customer: Prisma.UserCreateNestedOneWithoutCustomerInput
@@ -522,6 +526,7 @@ export type ServiceUncheckedCreateInput = {
   updatedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutServiceInput
 }
 
 export type ServiceUpdateInput = {
@@ -544,6 +549,7 @@ export type ServiceUpdateInput = {
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   post?: Prisma.PostUpdateOneWithoutServiceNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutServiceNestedInput
   provider?: Prisma.ProviderUpdateOneRequiredWithoutServiceNestedInput
   skills?: Prisma.SkillsUpdateOneWithoutServiceNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
@@ -572,6 +578,7 @@ export type ServiceUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutServiceNestedInput
 }
 
 export type ServiceCreateManyInput = {
@@ -789,6 +796,22 @@ export type ServiceUncheckedUpdateManyWithoutCustomerNestedInput = {
   deleteMany?: Prisma.ServiceScalarWhereInput | Prisma.ServiceScalarWhereInput[]
 }
 
+export type ServiceCreateNestedOneWithoutLocationInput = {
+  create?: Prisma.XOR<Prisma.ServiceCreateWithoutLocationInput, Prisma.ServiceUncheckedCreateWithoutLocationInput>
+  connectOrCreate?: Prisma.ServiceCreateOrConnectWithoutLocationInput
+  connect?: Prisma.ServiceWhereUniqueInput
+}
+
+export type ServiceUpdateOneWithoutLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.ServiceCreateWithoutLocationInput, Prisma.ServiceUncheckedCreateWithoutLocationInput>
+  connectOrCreate?: Prisma.ServiceCreateOrConnectWithoutLocationInput
+  upsert?: Prisma.ServiceUpsertWithoutLocationInput
+  disconnect?: Prisma.ServiceWhereInput | boolean
+  delete?: Prisma.ServiceWhereInput | boolean
+  connect?: Prisma.ServiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ServiceUpdateToOneWithWhereWithoutLocationInput, Prisma.ServiceUpdateWithoutLocationInput>, Prisma.ServiceUncheckedUpdateWithoutLocationInput>
+}
+
 export type ServiceCreateNestedManyWithoutProviderInput = {
   create?: Prisma.XOR<Prisma.ServiceCreateWithoutProviderInput, Prisma.ServiceUncheckedCreateWithoutProviderInput> | Prisma.ServiceCreateWithoutProviderInput[] | Prisma.ServiceUncheckedCreateWithoutProviderInput[]
   connectOrCreate?: Prisma.ServiceCreateOrConnectWithoutProviderInput | Prisma.ServiceCreateOrConnectWithoutProviderInput[]
@@ -929,6 +952,7 @@ export type ServiceCreateWithoutCustomerInput = {
   startedAt?: Date | string | null
   completedAt?: Date | string | null
   post?: Prisma.PostCreateNestedOneWithoutServiceInput
+  Location?: Prisma.LocationCreateNestedManyWithoutServiceInput
   provider: Prisma.ProviderCreateNestedOneWithoutServiceInput
   skills?: Prisma.SkillsCreateNestedOneWithoutServiceInput
 }
@@ -955,6 +979,7 @@ export type ServiceUncheckedCreateWithoutCustomerInput = {
   updatedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutServiceInput
 }
 
 export type ServiceCreateOrConnectWithoutCustomerInput = {
@@ -1011,6 +1036,122 @@ export type ServiceScalarWhereInput = {
   completedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
 }
 
+export type ServiceCreateWithoutLocationInput = {
+  id?: string
+  title?: string | null
+  description: string
+  price?: number | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  district?: string | null
+  city?: string | null
+  code?: string
+  role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
+  status?: $Enums.STATUSSERVICE
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  post?: Prisma.PostCreateNestedOneWithoutServiceInput
+  provider: Prisma.ProviderCreateNestedOneWithoutServiceInput
+  skills?: Prisma.SkillsCreateNestedOneWithoutServiceInput
+  customer: Prisma.UserCreateNestedOneWithoutCustomerInput
+}
+
+export type ServiceUncheckedCreateWithoutLocationInput = {
+  id?: string
+  postId?: string | null
+  title?: string | null
+  description: string
+  price?: number | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  district?: string | null
+  city?: string | null
+  code?: string
+  role?: string | null
+  isViewed?: boolean
+  isViewedAt?: Date | string | null
+  appointmentTime?: string | null
+  appointmentTimeIsAccepted?: boolean
+  providerId: string
+  skillId?: string | null
+  customerId: string
+  status?: $Enums.STATUSSERVICE
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+}
+
+export type ServiceCreateOrConnectWithoutLocationInput = {
+  where: Prisma.ServiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.ServiceCreateWithoutLocationInput, Prisma.ServiceUncheckedCreateWithoutLocationInput>
+}
+
+export type ServiceUpsertWithoutLocationInput = {
+  update: Prisma.XOR<Prisma.ServiceUpdateWithoutLocationInput, Prisma.ServiceUncheckedUpdateWithoutLocationInput>
+  create: Prisma.XOR<Prisma.ServiceCreateWithoutLocationInput, Prisma.ServiceUncheckedCreateWithoutLocationInput>
+  where?: Prisma.ServiceWhereInput
+}
+
+export type ServiceUpdateToOneWithWhereWithoutLocationInput = {
+  where?: Prisma.ServiceWhereInput
+  data: Prisma.XOR<Prisma.ServiceUpdateWithoutLocationInput, Prisma.ServiceUncheckedUpdateWithoutLocationInput>
+}
+
+export type ServiceUpdateWithoutLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  post?: Prisma.PostUpdateOneWithoutServiceNestedInput
+  provider?: Prisma.ProviderUpdateOneRequiredWithoutServiceNestedInput
+  skills?: Prisma.SkillsUpdateOneWithoutServiceNestedInput
+  customer?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
+}
+
+export type ServiceUncheckedUpdateWithoutLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  postId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isViewed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointmentTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  appointmentTimeIsAccepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSTATUSSERVICEFieldUpdateOperationsInput | $Enums.STATUSSERVICE
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
 export type ServiceCreateWithoutProviderInput = {
   id?: string
   title?: string | null
@@ -1031,6 +1172,7 @@ export type ServiceCreateWithoutProviderInput = {
   startedAt?: Date | string | null
   completedAt?: Date | string | null
   post?: Prisma.PostCreateNestedOneWithoutServiceInput
+  Location?: Prisma.LocationCreateNestedManyWithoutServiceInput
   skills?: Prisma.SkillsCreateNestedOneWithoutServiceInput
   customer: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -1057,6 +1199,7 @@ export type ServiceUncheckedCreateWithoutProviderInput = {
   updatedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutServiceInput
 }
 
 export type ServiceCreateOrConnectWithoutProviderInput = {
@@ -1104,6 +1247,7 @@ export type ServiceCreateWithoutPostInput = {
   updatedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
+  Location?: Prisma.LocationCreateNestedManyWithoutServiceInput
   provider: Prisma.ProviderCreateNestedOneWithoutServiceInput
   skills?: Prisma.SkillsCreateNestedOneWithoutServiceInput
   customer: Prisma.UserCreateNestedOneWithoutCustomerInput
@@ -1131,6 +1275,7 @@ export type ServiceUncheckedCreateWithoutPostInput = {
   updatedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutServiceInput
 }
 
 export type ServiceCreateOrConnectWithoutPostInput = {
@@ -1168,6 +1313,7 @@ export type ServiceUpdateWithoutPostInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  Location?: Prisma.LocationUpdateManyWithoutServiceNestedInput
   provider?: Prisma.ProviderUpdateOneRequiredWithoutServiceNestedInput
   skills?: Prisma.SkillsUpdateOneWithoutServiceNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
@@ -1195,6 +1341,7 @@ export type ServiceUncheckedUpdateWithoutPostInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutServiceNestedInput
 }
 
 export type ServiceCreateWithoutSkillsInput = {
@@ -1217,6 +1364,7 @@ export type ServiceCreateWithoutSkillsInput = {
   startedAt?: Date | string | null
   completedAt?: Date | string | null
   post?: Prisma.PostCreateNestedOneWithoutServiceInput
+  Location?: Prisma.LocationCreateNestedManyWithoutServiceInput
   provider: Prisma.ProviderCreateNestedOneWithoutServiceInput
   customer: Prisma.UserCreateNestedOneWithoutCustomerInput
 }
@@ -1243,6 +1391,7 @@ export type ServiceUncheckedCreateWithoutSkillsInput = {
   updatedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
+  Location?: Prisma.LocationUncheckedCreateNestedManyWithoutServiceInput
 }
 
 export type ServiceCreateOrConnectWithoutSkillsInput = {
@@ -1315,6 +1464,7 @@ export type ServiceUpdateWithoutCustomerInput = {
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   post?: Prisma.PostUpdateOneWithoutServiceNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutServiceNestedInput
   provider?: Prisma.ProviderUpdateOneRequiredWithoutServiceNestedInput
   skills?: Prisma.SkillsUpdateOneWithoutServiceNestedInput
 }
@@ -1341,6 +1491,7 @@ export type ServiceUncheckedUpdateWithoutCustomerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutServiceNestedInput
 }
 
 export type ServiceUncheckedUpdateManyWithoutCustomerInput = {
@@ -1411,6 +1562,7 @@ export type ServiceUpdateWithoutProviderInput = {
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   post?: Prisma.PostUpdateOneWithoutServiceNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutServiceNestedInput
   skills?: Prisma.SkillsUpdateOneWithoutServiceNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -1437,6 +1589,7 @@ export type ServiceUncheckedUpdateWithoutProviderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutServiceNestedInput
 }
 
 export type ServiceUncheckedUpdateManyWithoutProviderInput = {
@@ -1507,6 +1660,7 @@ export type ServiceUpdateWithoutSkillsInput = {
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   post?: Prisma.PostUpdateOneWithoutServiceNestedInput
+  Location?: Prisma.LocationUpdateManyWithoutServiceNestedInput
   provider?: Prisma.ProviderUpdateOneRequiredWithoutServiceNestedInput
   customer?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
 }
@@ -1533,6 +1687,7 @@ export type ServiceUncheckedUpdateWithoutSkillsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  Location?: Prisma.LocationUncheckedUpdateManyWithoutServiceNestedInput
 }
 
 export type ServiceUncheckedUpdateManyWithoutSkillsInput = {
@@ -1560,6 +1715,35 @@ export type ServiceUncheckedUpdateManyWithoutSkillsInput = {
 }
 
 
+/**
+ * Count Type ServiceCountOutputType
+ */
+
+export type ServiceCountOutputType = {
+  Location: number
+}
+
+export type ServiceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  Location?: boolean | ServiceCountOutputTypeCountLocationArgs
+}
+
+/**
+ * ServiceCountOutputType without action
+ */
+export type ServiceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ServiceCountOutputType
+   */
+  select?: Prisma.ServiceCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ServiceCountOutputType without action
+ */
+export type ServiceCountOutputTypeCountLocationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LocationWhereInput
+}
+
 
 export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1585,9 +1769,11 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   startedAt?: boolean
   completedAt?: boolean
   post?: boolean | Prisma.Service$postArgs<ExtArgs>
+  Location?: boolean | Prisma.Service$LocationArgs<ExtArgs>
   provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
   skills?: boolean | Prisma.Service$skillsArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.ServiceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["service"]>
 
 export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1676,9 +1862,11 @@ export type ServiceSelectScalar = {
 export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "postId" | "title" | "description" | "price" | "location" | "district" | "city" | "code" | "role" | "isViewed" | "isViewedAt" | "appointmentTime" | "appointmentTimeIsAccepted" | "providerId" | "skillId" | "customerId" | "status" | "createdAt" | "updatedAt" | "startedAt" | "completedAt", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.Service$postArgs<ExtArgs>
+  Location?: boolean | Prisma.Service$LocationArgs<ExtArgs>
   provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
   skills?: boolean | Prisma.Service$skillsArgs<ExtArgs>
   customer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.ServiceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ServiceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.Service$postArgs<ExtArgs>
@@ -1697,6 +1885,7 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Service"
   objects: {
     post: Prisma.$PostPayload<ExtArgs> | null
+    Location: Prisma.$LocationPayload<ExtArgs>[]
     provider: Prisma.$ProviderPayload<ExtArgs>
     skills: Prisma.$SkillsPayload<ExtArgs> | null
     customer: Prisma.$UserPayload<ExtArgs>
@@ -2119,6 +2308,7 @@ readonly fields: ServiceFieldRefs;
 export interface Prisma__ServiceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   post<T extends Prisma.Service$postArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Service$postArgs<ExtArgs>>): Prisma.Prisma__PostClient<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  Location<T extends Prisma.Service$LocationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Service$LocationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   provider<T extends Prisma.ProviderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProviderDefaultArgs<ExtArgs>>): Prisma.Prisma__ProviderClient<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   skills<T extends Prisma.Service$skillsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Service$skillsArgs<ExtArgs>>): Prisma.Prisma__SkillsClient<runtime.Types.Result.GetResult<Prisma.$SkillsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   customer<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -2590,6 +2780,30 @@ export type Service$postArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   include?: Prisma.PostInclude<ExtArgs> | null
   where?: Prisma.PostWhereInput
+}
+
+/**
+ * Service.Location
+ */
+export type Service$LocationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Location
+   */
+  select?: Prisma.LocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Location
+   */
+  omit?: Prisma.LocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LocationInclude<ExtArgs> | null
+  where?: Prisma.LocationWhereInput
+  orderBy?: Prisma.LocationOrderByWithRelationInput | Prisma.LocationOrderByWithRelationInput[]
+  cursor?: Prisma.LocationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LocationScalarFieldEnum | Prisma.LocationScalarFieldEnum[]
 }
 
 /**

@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link, useRouter } from 'expo-router'
 import React from 'react'
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
+import  { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export default function StoreConversationsScreen() {
   const { data: session } = authClient.useSession()
@@ -33,23 +34,26 @@ export default function StoreConversationsScreen() {
   return (
     <ScrollView className="flex-1 px-4 py-3" refreshControl={undefined}>
       <View className="gap-3 pb-10">
-        <Text className="text-xl font-bold">Mes discussions</Text>
-        <Button variant="outline" onPress={() => refetch()} disabled={isRefetching}>
-          <Text>Actualiser</Text>
-        </Button>
-
         {data?.length ? (
           data.map((conversation) => {
             const other =
               conversation.ownerId === session.user.id ? conversation.customer : conversation.owner
             const lastMessage = conversation.messages[0]
             return (
-              <Link key={conversation.id} href={`/(tabs)/store/messages/${conversation.id}`} asChild>
-                <Card>
-                  <CardContent className="gap-1 pt-4">
-                    <Text className="font-semibold">{conversation.item.title}</Text>
-                    <Text className="text-sm text-muted-foreground">Avec: {other.name}</Text>
-                    <Text className="text-sm">{lastMessage?.content || 'Aucun message'}</Text>
+              <Link key={conversation.id} href={`/(tabs)/store/messages/${conversation.id}`}>
+                <Card className='p-1.5 px-0 w-full'>
+                  <CardContent className="gap-1 pt-0">
+                    <View className='flex-row items-center gap-2'>
+                      <Avatar alt={`${other.name} profil picture`} className="h-12 w-12">
+                        <AvatarImage source={{ uri: conversation.item.imageUrls[0] ?? '' }} />
+                        <AvatarFallback>{other.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <View className='flex-1'>
+                        <Text className="font-semibold">{conversation.item.title}</Text>
+                        <Text className="text-sm text-muted-foreground">{other.name}</Text>
+                      </View>
+                    </View>
+                    <Text className="text-sm ml-16">{lastMessage?.content || 'Aucun message'}</Text>
                   </CardContent>
                 </Card>
               </Link>

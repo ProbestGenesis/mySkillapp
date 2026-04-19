@@ -425,10 +425,6 @@ export type StoreMessageUncheckedUpdateManyWithoutConversationNestedInput = {
   deleteMany?: Prisma.StoreMessageScalarWhereInput | Prisma.StoreMessageScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type StoreMessageCreateWithoutSenderInput = {
   id?: string
   content: string
