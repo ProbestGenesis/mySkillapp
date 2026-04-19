@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "bun run index.ts",
-    "build": "tsc index.ts --compile --minify --outfile dist/index",
-    "start": "bun dist/index.js",
+    "build": "tsc",
+    "start": "bun run opt/build/repo/apps/api/dist/index.js",
     "postinstall": "bun x prisma generate"
   },
   "devDependencies": {
