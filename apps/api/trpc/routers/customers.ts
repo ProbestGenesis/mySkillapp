@@ -50,7 +50,7 @@ export const customersRouter = t.router({
           ? {
               OR: [
                 { title: { contains: service, mode: 'insensitive' } },
-                { description: { contains: service, mode: 'insensitive' } },
+                { body: { contains: service, mode: 'insensitive' } },
               ],
             }
           : {}),
