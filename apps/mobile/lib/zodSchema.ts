@@ -47,8 +47,8 @@ export const postsSchema = z.object({
 export const registerForm = z
   .object({
     phone: z.string().nonempty('Veuillez saisir votre numéro de téléphone'),
-    password: z.string().nonempty('Veuillez saisir votre mot de passe').min(6, {
-      message: 'le mot de passe doit contenir au moins 6 caractères',
+    password: z.string().nonempty('Veuillez saisir votre mot de passe').min(8, {
+      message: 'le mot de passe doit contenir au moins 8 caractères',
     }),
     confirmPassword: z.string().nonempty('Veuillez resaisir votre mot de passe'),
   })

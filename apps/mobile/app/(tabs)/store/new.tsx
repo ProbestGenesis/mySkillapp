@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { authClient } from '@/lib/auth-client'
+import { authClient, useSession } from '@/lib/auth-client'
 import { useTRPC } from '@/provider/appProvider'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import * as ImagePicker from 'expo-image-picker'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   ActivityIndicator,
   Alert,
@@ -15,12 +15,15 @@ import {
   ScrollView,
   Text,
   View,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native'
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
 
 const MAX_IMAGES = 8
 
 export default function StoreNewScreen() {
-  const { data: session } = authClient.useSession()
+  const [session] = useState(useSession())
   const trpc = useTRPC()
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -36,6 +39,8 @@ export default function StoreNewScreen() {
   const [imageUrls, setImageUrls] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
+
+  const insets = useSafeAreaInsets()
 
   const uploadMutation = useMutation(trpc.store.uploadStoreItemImage.mutationOptions())
 
@@ -62,7 +67,7 @@ export default function StoreNewScreen() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsMultipleSelection: true,
-      quality: 0.75,
+      quality: 0.55,
       base64: true,
       selectionLimit: MAX_IMAGES - imageUrls.length,
     })
@@ -115,13 +120,36 @@ export default function StoreNewScreen() {
   }
 
   if (!session) {
-    router.replace('/auth')
-    return null
+    return (
+      <SafeAreaView className="h-screen flex-1">
+        <View className="h-full w-full flex-col items-center justify-center gap-2">
+          <Text className="text-accent text-center text-lg">
+            {' '}
+            Vous devez vous connecter pour acceder a cette page{' '}
+          </Text>
+          <Button
+            className="rounded-full"
+            variant={'outline'}
+            size={"lg"}
+            onPress={() => {
+              router.push('/auth');
+            }}>
+            {' '}
+            <Text>Se connecter</Text>{' '}
+          </Button>
+        </View>
+      </SafeAreaView>
+    );
   }
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top + 20 : insets.top + 10}
+      className="flex-1"
+    >
     <ScrollView className="flex-1 px-4 py-3">
-      <View className="gap-3 pb-10">
+      <View className="gap-3 pb-10 h-full ">
         <Text className="text-xl font-bold">Nouvelle annonce</Text>
         <Input placeholder="Titre" value={title} onChangeText={setTitle} />
         <Textarea
@@ -155,7 +183,7 @@ export default function StoreNewScreen() {
           ))}
         </View>
 
-        <Text className="text-base font-semibold">Options de contact annonceur</Text>
+        <Text className="text-base font-semibold">Votre Contact</Text>
         <Input placeholder="Téléphone" value={phoneNumber} onChangeText={setPhoneNumber} />
 
         {error ? <Text className="text-destructive">{error}</Text> : null}
@@ -177,5 +205,6 @@ export default function StoreNewScreen() {
         </Text>
       </View>
     </ScrollView>
+  </KeyboardAvoidingView>
   )
 }

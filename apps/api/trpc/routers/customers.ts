@@ -6,7 +6,7 @@ const nearDemandsInput = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   radiusMeters: z.number().min(50).max(500_000).optional().default(50_000),
-  limit: z.number().min(1).max(40).optional().default(20),
+  limit: z.number().min(1).max(40).optional().default(6),
   excludeUserId: z.string().optional(),
   service: z.string().min(2).optional(),
 })
@@ -16,7 +16,6 @@ export const customersRouter = t.router({
    * Demandes (`Post`) dont l’auteur a une `Location` proche du point (PostGIS).
    */
   listNearDemands: t.procedure.input(nearDemandsInput).query(async ({ input, ctx }) => {
-    console.log(input)
     const { excludeUserId, service, ...point } = input
 
     const rows = await findNearbyDemandPostIds(ctx.prisma, {

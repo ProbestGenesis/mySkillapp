@@ -7,6 +7,7 @@ import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from "@/components/ui/button"
 
 export default function StoreConversationsScreen() {
   const { data: session } = authClient.useSession();
@@ -19,9 +20,28 @@ export default function StoreConversationsScreen() {
   });
 
   if (!session) {
-    router.replace('/auth');
-    return null;
+    return (
+      <SafeAreaView className="h-screen flex-1">
+        <View className="h-full w-full flex-col items-center justify-center gap-2">
+          <Text className="text-accent text-center text-lg">
+            {' '}
+            Vous devez vous connecter pour acceder a cette page{' '}
+          </Text>
+          <Button
+            className="rounded-full"
+            variant={'outline'}
+            size={"lg"}
+            onPress={() => {
+              router.push('/auth');
+            }}>
+            {' '}
+            <Text>Se connecter</Text>{' '}
+          </Button>
+        </View>
+      </SafeAreaView>
+    );
   }
+
 
   if (isLoading) {
     return (

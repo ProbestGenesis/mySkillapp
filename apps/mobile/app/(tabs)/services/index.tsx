@@ -357,9 +357,9 @@ export default function ServiceListScreen() {
                   {item.appointmentTime}
                 </Text>
               </View>
-              {!item.appointmentTimeIsAccepted && (
+              {/*!item.appointmentTimeIsAccepted && (
                 <Text className="ml-auto text-[10px] text-yellow-600 italic">En attente...</Text>
-              )}
+              )*/}
             </View>
           )}
         </CardContent>
@@ -667,7 +667,7 @@ export default function ServiceListScreen() {
 
     return null;
   };
-
+{/*
   if(!session){
     return (
       <SafeAreaView className="flex-1">
@@ -683,7 +683,7 @@ export default function ServiceListScreen() {
         </View>
       </SafeAreaView>
     )
-  }
+  }*/}
 
   return (
     <SafeAreaView className="flex-1">

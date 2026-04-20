@@ -20,6 +20,7 @@
       "supportsTablet": true
     },
     "android": {
+      "launchMode": "singleTask",
       "package": "com.genesiscorp.skillmap",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",

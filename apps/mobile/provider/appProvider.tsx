@@ -4,23 +4,19 @@ import { createTRPCContext } from '@trpc/tanstack-react-query';
 import { useState } from 'react';
 import type { AppRouter } from '../../api/index.ts';
 
+
 import { authClient } from '@/lib/auth-client';
 
 export const { TRPCProvider, useTRPC, useTRPCClient } = createTRPCContext<AppRouter>();
 
 export function AppProvider(props: { children: React.ReactNode }) {
+  const { data: session, isPending } = authClient.useSession()
+
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
         retry: 2,
-        refetchOnWindowFocus: false,
-        throwOnError: (error) => {
-          if(error instanceof TRPCClientError && error.data?.code === 'UNAUTHORIZED') {
-            authClient.signOut()
-          }
-          return false
-        },
-        
+        refetchOnWindowFocus: false,  
       }
     }
   }));

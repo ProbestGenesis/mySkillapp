@@ -26,6 +26,9 @@ export const serviceRouter = t.router({
         where: {
           OR: [{ customerId: session!.user.id }, { providerId: user?.provider?.id }],
         },
+        orderBy: {
+          updatedAt: "desc"
+        },
         include: {
           provider: {
             include: {
@@ -43,9 +46,6 @@ export const serviceRouter = t.router({
               image: true,
               district: true,
               city: true,
-            },
-            include: {
-              Location: true,
             }
           },
         },

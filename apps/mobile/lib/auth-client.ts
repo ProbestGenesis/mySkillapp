@@ -4,21 +4,11 @@ import { phoneNumberClient, customSessionClient } from "better-auth/client/plugi
 import { Auth } from "../../api/auth";
 import * as SecureStore from "expo-secure-store";
 
-const secureStoreWrapper = {
-  getItem: async (key: string) => {
-    return await SecureStore.getItemAsync(key);
-  },
-  setItem: async (key: string, value: string) => {
-    await SecureStore.setItemAsync(key, value);
-  },
-  removeItem: async (key: string) => {
-    await SecureStore.deleteItemAsync(key);
-  },
-};
+
 
 
 export const authClient = createAuthClient({
-    baseURL:   process.env.EXPO_PUBLIC_SERVER_URL ?? "http://localhost:4000", 
+    baseURL:   process.env.EXPO_PUBLIC_SERVER_URL ?? "https://api-production-d535.up.railway.app", 
     plugins: [
         expoClient({
             scheme: process.env.EXPO_SCHEME ?? "skillmap",
@@ -27,7 +17,18 @@ export const authClient = createAuthClient({
         }),
         phoneNumberClient(),
         customSessionClient<Auth>(),
-    ]
+    ],
+    storage: {
+      async getItem(key:any) {
+        return await SecureStore.getItemAsync(key);
+      },
+      async setItem(key:any, value:any) {
+        await SecureStore.setItemAsync(key, value);
+      },
+      async removeItem(key:any) {
+        await SecureStore.deleteItemAsync(key);
+      },
+    },
 });
 
 export const { useSession, signIn, signUp, signOut, phoneNumber, updateUser, changeEmail } =  authClient;

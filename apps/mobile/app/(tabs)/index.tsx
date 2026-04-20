@@ -34,6 +34,7 @@ function index({}: Props) {
   return (
     <SafeAreaView className="flex-1">
       <View className={`h-screen flex-col pt-2 pb-8`}>
+        <View className="flex flex-row items-center justify-center"> <Text className="font-bold text-center text-xl">SKILLMAP</Text> </View>
         <View className="flex-1 flex-col px-2">
           <View className="flex-row items-center justify-between">
             {isPrestairePage ? (

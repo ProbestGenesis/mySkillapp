@@ -22,6 +22,7 @@ import {
   View,
 } from 'react-native';
 import { z } from 'zod';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
 
 type FormData = z.infer<typeof createSkill>;
 
@@ -84,13 +85,29 @@ export default function AddSkills() {
     }
   };
 
-  useEffect(() => {
-    if (!session) {
-      router.replace('/auth');
-    }
+     if (!session) {
+    return (
+      <SafeAreaView className="h-screen flex-1">
+        <View className="h-full w-full flex-col items-center justify-center gap-2">
+          <Text className="text-accent text-center text-lg">
+            {' '}
+            Vous devez vous connecter pour acceder a cette page{' '}
+          </Text>
+          <Button
+            className="rounded-full"
+            variant={'outline'}
+            size={"lg"}
+            onPress={() => {
+              router.push('/auth');
+            }}>
+            {' '}
+            <Text>Se connecter</Text>{' '}
+          </Button>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
-    return;
-  }, [session]);
 
   return (
     <MotiView

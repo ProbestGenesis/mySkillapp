@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Preference } from '@/components/ui/utils/settings/preference';
 import { Skills } from '@/components/ui/utils/settings/skills';
@@ -26,21 +25,10 @@ import {
   LogOut,
   MapPin,
   Phone,
-  QrCode,
-  ServerIcon,
-  Settings,
   Star,
   UserIcon,
 } from 'lucide-react-native';
-import { useEffect } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
@@ -48,7 +36,7 @@ type Props = {};
 function SettingScreen({}: Props) {
   const { data: session, isPending } = authClient.useSession();
   const trpc = useTRPC();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const { data, isLoading, error } = useQuery(
@@ -56,18 +44,36 @@ function SettingScreen({}: Props) {
   );
   const handleSignOut = async () => {
     try {
-      queryClient.invalidateQueries()
+      queryClient.invalidateQueries();
       await authClient.signOut();
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    if (!isPending && !session) {
-      router.replace('/auth');
-    }
-  }, [session, isPending]);
+  if (!session) {
+    return (
+      <SafeAreaView className="h-screen flex-1">
+        <View className="h-full w-full flex-col items-center justify-center gap-2">
+          <Text className="text-accent text-center text-lg">
+            {' '}
+            Vous devez vous connecter pour acceder a cette page{' '}
+          </Text>
+          <Button
+            className="rounded-full"
+            variant={'outline'}
+            size={"lg"}
+            onPress={() => {
+              router.push('/auth');
+            }}>
+            {' '}
+            <Text>Se connecter</Text>{' '}
+          </Button>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   if (isLoading || isPending) {
     return (
       <SafeAreaView className="h-screen flex-1">
@@ -121,11 +127,11 @@ function SettingScreen({}: Props) {
                   </Button>
                 </Link>
               ) : (
-               <Link asChild href={"/(tabs)/settings/editProfil"} >
-                <Button size={'sm'} variant={'outline'} className="rounded-full">
-                  <Text className="font-bold">Modifier votre profil</Text>
-                </Button>
-               </Link>
+                <Link asChild href={'/(tabs)/settings/editProfil'}>
+                  <Button size={'sm'} variant={'outline'} className="rounded-full">
+                    <Text className="font-bold">Modifier votre profil</Text>
+                  </Button>
+                </Link>
               )}
             </View>
 
@@ -183,7 +189,7 @@ function SettingScreen({}: Props) {
           </View>
 
           <View className="flex-col gap-8">
-           {/* <Card className="rounded-3xl">
+            {/* <Card className="rounded-3xl">
               <CardHeader>
                 <CardTitle>
                   <Text className="text-primary">Votre solde: </Text>
@@ -324,7 +330,7 @@ function SettingScreen({}: Props) {
               </Card>
             )}
 
-           {/* <Card className="rounded-3xl">
+            {/* <Card className="rounded-3xl">
               <CardHeader>
                 <CardTitle className="text-primary text-xl font-bold">
                   Confirmation de service terminé
@@ -369,7 +375,7 @@ function SettingScreen({}: Props) {
             </Card>*/}
 
             <Skills data={data} isLoading={isLoading} session={session} />
-           
+
             <Preference />
 
             <Button className="w-full flex-row gap-6" variant={'outline'} onPress={handleSignOut}>

@@ -183,7 +183,7 @@ export default function StoreItemDetailsScreen() {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <ActivityIndicator />
+        <ActivityIndicator color={"orange"} size={64} />
       </View>
     )
   }

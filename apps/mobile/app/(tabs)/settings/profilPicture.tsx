@@ -1,18 +1,18 @@
-import { View, Text, ActivityIndicator } from 'react-native';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { authClient } from '@/lib/auth-client';
-import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
-import clsx from 'clsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { authClient, useSession } from '@/lib/auth-client';
 import { useTRPC } from '@/provider/appProvider';
-import { Alert } from 'react-native';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
+import * as ImagePicker from 'expo-image-picker';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { ActivityIndicator, Alert, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
 function ProfilPicture({}: Props) {
-  const { data: session } = authClient.useSession();
+   const [session] = useState(useSession())
   const queryClient = useQueryClient();
   const router = useRouter();
   const trpc = useTRPC();
@@ -57,7 +57,7 @@ function ProfilPicture({}: Props) {
   const profilMutation = useMutation({
     ...trpc.user.updateProfilePicture.mutationOptions(),
     onSuccess: async (data) => {
-      await authClient.updateUser({
+      const updatedUserRes = await authClient.updateUser({
         image: data.imageUrl,
       });
       setSuccess({ message: data.message, status: 200 });
@@ -81,6 +81,30 @@ function ProfilPicture({}: Props) {
     });
   };
 
+  if (!session) {
+      return (
+        <SafeAreaView className="h-screen flex-1">
+          <View className="h-full w-full flex-col items-center justify-center gap-2">
+            <Text className="text-accent text-center text-lg">
+              {' '}
+              Vous devez vous connecter pour acceder a cette page{' '}
+            </Text>
+            <Button
+              className="rounded-full"
+              variant={'outline'}
+              size={"lg"}
+              onPress={() => {
+                router.push('/auth');
+              }}>
+              {' '}
+              <Text>Se connecter</Text>{' '}
+            </Button>
+          </View>
+        </SafeAreaView>
+      );
+    }
+  
+
   return (
     <View className="relative mt-2 h-full flex-col items-center justify-center gap-6 pt-8">
       <View className="flex-col items-center justify-center gap-6">
@@ -91,7 +115,7 @@ function ProfilPicture({}: Props) {
         </View>
         <Avatar alt="profil picture" className="h-32 w-32">
           <AvatarImage source={{ uri: image?.uri || '' }} />
-          <AvatarFallback>{session?.user.name?.slice(0, 2)}</AvatarFallback>
+          <AvatarFallback>{session?.data?.user.name?.slice(0, 2)}</AvatarFallback>
         </Avatar>
 
         <Button className="border-2 border-dotted" variant={'outline'} onPress={pickImage}>

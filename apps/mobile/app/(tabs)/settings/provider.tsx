@@ -25,7 +25,7 @@ import { AnimatePresence, MotiView } from 'moti';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
 type Props = {
@@ -70,14 +70,7 @@ export default function BecomeProvider({}: Props) {
     }
   }, [locationError, permissionGranted]);
 
-  useEffect(() => {
-    if (!session) {
-      router.replace('/auth');
-    }
-
-    return;
-  }, [session]);
-
+  
   const handleCloseLanding = () => {
     setCloseLanding(true);
   };
@@ -100,6 +93,30 @@ export default function BecomeProvider({}: Props) {
       }
     }
   };
+
+  if (!session) {
+    return (
+      <SafeAreaView className="h-screen flex-1">
+        <View className="h-full w-full flex-col items-center justify-center gap-2">
+          <Text className="text-accent text-center text-lg">
+            {' '}
+            Vous devez vous connecter pour acceder a cette page{' '}
+          </Text>
+          <Button
+            className="rounded-full"
+            variant={'outline'}
+            size={"lg"}
+            onPress={() => {
+              router.push('/auth');
+            }}>
+            {' '}
+            <Text>Se connecter</Text>{' '}
+          </Button>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
 
   return (
     <View className="flex-1">
@@ -241,13 +258,13 @@ export default function BecomeProvider({}: Props) {
             </View>
 
             <View className="gap-4">
-              <Text className="text-center text-lg font-semibold text-gray-700">
-                Devenir prestataire
+              <Text className="text-center text-sm font-semibold text-gray-700">
+                Trouvez rapidement un client dans votre zone
               </Text>
               <Pressable
                 onPress={handleCloseLanding}
                 className="bg-primary flex-row items-center justify-center gap-2 rounded-full py-3 active:opacity-80">
-                <Text className="text-base font-medium text-white">Quel emploi exercez-vous ?</Text>
+                <Text className="text-base font-medium text-white">Devenir prestataire</Text>
               </Pressable>
             </View>
           </MotiView>

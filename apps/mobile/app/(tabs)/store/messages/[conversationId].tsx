@@ -5,8 +5,8 @@ import { useTRPC } from '@/provider/appProvider'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useEffect, useMemo, useState } from 'react'
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ActivityIndicator, ScrollView, Text, View, KeyboardAvoidingView, Platform } from 'react-native'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function StoreConversationDetailScreen() {
   const { conversationId } = useLocalSearchParams<{ conversationId: string }>()
@@ -21,7 +21,7 @@ export default function StoreConversationDetailScreen() {
 
   const wsUrl = useMemo(() => {
     if (!session?.user?.id) return null
-    return `ws://192.168.201.16:4000/ws/store?userId=${encodeURIComponent(session.user.id)}&conversations=${encodeURIComponent(conversationId)}`
+    return `ws://api-production-d535.up.railway.app/ws/store?userId=${encodeURIComponent(session.user.id)}&conversations=${encodeURIComponent(conversationId)}`
   }, [session?.user?.id, conversationId])
 
   const { data, isLoading } = useQuery({
@@ -33,6 +33,8 @@ export default function StoreConversationDetailScreen() {
     ...trpc.store.getConversationPresence.queryOptions({ conversationId }),
     enabled: !!conversationId && !!session?.user?.id,
   })
+
+  const insets = useSafeAreaInsets()
 
   const sendMutation = useMutation(
     trpc.store.sendMessage.mutationOptions({
@@ -118,9 +120,28 @@ export default function StoreConversationDetailScreen() {
   }, [wsConnected, queryClient, trpc, conversationId, page, pageSize, refetchPresence])
 
   if (!session) {
-    router.replace('/auth')
-    return null
+    return (
+      <SafeAreaView className="h-screen flex-1">
+        <View className="h-full w-full flex-col items-center justify-center gap-2">
+          <Text className="text-accent text-center text-lg">
+            {' '}
+            Vous devez vous connecter pour acceder a cette page{' '}
+          </Text>
+          <Button
+            className="rounded-full"
+            variant={'outline'}
+            size={"lg"}
+            onPress={() => {
+              router.push('/auth');
+            }}>
+            {' '}
+            <Text>Se connecter</Text>{' '}
+          </Button>
+        </View>
+      </SafeAreaView>
+    );
   }
+
 
   if (isLoading) {
     return (
@@ -141,10 +162,15 @@ export default function StoreConversationDetailScreen() {
   }
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top + 20 : insets.top + 10}
+      className="flex-1"
+    >
     <View className="flex-1 px-3 py-2">
       <Text className="text-lg font-bold">{data.item.title}</Text>
       <Text className="text-xs text-muted-foreground">
-        {presenceData?.isOtherUserOnline ? 'En ligne' : 'Hors ligne'} {wsConnected ? '- temps reel' : '- mode polling'}
+        {presenceData?.isOtherUserOnline ? 'En ligne' : 'Hors ligne'} 
       </Text>
       <ScrollView className="mt-3 flex-1">
         <View className="gap-2 pb-4">
@@ -179,5 +205,6 @@ export default function StoreConversationDetailScreen() {
         </Button>
       </View>
     </View>
+    </KeyboardAvoidingView>
   )
 }
