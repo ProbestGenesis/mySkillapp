@@ -13,9 +13,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -23,9 +21,10 @@
       "launchMode": "singleTask",
       "package": "com.genesiscorp.skillmap",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.ACCESS_COARSE_LOCATION",
@@ -67,6 +66,15 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": false
+        }
+      ],
       "expo-web-browser",
       "expo-font"
     ],
@@ -78,6 +86,15 @@
       "eas": {
         "projectId": "3961fb8c-2232-446f-a414-aad27ecfe046"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3961fb8c-2232-446f-a414-aad27ecfe046",
+      "enable": true,
+      "checkAutomatically": "ON_APP_LAUNCH",
+      "fallbackToCacheTimeout": 60
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }

@@ -367,6 +367,7 @@ export default function EditProfil() {
                           <SelectGroup>
                             <SelectLabel>Professions</SelectLabel>
                             {profession.map((item) => (
+                              //@ts-ignore
                               <SelectItem key={item.value} label={item.label} value={item.value}>
                                 {item.label}
                               </SelectItem>
@@ -421,6 +422,7 @@ export default function EditProfil() {
                             <SelectGroup>
                               <SelectLabel>Disponibilités</SelectLabel>
                               {availability.map((item: any) => (
+                                //@ts-ignore
                                 <SelectItem key={item.value} label={item.label} value={item.value}>
                                   {item.label}
                                 </SelectItem>

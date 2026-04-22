@@ -20,12 +20,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { Redirect, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { AnimatePresence, MotiView } from 'moti';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
-import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
 type Props = {
@@ -70,7 +70,6 @@ export default function BecomeProvider({}: Props) {
     }
   }, [locationError, permissionGranted]);
 
-  
   const handleCloseLanding = () => {
     setCloseLanding(true);
   };
@@ -105,7 +104,7 @@ export default function BecomeProvider({}: Props) {
           <Button
             className="rounded-full"
             variant={'outline'}
-            size={"lg"}
+            size={'lg'}
             onPress={() => {
               router.push('/auth');
             }}>
@@ -116,7 +115,6 @@ export default function BecomeProvider({}: Props) {
       </SafeAreaView>
     );
   }
-
 
   return (
     <View className="flex-1">
@@ -147,6 +145,7 @@ export default function BecomeProvider({}: Props) {
                         <SelectGroup>
                           <SelectLabel>Professions</SelectLabel>
                           {profession.map((item) => (
+                            //@ts-ignore
                             <SelectItem key={item.value} label={item.label} value={item.value}>
                               {item.label}
                             </SelectItem>
@@ -178,6 +177,7 @@ export default function BecomeProvider({}: Props) {
                         <SelectGroup>
                           <SelectLabel>Disponibilités</SelectLabel>
                           {availability.map((item: any) => (
+                            //@ts-ignore
                             <SelectItem key={item.value} label={item.label} value={item.value}>
                               {item.label}
                             </SelectItem>

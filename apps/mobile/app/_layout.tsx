@@ -34,7 +34,7 @@ export default function RootLayout() {
   const { theme } = useUniwind();
 
   return (
-    <ThemeProvider value={NAV_THEME[theme ?? 'light']}>
+    <ThemeProvider value={NAV_THEME['light']}>
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
       <AppProvider>
         <TrpcTree />

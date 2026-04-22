@@ -36,7 +36,7 @@ export function ProviderCard({
       onOpenChange={(open) => {
         if (!open) onClose();
       }}>
-      <DialogContent className="w-full gap-0 rounded-2xl">
+      <DialogContent className="w-full gap-0 rounded-2xl min-w-xs">
         {providerCardDataLoading ? (
           <View className="items-center py-10">
             <ActivityIndicator />

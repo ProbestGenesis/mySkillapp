@@ -83,7 +83,7 @@ export default function ContactScreen() {
               <View className="rounded-lg bg-black/5 dark:bg-white/5 p-4 gap-2">
                 <Text className="text-muted-foreground text-xs font-medium">Message pré-rédigé</Text>
                 <Text className="text-foreground text-sm leading-relaxed">
-                  "Bonjour, je suis partenaire sur SkillMap et je souhaite vous contacter."
+                  "Bonjour, je souhaite devenir partenaire sur SKILLMAP pour disposé d'un quota de publication illimité"
                 </Text>
               </View>
 
@@ -96,7 +96,7 @@ export default function ContactScreen() {
               </Button>
 
               <Text className="text-muted-foreground text-xs text-center">
-                En appuyant sur le bouton, WhatsApp s'ouvrira avec un message pré-rédigé.
+                je souhaite devenir partenaire sur SKILLMAP pour disposé d'un quota de publication illimité
               </Text>
             </CardContent>
           </Card>

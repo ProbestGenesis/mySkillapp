@@ -1,19 +1,18 @@
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth-client';
-import { secretCode } from '@/lib/zodSchema';
-
-import { useTRPC } from '@/provider/appProvider';
+import { authClient, useSession } from '@/lib/auth-client';
 import { usePreciseLocation } from '@/lib/geolocation';
+import { secretCode } from '@/lib/zodSchema';
+import { useTRPC } from '@/provider/appProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clsx } from 'clsx';
@@ -22,7 +21,6 @@ import { AlertCircle, CalendarClock, Check, Locate, QrCode, UserIcon } from 'luc
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Alert, FlatList, Linking, Text, View } from 'react-native';
-
 import { Star } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -81,7 +79,7 @@ export default function ServiceListScreen() {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const router = useRouter();
-  const { data: session, isPending: sessionPending } = authClient.useSession();
+  const [session] = useState(useSession())
 
   const [activeDialog, setActiveDialog] = useState<DialogType>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -91,6 +89,8 @@ export default function ServiceListScreen() {
 
   const { location: currentLocation } = usePreciseLocation();
 
+
+  //Mise a jour de la localisation
   const updateLocationMutation = useMutation(
     trpc.service.updateServiceLocation.mutationOptions({
       onSuccess: () => {
@@ -102,7 +102,7 @@ export default function ServiceListScreen() {
 
   const { data, isLoading, refetch, isRefetching } = useQuery({
     ...trpc.service.getYoursServices.queryOptions(),
-    enabled: !!session?.user.id,
+    enabled: !!session?.data?.user.id,
   });
 
   const openDialog = (item: any, type: DialogType) => {
@@ -158,8 +158,7 @@ export default function ServiceListScreen() {
   const markAsViewedMutation = useMutation(
     trpc.service.markServiceAsViewed.mutationOptions({
       onSuccess: () => {
-        // Silently update cache or just invalidate if needed
-        // queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
+        queryClient.invalidateQueries({ queryKey: trpc.service.getYoursServices.queryKey() });
       },
     })
   );
@@ -182,11 +181,7 @@ export default function ServiceListScreen() {
   });
 
   useEffect(() => {
-    if (!session) {
-      router.push('/auth');
-    }
-
-    if (data && session?.user?.id) {
+    if (data && session?.data?.user?.id) {
       // @ts-ignore
       const providerId = session.user?.providerId;
       const unviewedServices = data.filter((s: any) => s.providerId === providerId && !s.isViewed);
@@ -201,7 +196,7 @@ export default function ServiceListScreen() {
   const renderItem = ({ item }: { item: any }) => {
     if (!item) return null;
 
-    const isCustomer = item.customerId === session?.user?.id;
+    const isCustomer = item.customerId === session?.data?.user?.id;
     const partnerName = isCustomer ? item.provider.user.name : item.customer.name;
     const partnerRoleLabel = isCustomer ? 'Prestataire' : 'Client';
 
@@ -242,99 +237,118 @@ export default function ServiceListScreen() {
             </View>
           </View>
 
-         <View className="flex-row items-center flex-wrap gap-1.5">
-           <View className="flex-row items-center gap-2">
-            <Locate size={14} className="text-muted-foreground" />
-            <Text className="text-muted-foreground text-sm">
-              {item.district ??  item.customer.district ?? 'Quartier non renseigné'}
-            </Text>
-          </View>
+          <View className="flex-row flex-wrap items-center gap-1.5">
+            <View className="flex-row items-center gap-2">
+              <Locate size={14} className="text-muted-foreground" />
+              <Text className="text-muted-foreground text-sm">
+                {item.district ?? item.customer.district ?? 'Quartier non renseigné'}
+              </Text>
+            </View>
 
-      {!isCustomer && item.status === 'IN_PROGRESS' && (
-            <Button
-              className='rounded-full w-fit px-2'
-              size={'iconSm'}
-              onPress={() => {
-                let lat, long;
-                
-                // 1. Localisation enregistrée avec le service
-                if (item.location && typeof item.location === 'object') {
-                  if ('lat' in item.location && 'long' in item.location) {
-                    lat = item.location.lat;
-                    long = item.location.long;
-                  } else if ('latitude' in item.location && 'longitude' in item.location) {
-                    lat = item.location.latitude;
-                    long = item.location.longitude;
-                  }
-                }
-            
-                // 2. Localisation en relation avec le client
-                if (lat === undefined || long === undefined) {
-                  if (item.customer?.location && typeof item.customer.location === 'object') {
-                    lat = item.customer.location.lat ?? item.customer.location.latitude;
-                    long = item.customer.location.long ?? item.customer.location.longitude;
-                  } else if (item.customer?.Location && Array.isArray(item.customer.Location) && item.customer.Location.length > 0) {
-                    const locInfo = item.customer.Location[0];
-                    if (locInfo?.position?.coordinates) {
-                      long = locInfo.position.coordinates[0];
-                      lat = locInfo.position.coordinates[1];
-                    } else if (locInfo?.lat !== undefined && locInfo?.long !== undefined) {
-                      lat = locInfo.lat;
-                      long = locInfo.long;
-                    } else if (locInfo?.latitude !== undefined && locInfo?.longitude !== undefined) {
-                      lat = locInfo.latitude;
-                      long = locInfo.longitude;
+            {!isCustomer && item.status === 'IN_PROGRESS' && (
+              <Button
+                className="w-fit rounded-full px-2"
+                size={'iconSm'}
+                onPress={() => {
+                  let lat, long;
+
+                  // 1. Localisation enregistrée avec le service
+                  if (item.location && typeof item.location === 'object') {
+                    if ('lat' in item.location && 'long' in item.location) {
+                      lat = item.location.lat;
+                      long = item.location.long;
+                    } else if ('latitude' in item.location && 'longitude' in item.location) {
+                      lat = item.location.latitude;
+                      long = item.location.longitude;
                     }
                   }
-                }
-            
-                if (lat !== undefined && long !== undefined) {
-                  const url = `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
-                  Linking.openURL(url);
-                } else {
-                  // Fallback: Recherche par adresse
-                  const searchQuery = item.district || item.customer?.district || item.city || item.customer?.city;
-                  if (searchQuery) {
-                    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+
+                  // 2. Localisation en relation avec le client
+                  if (lat === undefined || long === undefined) {
+                    if (item.customer?.location && typeof item.customer.location === 'object') {
+                      lat = item.customer.location.lat ?? item.customer.location.latitude;
+                      long = item.customer.location.long ?? item.customer.location.longitude;
+                    } else if (
+                      item.customer?.Location &&
+                      Array.isArray(item.customer.Location) &&
+                      item.customer.Location.length > 0
+                    ) {
+                      const locInfo = item.customer.Location[0];
+                      if (locInfo?.position?.coordinates) {
+                        long = locInfo.position.coordinates[0];
+                        lat = locInfo.position.coordinates[1];
+                      } else if (locInfo?.lat !== undefined && locInfo?.long !== undefined) {
+                        lat = locInfo.lat;
+                        long = locInfo.long;
+                      } else if (
+                        locInfo?.latitude !== undefined &&
+                        locInfo?.longitude !== undefined
+                      ) {
+                        lat = locInfo.latitude;
+                        long = locInfo.longitude;
+                      }
+                    }
+                  }
+
+                  if (lat !== undefined && long !== undefined) {
+                    const url = `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
                     Linking.openURL(url);
                   } else {
-                    Alert.alert('Information', 'Aucune localisation précise enregistrée pour ce client.');
+                    // Fallback: Recherche par adresse
+                    const searchQuery =
+                      item.district || item.customer?.district || item.city || item.customer?.city;
+                    if (searchQuery) {
+                      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+                      Linking.openURL(url);
+                    } else {
+                      Alert.alert(
+                        'Information',
+                        'Aucune localisation précise enregistrée pour ce client.'
+                      );
+                    }
                   }
-                }
-              }}
-            >
-              <Text className='text-white'>Voir la localisation precise</Text>
-            </Button>
-          )}
+                }}>
+                <Text className="text-white">Voir la localisation precise</Text>
+              </Button>
+            )}
 
-          {isCustomer && item.status !== 'COMPLETED' && item.status !== 'REJECTED' && (!item.location || typeof item.location !== 'object' || (!('lat' in item.location) && !('latitude' in item.location))) && (
-            <Button
-              className="rounded-full w-fit px-2 ml-2"
-              size={'iconSm'}
-              variant="outline"
-              disabled={updateLocationMutation.isPending}
-              onPress={() => {
-                if (!currentLocation) {
-                  Alert.alert('Erreur', 'Impossible de récupérer votre position. Vérifiez que la localisation est activée.');
-                  return;
-                }
-                updateLocationMutation.mutate({
-                  serviceId: item.id,
-                  location: {
-                    lat: currentLocation.latitude,
-                    long: currentLocation.longitude,
-                  }
-                });
-              }}
-            >
-              {updateLocationMutation.isPending ? (
-                <ActivityIndicator size="small" color="orange" />
-              ) : (
-                <Text className="text-xs font-bold text-primary">Renseigner ma position GPS</Text>
+            {isCustomer &&
+              item.status !== 'COMPLETED' &&
+              item.status !== 'REJECTED' &&
+              (!item.location ||
+                typeof item.location !== 'object' ||
+                (!('lat' in item.location) && !('latitude' in item.location))) && (
+                <Button
+                  className="ml-2 w-fit rounded-full px-2"
+                  size={'iconSm'}
+                  variant="outline"
+                  disabled={updateLocationMutation.isPending}
+                  onPress={() => {
+                    if (!currentLocation) {
+                      Alert.alert(
+                        'Erreur',
+                        'Impossible de récupérer votre position. Vérifiez que la localisation est activée.'
+                      );
+                      return;
+                    }
+                    updateLocationMutation.mutate({
+                      serviceId: item.id,
+                      location: {
+                        lat: currentLocation.latitude,
+                        long: currentLocation.longitude,
+                      },
+                    });
+                  }}>
+                  {updateLocationMutation.isPending ? (
+                    <ActivityIndicator size="small" color="orange" />
+                  ) : (
+                    <Text className="text-primary text-xs font-bold">
+                      Renseigner ma position GPS
+                    </Text>
+                  )}
+                </Button>
               )}
-            </Button>
-          )}
-         </View>
+          </View>
 
           {isCustomer && item.code && item.status !== 'COMPLETED' && (
             <View className="bg-primary/5 border-primary/20 mt-1 flex-row items-center justify-between rounded-xl border p-3">
@@ -667,14 +681,14 @@ export default function ServiceListScreen() {
 
     return null;
   };
-{/*
-  if(!session){
+
+  if (!session) {
     return (
       <SafeAreaView className="flex-1">
         <View className="bg-background h-screen">
           <View className="flex-1 items-center justify-center gap-6">
             <Text className="font-lg text-muted-foreground text-xl">
-             Vous devez être connecté pour accéder à cette page
+              Vous devez être connecté pour accéder à cette page
             </Text>
             <Button variant="outline" onPress={() => router.push('/auth')} className="rounded-full">
               <Text>Se connecter</Text>
@@ -682,8 +696,8 @@ export default function ServiceListScreen() {
           </View>
         </View>
       </SafeAreaView>
-    )
-  }*/}
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1">
@@ -717,8 +731,6 @@ export default function ServiceListScreen() {
               </View>
             )}
 
-            {/* --- LE DIALOGUE GLOBAL --- */}
-            {/* Il est rendu HORS de la liste, une seule fois */}
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogContent className="w-full rounded-2xl">{renderDialogContent()}</DialogContent>
             </Dialog>

@@ -1,16 +1,26 @@
-import { Stack } from 'expo-router';
+import { Button } from '@/components/ui/button';
+import { Stack, Link } from 'expo-router';
+import { ArrowLeft } from 'lucide-react-native';
 
 type Props = {};
 function ProviderLayout({}: Props) {
   return (
-      <Stack>
-        <Stack.Screen
-          name="contact/index"
-          options={{
-            title: 'Contacter',
-          }}
-        />
-      </Stack>
+    <Stack>
+      <Stack.Screen
+        name="contact"
+        options={{
+          title: 'Contacter',
+          headerBackVisible: false,
+          headerLeft: () => (
+            <Link asChild href="/">
+              <Button variant={'ghost'} size={"iconSm"}>
+                <ArrowLeft />
+              </Button>
+            </Link>
+          ),
+        }}
+      />=4
+    </Stack>
   );
 }
 export default ProviderLayout;
