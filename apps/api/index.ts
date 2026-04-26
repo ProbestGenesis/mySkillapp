@@ -21,7 +21,7 @@ app.use(
   })
 );
 app.all("/api/auth/*splat", toNodeHandler(auth))
-app.use(express.json({ limit: '10mb' }))
+app.use(express.json({ limit: '50mb' }))
 
 app.use(
     "/trpc",
