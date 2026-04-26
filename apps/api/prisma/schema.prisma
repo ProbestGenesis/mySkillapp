@@ -16,7 +16,6 @@ enum STATUSPOST {
 }
 
 enum STATUSSERVICE {
-  DEMAND
   PENDING
   IN_PROGRESS
   ACCEPTED
@@ -100,6 +99,7 @@ model StoreMessage {
   sender          User              @relation(fields: [senderId], references: [id], onDelete: Cascade)
   senderId        String
   content         String
+  imageUrl        String?
   createdAt       DateTime          @default(now())
   readAt          DateTime?
 }
@@ -136,6 +136,7 @@ model Provider {
   isAvailable   Boolean @default(true)
   availability  String?
   location      Json? 
+  experience     Int  @default(1)
   average_price Float?
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String

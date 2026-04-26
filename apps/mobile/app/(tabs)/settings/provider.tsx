@@ -27,6 +27,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
+import { Input } from '@/components/ui/input';
 
 type Props = {
   onComplete?: () => void;
@@ -118,7 +119,7 @@ export default function BecomeProvider({}: Props) {
 
   return (
     <View className="flex-1">
-      <AnimatePresence>
+      <AnimatePresence exitBeforeEnter>
         {closeLanding ? (
           <MotiView
             key="next"
@@ -161,6 +162,50 @@ export default function BecomeProvider({}: Props) {
               />
 
               <Controller
+                name="bio"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <View className="w-full">
+                    <Label className="text-lg font-bold">Parlez-nous de vous</Label>
+                    <Textarea
+                      placeholder="Décrivez vos compétences, expériences, etc."
+                      onChangeText={onChange}
+                      value={value}
+                      className="mt-1 h-32"
+                      multiline
+                      textAlignVertical="top"
+                    />
+                    {error?.message && (
+                      <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
+                    )}
+                  </View>
+                )}
+              />
+
+              <Controller
+                name="experience"
+                control={control}
+                defaultValue={1}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <View className="w-full">
+                    <Label className="text-lg font-bold">Années d'expérience</Label>
+                    <Input
+                      placeholder="Ex: 2"
+                      onChangeText={(text) => onChange(Number(text))}
+                      value={String(value ?? '')}
+                      className="mt-1 h-12"
+                      keyboardType="number-pad"
+                    />
+                    {error?.message && (
+                      <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
+                    )}
+                  </View>
+                )}
+              />
+
+
+              <Controller
                 control={control}
                 name="availability"
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -185,28 +230,6 @@ export default function BecomeProvider({}: Props) {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    {error?.message && (
-                      <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
-                    )}
-                  </View>
-                )}
-              />
-
-              <Controller
-                name="bio"
-                control={control}
-                defaultValue=""
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <View className="w-full">
-                    <Label className="text-lg font-bold">Parlez-nous de vous</Label>
-                    <Textarea
-                      placeholder="Décrivez vos compétences, expériences, etc."
-                      onChangeText={onChange}
-                      value={value}
-                      className="mt-1 h-32"
-                      multiline
-                      textAlignVertical="top"
-                    />
                     {error?.message && (
                       <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
                     )}

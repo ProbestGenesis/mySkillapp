@@ -161,7 +161,7 @@ export const postRouter = t.router({
       try {
         const post = await ctx.prisma.post.create({
           data: {
-            body: input.body,
+            body: input.body.trim(),
             user: {
               connect: {
                 id: ctx.session!.user.id,

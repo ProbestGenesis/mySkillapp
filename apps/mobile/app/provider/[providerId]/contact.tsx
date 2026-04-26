@@ -27,6 +27,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { usePreciseLocation } from '@/lib/geolocation';
 import clsx from 'clsx';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
 
@@ -116,8 +117,8 @@ function Contact({}: Props) {
     );
   }
   return (
-    <View className="h-full p-2">
-      <View>
+    <SafeAreaView className="flex-1 ">
+      <View className="h-full px-2 py-1">
         {' '}
         {data ? (
           <View className="relative">
@@ -127,7 +128,7 @@ function Contact({}: Props) {
                   <View className="flex-row items-center">
                     <Avatar alt="profil picture" className="size-20">
                       <AvatarImage
-                        //@ts-ignore
+                        //@ts-ignore  
                         source={{ uri: data?.user?.image }}
                       />
                       <AvatarFallback>
@@ -360,7 +361,7 @@ function Contact({}: Props) {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 export default Contact;

@@ -63,7 +63,7 @@ export const customersRouter = t.router({
       .map((id) => {
         const post = byId.get(id)
         if (!post) return null
-        return { ...post, distanceM: distanceByPostId.get(id) ?? 0 }
+        return { ...post, distanceM: distanceByPostId.get(id) ?? 0, distance: distanceByPostId.get(id) ?? 0 / 1000 }
       })
       .filter((x): x is NonNullable<typeof x> => x !== null)
   }),

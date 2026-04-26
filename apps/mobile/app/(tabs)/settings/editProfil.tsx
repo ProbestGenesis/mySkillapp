@@ -27,7 +27,14 @@ import { useRouter } from 'expo-router';
 import { MotiView } from 'moti';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
@@ -35,7 +42,7 @@ export default function EditProfil() {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const { data: session } = authClient.useSession();
+  const { data: session, refetch } = authClient.useSession();
 
   const [activeTab, setActiveTab] = useState('personal');
   const [success, setSuccess] = useState<{ message: string; type: 'success' | 'error' | null }>({
@@ -47,8 +54,9 @@ export default function EditProfil() {
     if (success.message && success.type === 'success') {
       const timer = setTimeout(() => {
         setSuccess({ message: '', type: null });
-        router.back()
-      }, 5000);
+        refetch()
+        router.back();
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [success]);
@@ -112,6 +120,7 @@ export default function EditProfil() {
         providerForm.reset({
           profession: { value: userData.provider.profession, label: userData.provider.profession },
           bio: userData.provider.bio || '',
+          experience: userData.provider.experience,
           availability: {
             value: (userData.provider.availability as any) || '7j/7',
             label: (userData.provider.availability as any) || '7j/7',
@@ -145,6 +154,7 @@ export default function EditProfil() {
       const res = await updatePersonal(data);
       if (res.ok) {
         setSuccess({ message: res.message, type: 'success' });
+        refetch()
         queryClient.invalidateQueries(
           trpc.user.getUserWithProviderData.queryOptions({ userId: session?.user.id as string })
         );
@@ -193,7 +203,7 @@ export default function EditProfil() {
       className="bg-background mt-2 flex-1"
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={insets.top}>
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 " showsVerticalScrollIndicator={false}>
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full px-4">
           {/* ── TabsList ── */}
           <TabsList className="mb-6 grid w-full grid-cols-2 gap-8">
@@ -383,7 +393,7 @@ export default function EditProfil() {
 
               {/* Bio */}
               <View>
-                <Label className="mb-2 font-semibold">Bio / Expérience</Label>
+                <Label className="mb-2 font-semibold">Bio </Label>
                 <Controller
                   control={providerForm.control}
                   name="bio"
@@ -401,6 +411,27 @@ export default function EditProfil() {
                   )}
                 />
               </View>
+
+              <Controller
+                name="experience"
+                control={providerForm.control}
+                defaultValue={1}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <View className="w-full">
+                    <Label className="text-lg font-bold">Années d'expérience</Label>
+                    <Input
+                      placeholder="Ex: 2"
+                      onChangeText={(text) => onChange(Number(text))}
+                      value={String(value ?? '')}
+                      className="mt-1 h-12"
+                      keyboardType="number-pad"
+                    />
+                    {error?.message && (
+                      <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
+                    )}
+                  </View>
+                )}
+              />
 
               {/* Disponibilité / Prix */}
               <View className="flex-row gap-4">

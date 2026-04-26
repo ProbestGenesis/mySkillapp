@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
 function ProfilPicture({}: Props) {
-   const [session] = useState(useSession())
+   const { data : session }= useSession()
   const queryClient = useQueryClient();
   const router = useRouter();
   const trpc = useTRPC();
@@ -115,7 +115,7 @@ function ProfilPicture({}: Props) {
         </View>
         <Avatar alt="profil picture" className="h-32 w-32">
           <AvatarImage source={{ uri: image?.uri || '' }} />
-          <AvatarFallback>{session?.data?.user.name?.slice(0, 2)}</AvatarFallback>
+          <AvatarFallback>{session?.user.name?.slice(0, 2)}</AvatarFallback>
         </Avatar>
 
         <Button className="border-2 border-dotted" variant={'outline'} onPress={pickImage}>

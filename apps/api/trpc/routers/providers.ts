@@ -4,12 +4,13 @@ import { createSkill } from '../../../../packages/lib/zodSchema.ts'
 import { findNearbyProviderUserIds } from '../lib/geoNearby.ts'
 import { protectedProcedure, t } from '../trpc.ts'
 
+
 const nearByInput = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   /** Rayon en mètres (ellipsoïde WGS84 via `geography`). */
-  radiusMeters: z.number().min(50).max(500_000).optional().default(50_000),
-  limit: z.number().min(1).max(40).optional().default(20),
+  radiusMeters: z.number().min(10).max(100_000).optional().default(10_000),
+  limit: z.number().min(1).max(10).optional().default(5),
   /** Exclure un utilisateur (ex. soi-même) du résultat. */
   excludeUserId: z.string().optional(),
   /** Filtre métier (profession/compétence). */
@@ -48,8 +49,8 @@ export const providersRouter = t.router({
     const skill = await ctx.prisma.skills.create({
       data: {
         providerId: userWithProvider.provider.id,
-        title: input.title,
-        description: input.description,
+        title: input.title.trim(),
+        description: input.description.trim(),
         average_price: parseInt(input.averagePrice, 10),
       },
     })
@@ -126,7 +127,7 @@ export const providersRouter = t.router({
         const provider = byUserId.get(uid)
         if (!provider) return null
         const distanceM = distanceByUserId.get(uid) ?? 0
-        return { ...provider, distanceM }
+        return { ...provider, distanceM, distance: distanceM / 1000 }
       })
       .filter((x): x is NonNullable<typeof x> => x !== null)
   }),

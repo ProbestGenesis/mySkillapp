@@ -4,6 +4,7 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { phoneNumber, customSession } from 'better-auth/plugins'
 import { env } from './lib/env.ts'
 import { prisma } from './lib/prisma.ts'
+import { sendOTP } from './lib/termii.ts'
 
 export const auth = betterAuth({
   
@@ -12,7 +13,7 @@ export const auth = betterAuth({
   }),
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
-  trustedOrigins: [env.CORS_ORIGIN, env.EXPO_SCHEME, "http://192.168.201.16:4000", 'skillmap://', "http://192.168.201.16:8081", "exp://192.168.201.16:8081"  ],
+  trustedOrigins: [env.CORS_ORIGIN, env.EXPO_SCHEME, "http://192.168.201.18:4000", 'skillmap://', "http://192.168.201.18:8081", "exp://192.168.201.18:8081"  ],
 
   user: {
     additionalFields: {
@@ -64,12 +65,12 @@ export const auth = betterAuth({
     }),
     phoneNumber({
       sendOTP: ({ phoneNumber, code }, ctx) => {
-        // Implement sending OTP code via SMS
+        sendOTP(Number(code), phoneNumber);
       },
       allowedAttempts: 6,
       expiresIn: 60 * 100,
       otpLength: 4,
-      requireVerification: true,
+      requireVerification: false,
     }),
   ],
 })

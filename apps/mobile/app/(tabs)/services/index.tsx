@@ -1,15 +1,15 @@
 import { Button } from '@/components/ui/button';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { authClient, useSession } from '@/lib/auth-client';
+import { useSession } from '@/lib/auth-client';
 import { usePreciseLocation } from '@/lib/geolocation';
 import { secretCode } from '@/lib/zodSchema';
 import { useTRPC } from '@/provider/appProvider';
@@ -17,13 +17,28 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clsx } from 'clsx';
 import { useRouter } from 'expo-router';
-import { AlertCircle, CalendarClock, Check, Locate, QrCode, UserIcon } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  AlertCircle,
+  CalendarClock,
+  Check,
+  Locate,
+  QrCode,
+  Star,
+  UserIcon,
+} from 'lucide-react-native';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, Alert, FlatList, Linking, Text, View } from 'react-native';
-import { Star } from 'lucide-react-native';
-import { TouchableOpacity } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Linking,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 type DialogType = 'CARE' | 'CANCEL' | 'FINISH' | 'RATE' | 'APPOINTMENT' | null;
 
@@ -79,15 +94,24 @@ export default function ServiceListScreen() {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const router = useRouter();
-  const [session] = useState(useSession())
+  const { data: session } = useSession();
+
+  const { location, error: locationError } = usePreciseLocation()
+
+  
+  const stableLoc = useMemo(() => {
+  if (!location) return null;
+  return {
+    lat: location.latitude,
+    long: location.longitude,
+  };
+}, [location?.latitude, location?.longitude]);
 
   const [activeDialog, setActiveDialog] = useState<DialogType>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [rating, setRating] = useState(5);
   const [timeStr, setTimeStr] = useState('');
-
-  const { location: currentLocation } = usePreciseLocation();
 
 
   //Mise a jour de la localisation
@@ -101,8 +125,11 @@ export default function ServiceListScreen() {
   );
 
   const { data, isLoading, refetch, isRefetching } = useQuery({
-    ...trpc.service.getYoursServices.queryOptions(),
-    enabled: !!session?.data?.user.id,
+    ...trpc.service.getYoursServices.queryOptions({
+      lat: stableLoc!.lat,
+      long: stableLoc!.long
+    }),
+    enabled: !!session?.user.id && !! stableLoc,
   });
 
   const openDialog = (item: any, type: DialogType) => {
@@ -181,7 +208,7 @@ export default function ServiceListScreen() {
   });
 
   useEffect(() => {
-    if (data && session?.data?.user?.id) {
+    if (data && session?.user?.id) {
       // @ts-ignore
       const providerId = session.user?.providerId;
       const unviewedServices = data.filter((s: any) => s.providerId === providerId && !s.isViewed);
@@ -193,10 +220,27 @@ export default function ServiceListScreen() {
     return;
   }, [session, data]);
 
+  if (!session) {
+    return (
+      <SafeAreaView className="flex-1">
+        <View className="bg-background h-screen">
+          <View className="flex-1 items-center justify-center gap-6">
+            <Text className="font-lg text-muted-foreground text-xl">
+              Vous devez être connecté pour accéder à cette page
+            </Text>
+            <Button variant="outline" onPress={() => router.push('/auth')} className="rounded-full">
+              <Text>Se connecter</Text>
+            </Button>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   const renderItem = ({ item }: { item: any }) => {
     if (!item) return null;
 
-    const isCustomer = item.customerId === session?.data?.user?.id;
+    const isCustomer = item.customerId === session?.user?.id;
     const partnerName = isCustomer ? item.provider.user.name : item.customer.name;
     const partnerRoleLabel = isCustomer ? 'Prestataire' : 'Client';
 
@@ -216,28 +260,48 @@ export default function ServiceListScreen() {
             <CardTitle className="text-lg font-bold">
               {item.skills?.title || item.title || 'Service sans titre'}
             </CardTitle>
-            <CardDescription className="mt-1 line-clamp-2">{item.description}</CardDescription>
+            <CardDescription className="mt-1.5 line-clamp-2 text-lg">
+              {item.description}
+            </CardDescription>
           </View>
           <StatusBadge status={item.status} />
         </CardHeader>
 
         <CardContent className="gap-3 px-4 py-0">
-          <View className="flex-row items-center gap-2">
+          <View className="flex-row   flex-wrap items-center gap-2">
             <View className="bg-primary/10 flex-row items-center rounded-full px-2 py-1">
               <UserIcon size={12} className="text-primary mr-1" />
               <Text className="text-primary text-xs font-semibold">
                 {partnerRoleLabel}: {partnerName}
               </Text>
             </View>
-            <View className="bg-muted flex-row items-center rounded-full px-2 py-1">
+            <View className="bg-muted flex-row  items-center rounded-full px-2 py-1">
               <CalendarClock size={12} className="text-muted-foreground mr-1" />
               <Text className="text-muted-foreground text-xs">
-                {new Date(item.createdAt).toLocaleDateString()}
+                {new Date(item.createdAt).toLocaleDateString('fr-FR', {
+                  weekday: 'short',
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
               </Text>
             </View>
+
+           
+
           </View>
 
           <View className="flex-row flex-wrap items-center gap-1.5">
+
+          <View className="bg-muted flex-row items-center rounded-full px-2 py-1">
+              <Locate size={12} className="text-muted-foreground mr-1" />
+              <Text className="text-muted-foreground text-xs">
+                {item.distance?.toFixed(2)} km
+              </Text>
+            </View>
+            
             <View className="flex-row items-center gap-2">
               <Locate size={14} className="text-muted-foreground" />
               <Text className="text-muted-foreground text-sm">
@@ -324,7 +388,7 @@ export default function ServiceListScreen() {
                   variant="outline"
                   disabled={updateLocationMutation.isPending}
                   onPress={() => {
-                    if (!currentLocation) {
+                    if (!stableLoc) { 
                       Alert.alert(
                         'Erreur',
                         'Impossible de récupérer votre position. Vérifiez que la localisation est activée.'
@@ -334,8 +398,8 @@ export default function ServiceListScreen() {
                     updateLocationMutation.mutate({
                       serviceId: item.id,
                       location: {
-                        lat: currentLocation.latitude,
-                        long: currentLocation.longitude,
+                        lat: stableLoc.lat,
+                        long: stableLoc.long,
                       },
                     });
                   }}>
@@ -389,7 +453,7 @@ export default function ServiceListScreen() {
             </Button>
           )}
 
-          {!isCustomer && item.status === 'ACCEPTED' && (
+          {!isCustomer && item.status === 'PENDING' && (
             <Button
               size="sm"
               className="rounded-full px-6"
@@ -471,9 +535,8 @@ export default function ServiceListScreen() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <View>
                 <Input
-                  placeholder="12345"
+                  placeholder="e4L45"
                   className="h-14 text-center text-2xl font-bold tracking-[10px]"
-                  keyboardType="number-pad"
                   maxLength={5}
                   onChangeText={onChange}
                   value={value}
@@ -636,7 +699,7 @@ export default function ServiceListScreen() {
           <View>
             <Text className="text-xl font-bold">Définir un rendez-vous</Text>
             <Text className="text-muted-foreground mt-1">
-              Proposez une date et une heure au client.
+              Proposez une date et une heure au client. Vous acceptez de réaliser ce service.
             </Text>
           </View>
 
@@ -682,25 +745,7 @@ export default function ServiceListScreen() {
     return null;
   };
 
-  if (!session) {
-    return (
-      <SafeAreaView className="flex-1">
-        <View className="bg-background h-screen">
-          <View className="flex-1 items-center justify-center gap-6">
-            <Text className="font-lg text-muted-foreground text-xl">
-              Vous devez être connecté pour accéder à cette page
-            </Text>
-            <Button variant="outline" onPress={() => router.push('/auth')} className="rounded-full">
-              <Text>Se connecter</Text>
-            </Button>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
   return (
-    <SafeAreaView className="flex-1">
       <View className="bg-background h-screen">
         {isLoading ? (
           <View className="h-full w-full flex-row items-center justify-center">
@@ -732,11 +777,12 @@ export default function ServiceListScreen() {
             )}
 
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogContent className="w-full rounded-2xl">{renderDialogContent()}</DialogContent>
+              <DialogContent className="w-full min-w-xs rounded-2xl">
+                {renderDialogContent()}
+              </DialogContent>
             </Dialog>
           </>
         )}
       </View>
-    </SafeAreaView>
   );
 }

@@ -13,11 +13,16 @@ import MyPostInfo from './myPostsInfo';
 import { ProviderCard } from './providersCard';
 import { Link } from 'expo-router';
 
+
 /** Aligné sur `providers.listNear` (Provider + user + skills + distance). */
-type NearProviderRow = {
+export type NearProviderRow = {
   id: string;
   profession: string;
+  rate: number;
+  mission_nb: number,
+  bio: string | null,
   user: { name: string; image: string | null };
+  skills: { id: string; title: string; description: string; average_price: number }[],
   distanceM: number;
 };
 
@@ -71,14 +76,15 @@ function ProviderCheckRadar({ selectedService }: Props) {
     }),
     enabled: !!stableLoc,
   });
+
   const nearProviders: NearProviderRow[] = nearQuery.data ?? [];
   const loadingNearProviders = nearQuery.isFetching;
-
-  const providerQuery = useQuery({
+  
+{/*  const providerQuery = useQuery({
     ...trpc.providers.getProvider.queryOptions({ id: providerId }),
     enabled: viewProviderCard && !!providerId,
   });
-
+*/}
   const { data: userPostsQuery, isPending: userPostFecthing } = useQuery({
     ...trpc.post.listMyPosts.queryOptions(),
     enabled: !!session,
@@ -193,10 +199,10 @@ function ProviderCheckRadar({ selectedService }: Props) {
           })}
         </AnimatePresence>
         <ProviderCard
-          provider={providerQuery.data}
+          provider={nearProviders.filter(el => el.id === providerId)[0]}
           viewProviderCard={viewProviderCard}
           onClose={onCloseProvieerCard}
-          providerCardDataLoading={providerQuery.isPending}
+          providerCardDataLoading={false}
         />
         <View className="absolute bottom-2 items-center">
           <View className="flex-col gap-1.5">

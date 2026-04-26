@@ -107,7 +107,7 @@ export default function StoreItemDetailsScreen() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: trpc.store.listItems.queryKey() })
         queryClient.invalidateQueries({ queryKey: trpc.store.getMyItems.queryKey() })
-        router.replace('/(tabs)/store')
+        router.back()
       },
     })
   )

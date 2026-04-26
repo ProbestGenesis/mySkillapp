@@ -6,7 +6,9 @@ type Props = {}
 function _layout({}: Props) {
   return (
     <Stack>
-        <Stack.Screen name='index' options={{headerShown: false}} />
+        <Stack.Screen name='index' options={{
+          title: "Services"
+        }} />
     </Stack>
   )
 }

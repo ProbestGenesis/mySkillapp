@@ -18,6 +18,7 @@ type Props = {};
 
 function index({}: Props) {
   const { data: session } = useSession();
+  console.log(session)
   const router = useRouter();
   const [showPostCard, setShowPostCard] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
