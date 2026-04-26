@@ -5,7 +5,7 @@ import { useTRPC } from '@/provider/appProvider';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useRouter } from 'expo-router';
 import React from 'react';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from "@/components/ui/button"
 
@@ -54,7 +54,17 @@ export default function StoreConversationsScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 px-4 py-3" refreshControl={undefined}>
+    <ScrollView
+      className="flex-1 px-4 py-3"
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefetching}
+          onRefresh={() => refetch()}
+          colors={['orange']}
+          tintColor="orange"
+        />
+      }
+    >
       <View className="gap-3 pb-10">
         {data?.length ? (
           data.map((conversation) => {

@@ -140,6 +140,7 @@ export const StoreMessageScalarFieldEnum = {
   conversationId: 'conversationId',
   senderId: 'senderId',
   content: 'content',
+  imageUrl: 'imageUrl',
   createdAt: 'createdAt',
   readAt: 'readAt'
 } as const
@@ -181,6 +182,7 @@ export const ProviderScalarFieldEnum = {
   isAvailable: 'isAvailable',
   availability: 'availability',
   location: 'location',
+  experience: 'experience',
   average_price: 'average_price',
   userId: 'userId',
   createdAt: 'createdAt',

@@ -2,13 +2,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
-import { signIn, useSession } from '@/lib/auth-client';
+import { authClient, signIn } from '@/lib/auth-client';
 import { signInForm } from '@/lib/zodSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Image } from 'expo-image';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
@@ -18,9 +18,6 @@ import { z } from 'zod';
 type FormSchema = z.infer<typeof signInForm>;
 type Props = {};
 function index({}: Props) {
-  const { data: session } = useSession();
-  const { role } = useLocalSearchParams();
-
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -46,6 +43,8 @@ function index({}: Props) {
       rememberMe: true,
     });
 
+    console.log(error)
+
     if (error?.status === 404) {
       setIsSuccess({
         type: 'signIn',
@@ -59,7 +58,7 @@ function index({}: Props) {
     if (error && error.code === 'PHONE_NUMBER_NOT_VERIFIED') {
       router.push(`/auth/verify/phoneNumber?phoneNumber=${data.phone}`);
     }
-    if (error && error.code === "INVALID_CREDENTIALS") {
+    if (error && error.code === 'INVALID_CREDENTIALS') {
       setIsSuccess({
         type: 'signIn',
         message: 'Numéro ou mot de passe incorrect',
@@ -68,7 +67,6 @@ function index({}: Props) {
       });
       setIsLoading(false);
     }
-    
 
     if (!error) {
       setIsSuccess({
@@ -77,6 +75,7 @@ function index({}: Props) {
         status: 200,
         error: false,
       });
+      const session = await authClient.getSession();
 
       setTimeout(() => {
         queryClient.invalidateQueries();
@@ -94,7 +93,11 @@ function index({}: Props) {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           className="h-screen flex-1 flex-col bg-blue-900">
           <View className="flex-1">
-            <Image source={require('@/assets/images/splash.png')} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+            <Image
+              source={require('@/assets/images/splash.png')}
+              style={{ width: '100%', height: '100%' }}
+              contentFit="cover"
+            />
           </View>
 
           <View className="max-h-[60%] flex-auto flex-col gap-6 rounded-t-3xl bg-white p-2 py-6">

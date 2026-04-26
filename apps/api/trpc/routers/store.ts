@@ -137,10 +137,10 @@ export const storeRouter = t.router({
         })
       }
       const buffer = Buffer.from(base64, 'base64')
-      if (buffer.byteLength > 5 * 1024 * 1024) {
+      if (buffer.byteLength > 10 * 1024 * 1024) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Le fichier ne doit pas dépasser 5MB',
+          message: 'Le fichier ne doit pas dépasser 10MB',
         })
       }
       const ext = fileName.includes('.') ? fileName.substring(fileName.lastIndexOf('.')) : '.jpg'
@@ -277,12 +277,13 @@ export const storeRouter = t.router({
     .input(
       z.object({
         conversationId: z.string(),
-        content: z.string().min(1),
+        content: z.string().optional().default(''),
+        imageUrl: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const normalized = input.content.trim()
-      if (!normalized) {
+      const normalized = (input.content ?? '').trim()
+      if (!normalized && !input.imageUrl) {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Message vide interdit' })
       }
       const conversation = await ctx.prisma.storeConversation.findUnique({
@@ -302,6 +303,7 @@ export const storeRouter = t.router({
           conversationId: input.conversationId,
           senderId: userId,
           content: normalized,
+          imageUrl: input.imageUrl,
         },
         include: {
           sender: { select: { id: true, name: true } },

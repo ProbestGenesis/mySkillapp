@@ -75,7 +75,8 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
               <DialogTitle>Ma demande</DialogTitle>
               <View className="flex-row items-center gap-2">
                 <Text className="text-muted-foreground text-xs">
-                  Publier le: {userPost?.createdAt.toString()}
+                  //@ts-ignore
+                  Publier le: {new Date(userPost?.createdAt as string).toLocaleDateString('fr-FR')}
                 </Text>
               </View>
             </DialogHeader>

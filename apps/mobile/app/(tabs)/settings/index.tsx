@@ -17,6 +17,7 @@ import { useTRPC } from '@/provider/appProvider';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Link, useRouter } from 'expo-router';
+import { useState } from 'react';
 import {
   AlertCircle,
   BriefcaseBusiness,
@@ -28,24 +29,35 @@ import {
   Star,
   UserIcon,
 } from 'lucide-react-native';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
 
 function SettingScreen({}: Props) {
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending, refetch: refetchSession } = authClient.useSession();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data, isLoading, error } = useQuery(
-    trpc.user.getUserWithProviderData.queryOptions({ userId: session?.user.id as string })
-  );
+  const { data, isLoading, error, refetch } = useQuery({
+    ...trpc.user.getUserWithProviderData.queryOptions({ userId: session?.user.id as string }),
+  });
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await Promise.all([
+      refetchSession(),
+      refetch(),
+    ]);
+    setIsRefreshing(false);
+  };
   const handleSignOut = async () => {
     try {
       queryClient.invalidateQueries();
       await authClient.signOut();
+      router.push("/auth")
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +120,17 @@ function SettingScreen({}: Props) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            colors={['orange']}
+            tintColor="orange"
+          />
+        }
+      >
         <View className="px-2 pb-20">
           <View className="flex gap-2 py-4">
             <View className="mb-4 flex-row items-center justify-between">

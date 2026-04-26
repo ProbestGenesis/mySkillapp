@@ -30,6 +30,7 @@ export type ProviderAvgAggregateOutputType = {
   rate: number | null
   mission_nb: number | null
   reviews_count: number | null
+  experience: number | null
   average_price: number | null
 }
 
@@ -37,6 +38,7 @@ export type ProviderSumAggregateOutputType = {
   rate: number | null
   mission_nb: number | null
   reviews_count: number | null
+  experience: number | null
   average_price: number | null
 }
 
@@ -50,6 +52,7 @@ export type ProviderMinAggregateOutputType = {
   reviews_count: number | null
   isAvailable: boolean | null
   availability: string | null
+  experience: number | null
   average_price: number | null
   userId: string | null
   createdAt: Date | null
@@ -66,6 +69,7 @@ export type ProviderMaxAggregateOutputType = {
   reviews_count: number | null
   isAvailable: boolean | null
   availability: string | null
+  experience: number | null
   average_price: number | null
   userId: string | null
   createdAt: Date | null
@@ -83,6 +87,7 @@ export type ProviderCountAggregateOutputType = {
   isAvailable: number
   availability: number
   location: number
+  experience: number
   average_price: number
   userId: number
   createdAt: number
@@ -95,6 +100,7 @@ export type ProviderAvgAggregateInputType = {
   rate?: true
   mission_nb?: true
   reviews_count?: true
+  experience?: true
   average_price?: true
 }
 
@@ -102,6 +108,7 @@ export type ProviderSumAggregateInputType = {
   rate?: true
   mission_nb?: true
   reviews_count?: true
+  experience?: true
   average_price?: true
 }
 
@@ -115,6 +122,7 @@ export type ProviderMinAggregateInputType = {
   reviews_count?: true
   isAvailable?: true
   availability?: true
+  experience?: true
   average_price?: true
   userId?: true
   createdAt?: true
@@ -131,6 +139,7 @@ export type ProviderMaxAggregateInputType = {
   reviews_count?: true
   isAvailable?: true
   availability?: true
+  experience?: true
   average_price?: true
   userId?: true
   createdAt?: true
@@ -148,6 +157,7 @@ export type ProviderCountAggregateInputType = {
   isAvailable?: true
   availability?: true
   location?: true
+  experience?: true
   average_price?: true
   userId?: true
   createdAt?: true
@@ -252,6 +262,7 @@ export type ProviderGroupByOutputType = {
   isAvailable: boolean
   availability: string | null
   location: runtime.JsonValue | null
+  experience: number
   average_price: number | null
   userId: string
   createdAt: Date
@@ -292,6 +303,7 @@ export type ProviderWhereInput = {
   isAvailable?: Prisma.BoolFilter<"Provider"> | boolean
   availability?: Prisma.StringNullableFilter<"Provider"> | string | null
   location?: Prisma.JsonNullableFilter<"Provider">
+  experience?: Prisma.IntFilter<"Provider"> | number
   average_price?: Prisma.FloatNullableFilter<"Provider"> | number | null
   userId?: Prisma.StringFilter<"Provider"> | string
   createdAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
@@ -314,6 +326,7 @@ export type ProviderOrderByWithRelationInput = {
   isAvailable?: Prisma.SortOrder
   availability?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
+  experience?: Prisma.SortOrder
   average_price?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -340,6 +353,7 @@ export type ProviderWhereUniqueInput = Prisma.AtLeast<{
   isAvailable?: Prisma.BoolFilter<"Provider"> | boolean
   availability?: Prisma.StringNullableFilter<"Provider"> | string | null
   location?: Prisma.JsonNullableFilter<"Provider">
+  experience?: Prisma.IntFilter<"Provider"> | number
   average_price?: Prisma.FloatNullableFilter<"Provider"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
@@ -361,6 +375,7 @@ export type ProviderOrderByWithAggregationInput = {
   isAvailable?: Prisma.SortOrder
   availability?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
+  experience?: Prisma.SortOrder
   average_price?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -386,6 +401,7 @@ export type ProviderScalarWhereWithAggregatesInput = {
   isAvailable?: Prisma.BoolWithAggregatesFilter<"Provider"> | boolean
   availability?: Prisma.StringNullableWithAggregatesFilter<"Provider"> | string | null
   location?: Prisma.JsonNullableWithAggregatesFilter<"Provider">
+  experience?: Prisma.IntWithAggregatesFilter<"Provider"> | number
   average_price?: Prisma.FloatNullableWithAggregatesFilter<"Provider"> | number | null
   userId?: Prisma.StringWithAggregatesFilter<"Provider"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Provider"> | Date | string
@@ -403,6 +419,7 @@ export type ProviderCreateInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -424,6 +441,7 @@ export type ProviderUncheckedCreateInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   userId: string
   createdAt?: Date | string
@@ -445,6 +463,7 @@ export type ProviderUpdateInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -466,6 +485,7 @@ export type ProviderUncheckedUpdateInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -487,6 +507,7 @@ export type ProviderCreateManyInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   userId: string
   createdAt?: Date | string
@@ -504,6 +525,7 @@ export type ProviderUpdateManyMutationInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -520,6 +542,7 @@ export type ProviderUncheckedUpdateManyInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -542,6 +565,7 @@ export type ProviderCountOrderByAggregateInput = {
   isAvailable?: Prisma.SortOrder
   availability?: Prisma.SortOrder
   location?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   average_price?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -552,6 +576,7 @@ export type ProviderAvgOrderByAggregateInput = {
   rate?: Prisma.SortOrder
   mission_nb?: Prisma.SortOrder
   reviews_count?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   average_price?: Prisma.SortOrder
 }
 
@@ -565,6 +590,7 @@ export type ProviderMaxOrderByAggregateInput = {
   reviews_count?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   availability?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   average_price?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -581,6 +607,7 @@ export type ProviderMinOrderByAggregateInput = {
   reviews_count?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
   availability?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   average_price?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -591,6 +618,7 @@ export type ProviderSumOrderByAggregateInput = {
   rate?: Prisma.SortOrder
   mission_nb?: Prisma.SortOrder
   reviews_count?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   average_price?: Prisma.SortOrder
 }
 
@@ -742,6 +770,7 @@ export type ProviderCreateWithoutUserInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -762,6 +791,7 @@ export type ProviderUncheckedCreateWithoutUserInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -798,6 +828,7 @@ export type ProviderUpdateWithoutUserInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -818,6 +849,7 @@ export type ProviderUncheckedUpdateWithoutUserInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -838,6 +870,7 @@ export type ProviderCreateWithoutPostInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -858,6 +891,7 @@ export type ProviderUncheckedCreateWithoutPostInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   userId: string
   createdAt?: Date | string
@@ -883,6 +917,7 @@ export type ProviderCreateWithoutPostAppliedInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -903,6 +938,7 @@ export type ProviderUncheckedCreateWithoutPostAppliedInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   userId: string
   createdAt?: Date | string
@@ -939,6 +975,7 @@ export type ProviderUpdateWithoutPostInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -959,6 +996,7 @@ export type ProviderUncheckedUpdateWithoutPostInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -998,6 +1036,7 @@ export type ProviderScalarWhereInput = {
   isAvailable?: Prisma.BoolFilter<"Provider"> | boolean
   availability?: Prisma.StringNullableFilter<"Provider"> | string | null
   location?: Prisma.JsonNullableFilter<"Provider">
+  experience?: Prisma.IntFilter<"Provider"> | number
   average_price?: Prisma.FloatNullableFilter<"Provider"> | number | null
   userId?: Prisma.StringFilter<"Provider"> | string
   createdAt?: Prisma.DateTimeFilter<"Provider"> | Date | string
@@ -1015,6 +1054,7 @@ export type ProviderCreateWithoutServiceInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1035,6 +1075,7 @@ export type ProviderUncheckedCreateWithoutServiceInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   userId: string
   createdAt?: Date | string
@@ -1071,6 +1112,7 @@ export type ProviderUpdateWithoutServiceInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1091,6 +1133,7 @@ export type ProviderUncheckedUpdateWithoutServiceInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1111,6 +1154,7 @@ export type ProviderCreateWithoutSkillsInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1131,6 +1175,7 @@ export type ProviderUncheckedCreateWithoutSkillsInput = {
   isAvailable?: boolean
   availability?: string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: number
   average_price?: number | null
   userId: string
   createdAt?: Date | string
@@ -1167,6 +1212,7 @@ export type ProviderUpdateWithoutSkillsInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1187,6 +1233,7 @@ export type ProviderUncheckedUpdateWithoutSkillsInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1207,6 +1254,7 @@ export type ProviderUpdateWithoutPostAppliedInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1227,6 +1275,7 @@ export type ProviderUncheckedUpdateWithoutPostAppliedInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1247,6 +1296,7 @@ export type ProviderUncheckedUpdateManyWithoutPostAppliedInput = {
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
   availability?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
   average_price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1322,6 +1372,7 @@ export type ProviderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   isAvailable?: boolean
   availability?: boolean
   location?: boolean
+  experience?: boolean
   average_price?: boolean
   userId?: boolean
   createdAt?: boolean
@@ -1345,6 +1396,7 @@ export type ProviderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isAvailable?: boolean
   availability?: boolean
   location?: boolean
+  experience?: boolean
   average_price?: boolean
   userId?: boolean
   createdAt?: boolean
@@ -1363,6 +1415,7 @@ export type ProviderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isAvailable?: boolean
   availability?: boolean
   location?: boolean
+  experience?: boolean
   average_price?: boolean
   userId?: boolean
   createdAt?: boolean
@@ -1381,13 +1434,14 @@ export type ProviderSelectScalar = {
   isAvailable?: boolean
   availability?: boolean
   location?: boolean
+  experience?: boolean
   average_price?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ProviderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "rate" | "bio" | "address" | "profession" | "mission_nb" | "reviews_count" | "isAvailable" | "availability" | "location" | "average_price" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["provider"]>
+export type ProviderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "rate" | "bio" | "address" | "profession" | "mission_nb" | "reviews_count" | "isAvailable" | "availability" | "location" | "experience" | "average_price" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["provider"]>
 export type ProviderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   post?: boolean | Prisma.Provider$postArgs<ExtArgs>
@@ -1423,6 +1477,7 @@ export type $ProviderPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     isAvailable: boolean
     availability: string | null
     location: runtime.JsonValue | null
+    experience: number
     average_price: number | null
     userId: string
     createdAt: Date
@@ -1865,6 +1920,7 @@ export interface ProviderFieldRefs {
   readonly isAvailable: Prisma.FieldRef<"Provider", 'Boolean'>
   readonly availability: Prisma.FieldRef<"Provider", 'String'>
   readonly location: Prisma.FieldRef<"Provider", 'Json'>
+  readonly experience: Prisma.FieldRef<"Provider", 'Int'>
   readonly average_price: Prisma.FieldRef<"Provider", 'Float'>
   readonly userId: Prisma.FieldRef<"Provider", 'String'>
   readonly createdAt: Prisma.FieldRef<"Provider", 'DateTime'>

@@ -130,6 +130,7 @@ export const postsSchema = z.object({
       value: z.enum(["7j/7", "Lundi-Samedi", "week-end"]),
       label: z.enum(["7j/7", "Lundi-Samedi", "week-end"]),
     }),
+    experience: z.number().nonoptional("Veuillez saisir votre nombre d'années d'experience")
   });
   
   export const createSkill = z.object({

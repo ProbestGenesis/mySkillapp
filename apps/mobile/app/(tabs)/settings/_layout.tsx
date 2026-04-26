@@ -3,7 +3,7 @@ import { Stack } from "expo-router"
 type Props = {}
 function SettingLayout({}: Props) {
   return (
-      <Stack screenOptions={{  }} >
+      <Stack screenOptions={{ headerBackVisible: true }} >
       <Stack.Screen
         name="index"
         options={{
@@ -35,6 +35,8 @@ function SettingLayout({}: Props) {
         options={{
           title: 'Photo de profil',
           headerBackVisible: true,
+          
+          
         }}
       />
     </Stack>

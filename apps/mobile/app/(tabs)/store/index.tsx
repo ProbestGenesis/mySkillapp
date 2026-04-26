@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, ArrowRight } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
 
 export default function StoreIndexScreen() {
   const trpc = useTRPC();
@@ -45,7 +45,18 @@ export default function StoreIndexScreen() {
   const hasNextPage = (data?.length ?? 0) >= pageSize;
 
   return (
-    <ScrollView className="bg-background flex-1" showsVerticalScrollIndicator={false}>
+    <ScrollView
+      className="bg-background flex-1"
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefetching}
+          onRefresh={() => refetch()}
+          colors={['orange']}
+          tintColor="orange"
+        />
+      }
+    >
       <View className="gap-6 px-1.5 py-6 pb-12">
         {/* Header Section */}
         <SearchHeader

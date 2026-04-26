@@ -10,7 +10,7 @@ import { usePathname, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
-import { z } from 'zod';
+import { promise, z } from 'zod';
 
 type Props = {
   forAuth: boolean;
@@ -35,45 +35,46 @@ function UserInfo({ closeDrawer, forAuth }: Props) {
     console.log(data);
     setIsLoading(true);
 
-    const { error } = await updateUser({
-      name: data.name,
-    });
 
-    if (error) {
-      setIsSuccess({
-        message: error?.message,
-        status: parseInt(error?.code ?? '0', 10),
-        error: true,
+    Promise.allSettled([
+      updateUser({
+        name: data.name,
+      }),
+      changeEmail({
+        newEmail: data.email ?? session?.user.email as string,
+      }),
+    ]).then((results) => {
+      results.forEach((result) => {
+        if (result.status === 'rejected') {
+          setIsSuccess({
+            message: result.reason.message,
+            status: parseInt(result.reason.code ?? '0', 10),
+            error: true,
+          });
+        }
       });
 
+      setIsSuccess({
+        message: 'Vos informations ont été mise à jour',
+        status: 201,
+        error: false,
+      });
+    })
+    .catch(error =>{
+       setIsSuccess({
+            message: error?.message,
+            status: parseInt(error?.code ?? '0', 10),
+            error: true,
+          });
+    })
+    .finally(() => {
       setIsLoading(false);
-    }
-
-    if (data.email) {
-      const { error } = await changeEmail({
-        newEmail: data.email,
-      });
-
-      setIsSuccess({
-        message: error?.message,
-        status: parseInt(error?.code ?? '0', 10),
-        error: true,
-      });
-    }
-
-    setIsSuccess({
-      message: 'Vos informations ont été mise à jour',
-      status: 201,
-      error: false,
-    });
-    setTimeout(() => {
       if (!forAuth) {
         closeDrawer();
       } else {
         router.push('/');
       }
-    }, 2000);
-  };
+    })}
 
   useEffect(() => {
     if (pathname.includes('/auth')) {

@@ -122,6 +122,7 @@ export const createProvider = z.object({
     value: z.enum(['7j/7', 'Lundi-Samedi', 'week-end']),
     label: z.enum(['7j/7', 'Lundi-Samedi', 'week-end']),
   }),
+  experience: z.number().nonoptional("Veuillez saisir votre nombre d'années d'experience")
 });
 
 export const createSkill = z.object({
@@ -160,6 +161,7 @@ export const updateProviderProfileSchema = z.object({
     value: z.string(),
     label: z.string(),
   }),
+  experience: z.number().nonoptional("Veuillez saisir votre nombre d'années d'experience"),
   bio: z.string().min(20, 'Veuillez saisir au moins 20 caractères'),
   availability: z.object({
     value: z.enum(['7j/7', 'Lundi-Samedi', 'week-end']),

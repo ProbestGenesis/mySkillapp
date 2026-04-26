@@ -194,6 +194,8 @@ function RegisterPage() {
     }
   };
 
+  
+
   return (
     <SafeAreaView className="flex-1 bg-blue-900">
       <ScrollView showsVerticalScrollIndicator={false} className="">
@@ -228,7 +230,7 @@ function RegisterPage() {
                           className="rounded-lg"
                           onChangeText={onChange}
                           value={value}
-                          placeholder="+228"
+                          placeholder="99785422"
                           keyboardType="phone-pad"
                         />
                         {error && <Text className="text-destructive text-sm">{error.message}</Text>}
@@ -365,7 +367,7 @@ function RegisterPage() {
                   </Button>
                 </View>
 
-                <Button variant={"outline"} disabled={timer > 0} onPress={() => {
+                <Button variant={"outline"}  onPress={() => {
                   setStep(3)
                 }}>
                     <Text>Continuer sans vérification</Text>

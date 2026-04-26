@@ -5,6 +5,7 @@ import { Star } from 'lucide-react-native';
 import { Text } from '../../text';
 import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { Link } from 'expo-router';
+import type {  NearProviderRow } from "@/components/ui/utils/home/providersCheckRadar"
 
 /** Aligné sur `providers.getProvider`. */
 export type ProviderDetail = {
@@ -18,7 +19,7 @@ export type ProviderDetail = {
 } | null;
 
 type Props = {
-  provider: ProviderDetail | undefined;
+  provider: NearProviderRow;
   viewProviderCard: boolean;
   onClose: () => void;
   providerCardDataLoading: boolean;
@@ -30,6 +31,7 @@ export function ProviderCard({
   onClose,
   providerCardDataLoading,
 }: Props) {
+  
   return (
     <Dialog
       open={viewProviderCard}

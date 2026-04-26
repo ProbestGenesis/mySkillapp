@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
 import { protectedProcedure, t } from '../trpc.ts'
+import { calculDistance } from '../lib/calculDistance.ts'
 
 const confirmProcedure = protectedProcedure.input(
   z.object({
@@ -9,8 +10,13 @@ const confirmProcedure = protectedProcedure.input(
   })
 )
 export const serviceRouter = t.router({
-  getYoursServices: protectedProcedure.query(async ({ ctx }) => {
+  getYoursServices: protectedProcedure.input(z.object({
+    lat: z.number().nonoptional("Coordonnée de localisation incomplète"),
+    long: z.number().nonoptional("Coordonnée de localisation incomplète")
+  })).query(async ({ input, ctx }) => {
     try {
+
+      const { lat, long } = input
       const session = ctx.session
       const user = await ctx.prisma.user.findUnique({
         where: { id: session?.user.id },
@@ -20,9 +26,20 @@ export const serviceRouter = t.router({
               id: true,
             },
           },
+          Location: true
         },
       })
-      return await ctx.prisma.service.findMany({
+
+      let distance = 0;
+      if (user?.id) {
+        distance = await calculDistance(ctx.prisma as any, {
+          userId: user.id,
+          lat,
+          long
+        })
+      }
+
+      const services = await ctx.prisma.service.findMany({
         where: {
           OR: [{ customerId: session!.user.id }, { providerId: user?.provider?.id }],
         },
@@ -50,6 +67,11 @@ export const serviceRouter = t.router({
           },
         },
       })
+
+      return services.map(service => ({
+        ...service,
+        distance
+      }))
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -142,20 +164,43 @@ export const serviceRouter = t.router({
       const isProvider = service.providerId === session!.user.providerId
       const isCustomer = service.customerId === session!.user.id
 
-      if (!isProvider && !isCustomer) {
+
+      const provider = await ctx.prisma.provider.findUnique({
+        where: {
+          id: session!.user.providerId
+        },
+        select: {
+          id: true, 
+          mission_nb: true
+        }
+      })
+      if (!provider && !isCustomer) {
         throw new TRPCError({
           code: 'FORBIDDEN',
           message: "Vous n'êtes pas autorisé à confirmer ce service",
         })
       }
 
-      return await ctx.prisma.service.update({
+      await ctx.prisma.service.update({
         where: { id: serviceId },
         data: {
           status: 'COMPLETED',
           completedAt: new Date(),
         },
       })
+
+      await ctx.prisma.provider.update({
+        where: {
+          id: session!.user.providerId
+        },
+        data: {
+          mission_nb: provider!.mission_nb + 1
+        }
+      })
+
+      return   {
+        success: true, 
+      }
     } catch (error: any) {
       if (error instanceof TRPCError) throw error
       throw new TRPCError({
@@ -311,14 +356,14 @@ export const serviceRouter = t.router({
         }
 
         if (service.isViewed) return { success: true }
-
-        return await ctx.prisma.service.update({
-          where: { id: serviceId },
-          data: {
-            isViewed: true,
-            isViewedAt: new Date(),
-          },
-        })
+        await ctx.prisma.service.update({
+                  where: { id: serviceId },
+                  data: {
+                    isViewed: true,
+                    isViewedAt: new Date(),
+                  },
+                })
+        return { success: true }
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -370,6 +415,7 @@ export const serviceRouter = t.router({
         return await ctx.prisma.service.update({
           where: { id: serviceId },
           data: {
+            status: "IN_PROGRESS",
             appointmentTime,
             appointmentTimeIsAccepted: false, // On attend la validation du client ou on notifie
           },

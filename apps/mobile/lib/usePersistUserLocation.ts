@@ -23,7 +23,7 @@ export function usePersistUserLocation() {
       return;
     }
 
-    const key = `${location.latitude.toFixed(5)},${location.longitude.toFixed(5)}`;
+    const key = `${location.latitude.toFixed(5)}, ${location.longitude.toFixed(5)}`;
     const now = Date.now();
     const sameCell = lastKey.current === key;
     const tooSoon = now - lastSentAt.current < MIN_INTERVAL_MS;
