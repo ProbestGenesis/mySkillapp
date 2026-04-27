@@ -27,3 +27,11 @@ export const STATUSSERVICE = {
 } as const
 
 export type STATUSSERVICE = (typeof STATUSSERVICE)[keyof typeof STATUSSERVICE]
+
+
+export const OCCUPATION = {
+  ETUDIANT: 'ETUDIANT',
+  PROFESSIONNEL: 'PROFESSIONNEL'
+} as const
+
+export type OCCUPATION = (typeof OCCUPATION)[keyof typeof OCCUPATION]

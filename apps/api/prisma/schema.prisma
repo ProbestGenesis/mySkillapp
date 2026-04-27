@@ -22,6 +22,12 @@ enum STATUSSERVICE {
   REJECTED
   COMPLETED
 }
+
+enum OCCUPATION {
+  ETUDIANT
+  PROFESSIONNEL
+}
+
 model User {
   id            String     @id
   name          String
@@ -39,6 +45,9 @@ model User {
   district      String? 
   provider      Provider?
   customer Service[] @relation("CustomerRelation")
+  reel Reel[]
+  comment Comment[]
+  likes Like[]
 
   phoneNumber         String?
   phoneNumberVerified Boolean?
@@ -137,6 +146,7 @@ model Provider {
   availability  String?
   location      Json? 
   experience     Int  @default(1)
+  occupation    OCCUPATION @default(PROFESSIONNEL)
   average_price Float?
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
@@ -150,6 +160,7 @@ model Provider {
 
   @@unique([userId])
 }
+
 
 model Post {
   id             String    @id @default(uuid())
@@ -213,6 +224,41 @@ model Skills {
   title         String
   description   String
   average_price Float
+}
+
+model Reel {
+  id            String    @id @default(uuid())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  url           String
+  thumbnail     String?
+  description   String?
+  comments Comment[]
+  like Like[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+}
+
+model Comment {
+  id            String    @id @default(uuid())
+  reel Reel @relation(fields: [reelId], references: [id], onDelete: Cascade)
+  reelId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  comment String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Like {
+  id            String    @id @default(uuid())
+  reel Reel @relation(fields: [reelId], references: [id], onDelete: Cascade)
+  reelId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Session {

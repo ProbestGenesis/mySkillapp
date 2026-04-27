@@ -194,6 +194,20 @@ function GateAwareTabsLayout() {
         />
 
         <Tabs.Screen
+          name="reels"
+          options={{
+            title: 'Reels',
+            tabBarIcon: ({ size, focused }) => (
+              <Ionicons
+                name={focused ? 'play-circle' : 'play-circle-outline'}
+                size={size}
+                color={focused ? '#000' : '#ccc'}
+              />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
           name="settings"
           options={{
             title: 'Settings',

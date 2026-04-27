@@ -239,6 +239,13 @@ export type JsonNullableFilterBase<$PrismaModel = never> = {
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
 }
 
+export type EnumOCCUPATIONFilter<$PrismaModel = never> = {
+  equals?: $Enums.OCCUPATION | Prisma.EnumOCCUPATIONFieldRefInput<$PrismaModel>
+  in?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOCCUPATIONFilter<$PrismaModel> | $Enums.OCCUPATION
+}
+
 export type FloatNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
@@ -275,6 +282,16 @@ export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedJsonNullableFilter<$PrismaModel>
   _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>
+}
+
+export type EnumOCCUPATIONWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OCCUPATION | Prisma.EnumOCCUPATIONFieldRefInput<$PrismaModel>
+  in?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOCCUPATIONWithAggregatesFilter<$PrismaModel> | $Enums.OCCUPATION
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOCCUPATIONFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOCCUPATIONFilter<$PrismaModel>
 }
 
 export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -530,6 +547,13 @@ export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type NestedEnumOCCUPATIONFilter<$PrismaModel = never> = {
+  equals?: $Enums.OCCUPATION | Prisma.EnumOCCUPATIONFieldRefInput<$PrismaModel>
+  in?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOCCUPATIONFilter<$PrismaModel> | $Enums.OCCUPATION
+}
+
 export type NestedFloatNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
@@ -563,6 +587,16 @@ export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumOCCUPATIONWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OCCUPATION | Prisma.EnumOCCUPATIONFieldRefInput<$PrismaModel>
+  in?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OCCUPATION[] | Prisma.ListEnumOCCUPATIONFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOCCUPATIONWithAggregatesFilter<$PrismaModel> | $Enums.OCCUPATION
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOCCUPATIONFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOCCUPATIONFilter<$PrismaModel>
 }
 
 export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
