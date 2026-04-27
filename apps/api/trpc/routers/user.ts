@@ -76,6 +76,8 @@ export const userRouter = t.router({
           },
         },
         profession: input.profession.value,
+        experience: input.experience,
+        occupation: input.occupation,
         bio: input.bio,
         availability: input.availability.value,
       },
@@ -187,6 +189,8 @@ export const userRouter = t.router({
         bio: input.bio,
         availability: input.availability.value,
         average_price: input.average_price ? parseFloat(input.average_price) : null,
+        occupation: input.occupation,
+        experience: input.experience,
       },
     });
     return { ok: true, message: 'Informations de prestation mises à jour avec succès' };

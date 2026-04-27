@@ -31,13 +31,14 @@ export const serviceRouter = t.router({
       })
 
       let distance = 0;
-      if (user?.id) {
+      if (user?.id && lat && long) {
         distance = await calculDistance(ctx.prisma as any, {
           userId: user.id,
           lat,
           long
         })
       }
+
 
       const services = await ctx.prisma.service.findMany({
         where: {

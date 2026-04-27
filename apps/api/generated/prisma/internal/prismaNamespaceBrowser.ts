@@ -61,6 +61,9 @@ export const ModelName = {
   Post: 'Post',
   Service: 'Service',
   Skills: 'Skills',
+  Reel: 'Reel',
+  Comment: 'Comment',
+  Like: 'Like',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification'
@@ -183,6 +186,7 @@ export const ProviderScalarFieldEnum = {
   availability: 'availability',
   location: 'location',
   experience: 'experience',
+  occupation: 'occupation',
   average_price: 'average_price',
   userId: 'userId',
   createdAt: 'createdAt',
@@ -248,6 +252,42 @@ export const SkillsScalarFieldEnum = {
 } as const
 
 export type SkillsScalarFieldEnum = (typeof SkillsScalarFieldEnum)[keyof typeof SkillsScalarFieldEnum]
+
+
+export const ReelScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  url: 'url',
+  thumbnail: 'thumbnail',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReelScalarFieldEnum = (typeof ReelScalarFieldEnum)[keyof typeof ReelScalarFieldEnum]
+
+
+export const CommentScalarFieldEnum = {
+  id: 'id',
+  reelId: 'reelId',
+  userId: 'userId',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const LikeScalarFieldEnum = {
+  id: 'id',
+  reelId: 'reelId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof LikeScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

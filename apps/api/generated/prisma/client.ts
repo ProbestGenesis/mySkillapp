@@ -92,6 +92,21 @@ export type Service = Prisma.ServiceModel
  */
 export type Skills = Prisma.SkillsModel
 /**
+ * Model Reel
+ * 
+ */
+export type Reel = Prisma.ReelModel
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = Prisma.CommentModel
+/**
+ * Model Like
+ * 
+ */
+export type Like = Prisma.LikeModel
+/**
  * Model Session
  * 
  */
