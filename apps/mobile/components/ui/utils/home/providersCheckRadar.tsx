@@ -4,6 +4,7 @@ import { authClient } from '@/lib/auth-client';
 import { usePreciseLocation } from '@/lib/geolocation';
 import { useTRPC } from '@/provider/appProvider';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'expo-router';
 import { AnimatePresence, MotiView } from 'moti';
 import React, { useCallback, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Text, TouchableOpacity, View } from 'react-native';
@@ -11,18 +12,16 @@ import Ripple from '../../radar';
 import { Skeleton } from '../../skeleton';
 import MyPostInfo from './myPostsInfo';
 import { ProviderCard } from './providersCard';
-import { Link } from 'expo-router';
-
 
 /** Aligné sur `providers.listNear` (Provider + user + skills + distance). */
 export type NearProviderRow = {
   id: string;
   profession: string;
   rate: number;
-  mission_nb: number,
-  bio: string | null,
+  mission_nb: number;
+  bio: string | null;
   user: { name: string; image: string | null };
-  skills: { id: string; title: string; description: string; average_price: number }[],
+  skills: { id: string; title: string; description: string; average_price: number }[];
   distanceM: number;
 };
 
@@ -61,7 +60,8 @@ function ProviderCheckRadar({ selectedService }: Props) {
       setLocationAlert(true);
       setLocationMessageError({
         title: 'Erreur de localisation',
-        description: "Veuillez activer votre localisation et relancer l'application pour voir les prestataires à proximité",
+        description:
+          "Veuillez activer votre localisation et relancer l'application pour voir les prestataires à proximité",
         type: undefined,
       });
     }
@@ -79,12 +79,14 @@ function ProviderCheckRadar({ selectedService }: Props) {
 
   const nearProviders: NearProviderRow[] = nearQuery.data ?? [];
   const loadingNearProviders = nearQuery.isFetching;
-  
-{/*  const providerQuery = useQuery({
+
+  {
+    /*  const providerQuery = useQuery({
     ...trpc.providers.getProvider.queryOptions({ id: providerId }),
     enabled: viewProviderCard && !!providerId,
   });
-*/}
+*/
+  }
   const { data: userPostsQuery, isPending: userPostFecthing } = useQuery({
     ...trpc.post.listMyPosts.queryOptions(),
     enabled: !!session,
@@ -111,21 +113,24 @@ function ProviderCheckRadar({ selectedService }: Props) {
         {' '}
         <Ripple />
         <View className="absolute top-[53%] left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 items-center">
-         {session?.user.image ?  <Avatar
-            alt="user-avatar"
-            style={{ width: CENTRAL_AVATAR_SIZE, height: CENTRAL_AVATAR_SIZE }}>
-            <AvatarImage source={{ uri: session?.user?.image ?? undefined }} />
-            <AvatarFallback />
-          </Avatar>  : <Link href={"/(tabs)/settings/profilPicture"} >
-          <Avatar
-            alt="user-avatar"
-            style={{ width: CENTRAL_AVATAR_SIZE, height: CENTRAL_AVATAR_SIZE }}>
-           
-            <AvatarFallback>
-              <Text className="text-center">Ajouter une photo</Text>
-            </AvatarFallback>
-          </Avatar>
-          </Link> }
+          {session?.user.image ? (
+            <Avatar
+              alt="user-avatar"
+              style={{ width: CENTRAL_AVATAR_SIZE, height: CENTRAL_AVATAR_SIZE }}>
+              <AvatarImage source={{ uri: session?.user?.image ?? undefined }} />
+              <AvatarFallback />
+            </Avatar>
+          ) : (
+            <Link href={'/(tabs)/settings/profilPicture'}>
+              <Avatar
+                alt="user-avatar"
+                style={{ width: CENTRAL_AVATAR_SIZE, height: CENTRAL_AVATAR_SIZE }}>
+                <AvatarFallback>
+                  <Text className="text-center">Ajouter une photo</Text>
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+          )}
           <Text className="mt-2 text-sm font-medium">{session?.user?.name ?? 'Vous'}</Text>
         </View>
         <AnimatePresence>
@@ -199,7 +204,7 @@ function ProviderCheckRadar({ selectedService }: Props) {
           })}
         </AnimatePresence>
         <ProviderCard
-          provider={nearProviders.filter(el => el.id === providerId)[0]}
+          provider={nearProviders.filter((el) => el.id === providerId)[0]}
           viewProviderCard={viewProviderCard}
           onClose={onCloseProvieerCard}
           providerCardDataLoading={false}
@@ -263,7 +268,7 @@ function ProviderCheckRadar({ selectedService }: Props) {
                   userPosts?.map((item: any) => (
                     <MyPostInfo key={item.id} postId={item.id}>
                       <Avatar alt="posts" className="size-12">
-                        <AvatarImage   />
+                        <AvatarImage />
                         <AvatarFallback>
                           <Text className="text-xs">{item?.profession?.slice(0, 2)}</Text>
                         </AvatarFallback>

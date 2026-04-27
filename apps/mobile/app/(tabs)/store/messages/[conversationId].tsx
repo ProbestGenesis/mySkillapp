@@ -3,26 +3,26 @@ import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 import { useTRPC } from '@/provider/appProvider';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Image } from 'expo-image';
+import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useMemo, useState } from 'react';
+import { ChevronLeft, ChevronRight, ImagePlus, Send, X } from 'lucide-react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
+  Modal,
   Platform,
+  Pressable,
   ScrollView,
   Text,
   View,
-  Modal,
-  Pressable,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as ImagePicker from 'expo-image-picker';
-import { Image } from 'expo-image';
-import { Plus, X, ChevronLeft, ChevronRight, ImagePlus } from 'lucide-react-native';
 
 export default function StoreConversationDetailScreen() {
   const { conversationId } = useLocalSearchParams<{ conversationId: string }>();
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const trpc = useTRPC();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -36,11 +36,12 @@ export default function StoreConversationDetailScreen() {
   const [viewerVisible, setViewerVisible] = useState(false);
   const [viewerImageIndex, setViewerImageIndex] = useState(0);
 
+  const scrollViewRef = useRef<ScrollView>(null);
+
   const wsUrl = useMemo(() => {
     if (!session?.user?.id) return null;
     return `ws://api-production-d535.up.railway.app/ws/store?userId=${encodeURIComponent(session.user.id)}&conversations=${encodeURIComponent(conversationId)}`;
   }, [session?.user?.id, conversationId]);
-
 
   const { data, isLoading } = useQuery({
     ...trpc.store.getConversation.queryOptions({ conversationId, page, pageSize }),
@@ -54,9 +55,7 @@ export default function StoreConversationDetailScreen() {
 
   const conversationImages = useMemo(() => {
     if (!data) return [];
-    return data.messages
-      .filter((m) => !!m.imageUrl)
-      .map((m) => m.imageUrl as string);
+    return data.messages.filter((m) => !!m.imageUrl).map((m) => m.imageUrl as string);
   }, [data]);
   const insets = useSafeAreaInsets();
 
@@ -90,7 +89,7 @@ export default function StoreConversationDetailScreen() {
       base64: true,
     });
     if (result.canceled || !result.assets.length) return;
-    
+
     setUploading(true);
     try {
       const asset = result.assets[0];
@@ -111,7 +110,11 @@ export default function StoreConversationDetailScreen() {
 
   const onSend = () => {
     if (!content.trim() && !selectedImage) return;
-    sendMutation.mutate({ conversationId, content: content.trim(), imageUrl: selectedImage || undefined });
+    sendMutation.mutate({
+      conversationId,
+      content: content.trim(),
+      imageUrl: selectedImage || undefined,
+    });
   };
 
   const markReadMutation = useMutation(trpc.store.markConversationRead.mutationOptions());
@@ -125,6 +128,15 @@ export default function StoreConversationDetailScreen() {
       markReadMutation.mutate({ conversationId });
     }
   }, [data, session?.user?.id, conversationId]);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (data?.messages) {
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [data?.messages]);
 
   useEffect(() => {
     if (!wsUrl) return;
@@ -183,7 +195,7 @@ export default function StoreConversationDetailScreen() {
     return () => clearInterval(interval);
   }, [wsConnected, queryClient, trpc, conversationId, page, pageSize, refetchPresence]);
 
-  if (!session) {
+  if (!isPending && !session) {
     return (
       <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-col items-center justify-center gap-2">
@@ -229,91 +241,124 @@ export default function StoreConversationDetailScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={insets.top}
-      className="flex-1 flex-col">
-      <ScrollView className='flex-1' showsVerticalScrollIndicator={false}>
-        <View className="h-full px-3 py-2">
-          <Text className="text-lg font-bold">{data.item.title}</Text>
-          <Text className="text-muted-foreground text-xs">
-            {presenceData?.isOtherUserOnline ? 'En ligne' : 'Hors ligne'}
-          </Text>
-          <ScrollView className="mt-3 flex-1">
-            <View className="gap-2 pb-4">
-              {data.messages.map((message) => {
-                const mine = message.senderId === session.user.id;
-                const readLabel = mine ? (message.readAt ? 'Vu' : 'Envoye') : '';
-                return (
-                  <View
-                    key={message.id}
-                    className={`max-w-[85%] rounded-xl px-3 py-2 ${mine ? 'bg-primary self-end' : 'bg-muted self-start'}`}>
-                    {message.imageUrl && (
-                      <Pressable onPress={() => {
-                        const idx = conversationImages.indexOf(message.imageUrl as string);
-                        setViewerImageIndex(idx !== -1 ? idx : 0);
-                        setViewerVisible(true);
-                      }}>
-                        <Image
-                          source={{ uri: message.imageUrl }}
-                          style={{ width: 200, height: 200, borderRadius: 8, marginBottom: !!message.content ? 8 : 0 }}
-                          contentFit="cover"
-                        />
-                      </Pressable>
-                    )}
-                    {!!message.content && (
-                      <Text className={mine ? 'text-white' : 'text-foreground'}>
-                        {message.content}
-                      </Text>
-                    )}
-                    <Text
-                      className={`mt-1 text-[10px] ${mine ? 'text-white/80' : 'text-muted-foreground'}`}>
-                      {message.sender.name} {readLabel ? `- ${readLabel}` : ''}
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
-          </ScrollView>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top + 44 : 100}
+      style={{ flex: 1 }}>
+      {/* Header */}
+      <View className="px-3 pt-2 pb-1">
+        <Text className="text-lg font-bold">{data.item.title}</Text>
+        <Text className="text-muted-foreground text-xs">
+          {presenceData?.isOtherUserOnline ? 'En ligne' : 'Hors ligne'}
+        </Text>
+      </View>
 
-          <View className="pt-2 ">
-            {selectedImage && (
-              <View className="relative mb-2 self-start rounded-lg bg-muted p-2">
-                <Image source={{ uri: selectedImage }} style={{ width: 100, height: 100, borderRadius: 8 }} />
-                <Pressable
-                  onPress={() => setSelectedImage(null)}
-                  className="absolute -right-2 -top-2 rounded-full bg-destructive p-1">
-                  <X size={16} color="white" />
-                </Pressable>
+      {/* Messages – flex-1 so it takes all available space */}
+      <ScrollView
+        ref={scrollViewRef}
+        className="flex-1 px-3"
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: false })}>
+        <View className="gap-2 pb-4 pt-2">
+          {data.messages.map((message) => {
+            const mine = message.senderId === session?.user?.id;
+            const readLabel = mine ? (message.readAt ? 'Vu' : 'Envoye') : '';
+            return (
+              <View
+                key={message.id}
+                className={`max-w-[85%] rounded-xl px-3 py-2 ${mine ? 'bg-primary self-end' : 'bg-muted self-start'}`}>
+                {message.imageUrl && (
+                  <Pressable
+                    onPress={() => {
+                      const idx = conversationImages.indexOf(message.imageUrl as string);
+                      setViewerImageIndex(idx !== -1 ? idx : 0);
+                      setViewerVisible(true);
+                    }}>
+                    <Image
+                      source={{ uri: message.imageUrl }}
+                      style={{
+                        width: 200,
+                        height: 200,
+                        borderRadius: 8,
+                        marginBottom: !!message.content ? 8 : 0,
+                      }}
+                      contentFit="cover"
+                    />
+                  </Pressable>
+                )}
+                {!!message.content && (
+                  <Text className={mine ? 'text-white' : 'text-foreground'}>
+                    {message.content}
+                  </Text>
+                )}
+                <Text
+                  className={`mt-1 text-[10px] ${mine ? 'text-white/80' : 'text-muted-foreground'}`}>
+                  {message.sender.name} {readLabel ? `- ${readLabel}` : ''}
+                </Text>
               </View>
-            )}
-
-            <View className="flex-row items-center gap-2 pb-0.5">
-              <Button variant="outline" size="icon" onPress={pickImage} disabled={uploading} className="rounded-full">
-                {uploading ? <ActivityIndicator size="small" color="black" /> : <ImagePlus size={20} color="black" />}
-              </Button>
-              <Input
-                className="flex-1"
-                placeholder="Votre message"
-                value={content}
-                onChangeText={setContent}
-              />
-              <Button
-                onPress={onSend}
-                disabled={sendMutation.isPending || uploading || (!content.trim() && !selectedImage)} className="rounded-full">
-                <Text className="font-bold text-white">Envoyer</Text>
-              </Button>
-            </View>
-          </View>
+            );
+          })}
         </View>
       </ScrollView>
 
+      {/* Input bar – fixed at bottom */}
+      <View className="border-border border-t px-3 pt-2" style={{ paddingBottom: Math.max(insets.bottom, 8) }}>
+        {selectedImage && (
+          <View className="bg-muted relative mb-2 self-start rounded-lg p-2">
+            <Image
+              source={{ uri: selectedImage }}
+              style={{ width: 100, height: 100, borderRadius: 8 }}
+            />
+            <Pressable
+              onPress={() => setSelectedImage(null)}
+              className="bg-destructive absolute -top-2 -right-2 rounded-full p-1">
+              <X size={16} color="white" />
+            </Pressable>
+          </View>
+        )}
+
+        <View className="flex-row items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            onPress={pickImage}
+            disabled={uploading}
+            className="rounded-full">
+            {uploading ? (
+              <ActivityIndicator size="small" color="black" />
+            ) : (
+              <ImagePlus size={20} color="black" />
+            )}
+          </Button>
+          <Input
+            className="flex-1"
+            placeholder="Votre message"
+            value={content}
+            onChangeText={setContent}
+          />
+          <Button
+            onPress={onSend}
+            disabled={
+              sendMutation.isPending || uploading || (!content.trim() && !selectedImage)
+            }
+            size={"sm"}
+            className="rounded-full">
+            {
+              sendMutation.isPending ? <ActivityIndicator color="white" /> :  <Send color="white" />
+            }
+          </Button>
+        </View>
+      </View>
+
       <Modal visible={viewerVisible} transparent={true} animationType="fade">
-        <View className="flex-1 bg-black/95 justify-center items-center relative">
-          <SafeAreaView className="absolute top-0 w-full z-10 flex-row justify-end p-4">
-            <Pressable onPress={() => setViewerVisible(false)} className="bg-white/20 p-2 rounded-full mt-2 mr-2">
+        <View className="relative flex-1 items-center justify-center bg-black/95">
+          <SafeAreaView className="absolute top-0 z-10 w-full flex-row justify-end p-4">
+            <Pressable
+              onPress={() => setViewerVisible(false)}
+              className="mt-2 mr-2 rounded-full bg-white/20 p-2">
               <X size={24} color="white" />
             </Pressable>
           </SafeAreaView>
-          
+
           {conversationImages.length > 0 && (
             <Image
               source={{ uri: conversationImages[viewerImageIndex] }}
@@ -326,16 +371,26 @@ export default function StoreConversationDetailScreen() {
             <Pressable
               onPress={() => setViewerImageIndex((prev) => Math.max(0, prev - 1))}
               disabled={viewerImageIndex === 0}
-              className={`p-3 rounded-full ${viewerImageIndex === 0 ? 'bg-white/10' : 'bg-white/30'}`}
-            >
-              <ChevronLeft size={32} color={viewerImageIndex === 0 ? 'rgba(255,255,255,0.3)' : 'white'} />
+              className={`rounded-full p-3 ${viewerImageIndex === 0 ? 'bg-white/10' : 'bg-white/30'}`}>
+              <ChevronLeft
+                size={32}
+                color={viewerImageIndex === 0 ? 'rgba(255,255,255,0.3)' : 'white'}
+              />
             </Pressable>
             <Pressable
-              onPress={() => setViewerImageIndex((prev) => Math.min(conversationImages.length - 1, prev + 1))}
+              onPress={() =>
+                setViewerImageIndex((prev) => Math.min(conversationImages.length - 1, prev + 1))
+              }
               disabled={viewerImageIndex === conversationImages.length - 1}
-              className={`p-3 rounded-full ${viewerImageIndex === conversationImages.length - 1 ? 'bg-white/10' : 'bg-white/30'}`}
-            >
-              <ChevronRight size={32} color={viewerImageIndex === conversationImages.length - 1 ? 'rgba(255,255,255,0.3)' : 'white'} />
+              className={`rounded-full p-3 ${viewerImageIndex === conversationImages.length - 1 ? 'bg-white/10' : 'bg-white/30'}`}>
+              <ChevronRight
+                size={32}
+                color={
+                  viewerImageIndex === conversationImages.length - 1
+                    ? 'rgba(255,255,255,0.3)'
+                    : 'white'
+                }
+              />
             </Pressable>
           </View>
         </View>

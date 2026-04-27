@@ -42,7 +42,7 @@ export default function EditProfil() {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const { data: session, refetch } = authClient.useSession();
+  const { data: session, refetch, isPending } = authClient.useSession();
 
   const [activeTab, setActiveTab] = useState('personal');
   const [success, setSuccess] = useState<{ message: string; type: 'success' | 'error' | null }>({
@@ -54,7 +54,7 @@ export default function EditProfil() {
     if (success.message && success.type === 'success') {
       const timer = setTimeout(() => {
         setSuccess({ message: '', type: null });
-        refetch()
+        refetch();
         router.back();
       }, 2000);
       return () => clearTimeout(timer);
@@ -105,6 +105,7 @@ export default function EditProfil() {
   });
 
   const providerForm = useForm<z.infer<typeof updateProviderProfileSchema>>({
+    //@ts-ignore
     resolver: zodResolver(updateProviderProfileSchema),
   });
 
@@ -126,6 +127,7 @@ export default function EditProfil() {
             label: (userData.provider.availability as any) || '7j/7',
           },
           average_price: userData.provider.average_price?.toString() || '',
+          occupation: userData.provider.occupation as 'ETUDIANT' | 'PROFESSIONNEL' || 'PROFESSIONNEL',
         });
       }
     }
@@ -154,7 +156,7 @@ export default function EditProfil() {
       const res = await updatePersonal(data);
       if (res.ok) {
         setSuccess({ message: res.message, type: 'success' });
-        refetch()
+        refetch();
         queryClient.invalidateQueries(
           trpc.user.getUserWithProviderData.queryOptions({ userId: session?.user.id as string })
         );
@@ -203,7 +205,7 @@ export default function EditProfil() {
       className="bg-background mt-2 flex-1"
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={insets.top}>
-      <ScrollView className="flex-1 " showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full px-4">
           {/* ── TabsList ── */}
           <TabsList className="mb-6 grid w-full grid-cols-2 gap-8">
@@ -412,26 +414,58 @@ export default function EditProfil() {
                 />
               </View>
 
-              <Controller
-                name="experience"
-                control={providerForm.control}
-                defaultValue={1}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <View className="w-full">
-                    <Label className="text-lg font-bold">Années d'expérience</Label>
-                    <Input
-                      placeholder="Ex: 2"
-                      onChangeText={(text) => onChange(Number(text))}
-                      value={String(value ?? '')}
-                      className="mt-1 h-12"
-                      keyboardType="number-pad"
-                    />
-                    {error?.message && (
-                      <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
-                    )}
-                  </View>
-                )}
-              />
+              <View className="flex-row gap-4">
+                <Controller
+                  name="experience"
+                  control={providerForm.control}
+                  defaultValue={1}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <View className="flex-1">
+                      <Label className="text-lg font-bold">Années d'expérience</Label>
+                      <Input
+                        placeholder="Ex: 2"
+                        onChangeText={(text) => onChange(Number(text))}
+                        value={String(value ?? '')}
+                        className="mt-1 h-12"
+                        keyboardType="number-pad"
+                      />
+                      {error?.message && (
+                        <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
+                      )}
+                    </View>
+                  )}
+                />
+
+                <Controller
+                  name="occupation"
+                  control={providerForm.control}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <View className="flex-1">
+                      <Label className="text-lg font-bold">Ocupation</Label>
+                      <Select onValueChange={(v: any) => onChange(v)}
+                     >
+                        <SelectTrigger className="h-12">
+                          <SelectValue placeholder={String(value ?? '')} />
+                        </SelectTrigger>
+                        <SelectContent insets={contentInsets}>
+                          <SelectGroup>
+                            <SelectLabel>Métiers</SelectLabel>
+                            {["ETUDIANT", "PROFESSIONNEL"].map((item: any) => (
+                              //@ts-ignore
+                              <SelectItem key={item} label={item} value={item}>
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      {error?.message && (
+                        <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
+                      )}
+                    </View>
+                  )}
+                />
+              </View>
 
               {/* Disponibilité / Prix */}
               <View className="flex-row gap-4">
@@ -491,10 +525,13 @@ export default function EditProfil() {
                   />
                 </View>
               </View>
-
+              <View>
+                <Text className="text-muted">*Le rix de base est le prix en dessous de quel vous ne souhaitez pas être contacté </Text>
+              </View>
               {/* Submit */}
               <Button
                 className="bg-primary mt-6 h-14 rounded-full"
+                //@ts-ignore
                 onPress={providerForm.handleSubmit(onProviderSubmit)}
                 disabled={isUpdatingProvider}>
                 {isUpdatingProvider ? (
@@ -505,7 +542,7 @@ export default function EditProfil() {
               </Button>
 
               {/* Feedback */}
-              <FeedbackBanner success={success} />
+              {/* <FeedbackBanner success={success} /> */}
             </MotiView>
           </TabsContent>
         </Tabs>

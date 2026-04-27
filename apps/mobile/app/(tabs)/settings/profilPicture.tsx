@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
 function ProfilPicture({}: Props) {
-   const { data : session }= useSession()
+   const { data : session, isPending }= useSession()
   const queryClient = useQueryClient();
   const router = useRouter();
   const trpc = useTRPC();
@@ -81,7 +81,7 @@ function ProfilPicture({}: Props) {
     });
   };
 
-  if (!session) {
+  if (!isPending && !session) {
       return (
         <SafeAreaView className="h-screen flex-1">
           <View className="h-full w-full flex-col items-center justify-center gap-2">

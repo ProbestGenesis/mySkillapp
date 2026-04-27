@@ -23,7 +23,7 @@ import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context'
 const MAX_IMAGES = 8
 
 export default function StoreNewScreen() {
-  const [session] = useState(useSession())
+  const { data: session, isPending } = useSession();
   const trpc = useTRPC()
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -119,7 +119,8 @@ export default function StoreNewScreen() {
     })
   }
 
-  if (!session) {
+
+  if (!isPending && !session) {
     return (
       <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-col items-center justify-center gap-2">
@@ -150,7 +151,6 @@ export default function StoreNewScreen() {
     >
     <ScrollView className="flex-1 px-4 py-3">
       <View className="gap-3 pb-10 h-full ">
-        <Text className="text-xl font-bold">Nouvelle annonce</Text>
         <Input placeholder="Titre" value={title} onChangeText={setTitle} />
         <Textarea
           placeholder="Description"
@@ -164,7 +164,7 @@ export default function StoreNewScreen() {
 
         <Text className="text-base font-semibold">Photos ({imageUrls.length}/{MAX_IMAGES})</Text>
         <Button variant="outline" onPress={pickImages} disabled={uploading || imageUrls.length >= MAX_IMAGES}>
-          {uploading ? (
+          {isPending && uploading ? (
             <ActivityIndicator />
           ) : (
             <Text>Ajouter des photos</Text>

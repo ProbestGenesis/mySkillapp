@@ -64,7 +64,7 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="w-[90%] rounded-2xl">
+      <DialogContent className=" rounded-2xl">
         {isLoading ? (
           <View className="flex-row items-center justify-center">
             <ActivityIndicator />
@@ -75,8 +75,15 @@ function MyPostInfo({ children, postId }: { children: React.ReactNode; postId: s
               <DialogTitle>Ma demande</DialogTitle>
               <View className="flex-row items-center gap-2">
                 <Text className="text-muted-foreground text-xs">
-                  //@ts-ignore
-                  Publier le: {new Date(userPost?.createdAt as string).toLocaleDateString('fr-FR')}
+                
+                  Publier le: {new Date(userPost?.createdAt as string).toLocaleDateString('fr-FR', {
+                      weekday: 'short',
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                  })}
                 </Text>
               </View>
             </DialogHeader>

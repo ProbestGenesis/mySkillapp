@@ -117,13 +117,11 @@ function Contact({}: Props) {
     );
   }
   return (
-    <SafeAreaView className="flex-1 ">
-      <View className="h-full px-2 py-1">
-        {' '}
+      <View className="h-full px-2 pt-2">
         {data ? (
           <View className="relative">
             <ScrollView showsVerticalScrollIndicator={false} className="">
-              <View className="flex-col gap-2 pb-30">
+              <View className="flex-col gap-2 pb-35">
                 <View className="flex-col gap-1">
                   <View className="flex-row items-center">
                     <Avatar alt="profil picture" className="size-20">
@@ -250,7 +248,7 @@ function Contact({}: Props) {
               </View>
             </ScrollView>
 
-            <View className="absolute bottom-2 w-full">
+            <View className="absolute bottom-10 w-full">
               <View className="">
                 <View className="flex-row items-center justify-end gap-2">
                   <Dialog>
@@ -361,7 +359,6 @@ function Contact({}: Props) {
           </View>
         )}
       </View>
-    </SafeAreaView>
   );
 }
 export default Contact;

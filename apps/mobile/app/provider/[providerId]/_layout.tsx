@@ -7,13 +7,27 @@ function ProviderLayout({}: Props) {
   return (
     <Stack>
       <Stack.Screen
+        name="index"
+        options={{
+          title: 'Profile',
+          headerBackVisible: false,
+          headerLeft: () => (
+            <Link asChild href="/">
+              <Button variant={'ghost'} size={"iconSm"} className='me-4 rounded-full'>
+                <ArrowLeft />
+              </Button>
+            </Link>
+          ),
+        }}
+      />
+      <Stack.Screen
         name="contact"
         options={{
           title: 'Contacter',
           headerBackVisible: false,
           headerLeft: () => (
             <Link asChild href="/">
-              <Button variant={'ghost'} size={"iconSm"}>
+              <Button variant={'ghost'} size={"iconSm"} className='me-4'>
                 <ArrowLeft />
               </Button>
             </Link>
