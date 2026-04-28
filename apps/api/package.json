@@ -2,15 +2,15 @@
   "name": "api",
   "module": "index.ts",
   "type": "module",
+  "version": "1.22.22",
   "private": true,
   "scripts": {
     "dev": "nodemon index.ts",
-    "build": "bun build ./index.ts --outdir ./dist --target bun",
-    "start": "bun run dist/index.js",
-    "postinstall": "bun x prisma generate"
+    "build": "yarn build ./index.ts --outdir ./dist --target yarn",
+    "start": "yarn run dist/index.js",
+    "postinstall": "yarn prisma generate"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/pg": "^8.20.0",

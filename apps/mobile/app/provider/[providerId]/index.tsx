@@ -5,20 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTRPC } from '@/provider/appProvider';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import clsx from 'clsx';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import {
   BriefcaseBusiness,
   Calendar,
+  CircleQuestionMark,
   HandCoins,
   MapPin,
-  MessageCircleQuestion,
   Phone,
   Star,
 } from 'lucide-react-native';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLocalSearchParams } from 'expo-router';
 
 type Props = {};
@@ -73,18 +72,13 @@ function Profil({}: Props) {
                       {data?.profession || 'Profession non renseignée'}
                     </Text>
                     {data && (
-                      <Badge variant="secondary">
-                        <View className="flex-row gap-2">
-                          <Star fill="yellow" stroke={'yellow'} size="18" />
-                          <Text
-                            className={clsx({
-                              'text-green-600': data?.rate > 3,
-                              'text-red-700': data?.rate < 3,
-                            })}>
-                            {data.rate}
-                          </Text>
+                      <View className="flex-row items-center gap-1.5">
+                        <View className="flex-row items-center gap-0.5">
+                          <Text className="text-xs">{data.rate}</Text>
+                          <Star size={12} color="#FFD700" />
                         </View>
-                      </Badge>
+                        <Text className="text-xs">{data.mission_nb} missions</Text>
+                      </View>
                     )}
                   </View>
                 )}
@@ -177,17 +171,29 @@ function Profil({}: Props) {
                 <View className="flex-row items-center justify-start gap-2">
                   <HandCoins />
 
-                  <View className="flex-row gap-1">
-                    <Text>Prix de base: </Text>
+                  <View className="flex-row items-center gap-1">
+                    <Text>Prix de base(FCFA): </Text>
 
                     {data?.average_price ? (
                       <Text>{data?.average_price}</Text>
                     ) : (
                       <Text className="text-muted">non renseignée</Text>
                     )}
-
-                    <MessageCircleQuestion />
                   </View>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button className="w-8 rounded-full" variant="ghost" size={'icon'}>
+                        <CircleQuestionMark color="#898989" />
+                      </Button>
+                    </TooltipTrigger>
+
+                    <TooltipContent className="max-w-2xs">
+                      <Text className="text-muted text-xs">
+                        C'est le prix en dessous du quel le prestataire ne souhaite pas être
+                        contacté.
+                      </Text>
+                    </TooltipContent>
+                  </Tooltip>
                 </View>
               </View>
             </CardContent>
@@ -201,38 +207,41 @@ function Profil({}: Props) {
             </View>
             <View className="flex-row flex-wrap gap-2">
               {data?.skills.map((item: any, idx: number) => (
-                <Badge key={item.id}>
-                  <Pressable
-                    onPress={() => {
-                      router.push({
-                        pathname: "/settings/skills",
-                        params: {
-                          providerId: data.id,
-                          skillId: item.id,
-                        },
-                      });
-                    }}>
+                <Link
+                  key={item.id}
+                  href={{
+                    pathname: '/provider/[providerId]/contact',
+                    params: {
+                      providerId: data.id,
+                      skillId: item.id,
+                    },
+                  }}
+                  asChild>
+                  <Badge>
                     <Text className="text-xs text-white">{item.title}</Text>
-                  </Pressable>
-                </Badge>
+                  </Badge>
+                </Link>
               ))}
             </View>
           </View>
         )}
 
-        <View className="mt-4 w-full flex-row">
-          <Dialog className="w-full">
-            <DialogTrigger asChild className="w-full">
+        {!isLoading && data && (
+          <View className="mt-4 w-full flex-row">
+            <Link
+              asChild
+              href={{
+                pathname: '/provider/[providerId]/contact',
+                params: {
+                  providerId: data?.id as string,
+                },
+              }}>
               <Button className="w-full rounded-full">
-                <Text className="text-white">Conctacter </Text>
+                <Text className="text-white">Contacter </Text>
               </Button>
-            </DialogTrigger>
-
-            <DialogContent>
-              <DialogHeader></DialogHeader>
-            </DialogContent>
-          </Dialog>
-        </View>
+            </Link>
+          </View>
+        )}
       </View>
     </ScrollView>
   );

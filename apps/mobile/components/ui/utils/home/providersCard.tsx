@@ -52,7 +52,13 @@ export function ProviderCard({
           <>
             {/* ── Header : avatar + infos ── */}
             <View className="gap-1">
-              <View className="flex-row items-center gap-2">
+              <Link href={{
+                pathname: "/provider/[providerId]",
+                params: {
+                  providerId: provider.id
+                }
+              }} asChild>
+                <Pressable onPress={onClose} className="flex-row items-center gap-2">
                 <Avatar alt="provider" className="size-20">
                   <AvatarImage source={{ uri: provider.user?.image ?? undefined }} />
                   <AvatarFallback />
@@ -70,7 +76,8 @@ export function ProviderCard({
                     <Text className="text-xs">{provider.mission_nb} missions</Text>
                   </View>
                 </View>
-              </View>
+              </Pressable>
+              </Link>
 
               {provider.bio ? (
                 <Text className="text-muted-foreground ps-1 text-left text-sm">{provider.bio}</Text>

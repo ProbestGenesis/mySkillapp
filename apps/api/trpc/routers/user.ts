@@ -77,7 +77,7 @@ export const userRouter = t.router({
         },
         profession: input.profession.value,
         experience: input.experience,
-        occupation: input.occupation,
+        occupation: input.occupation.value,
         bio: input.bio,
         availability: input.availability.value,
       },
@@ -189,7 +189,7 @@ export const userRouter = t.router({
         bio: input.bio,
         availability: input.availability.value,
         average_price: input.average_price ? parseFloat(input.average_price) : null,
-        occupation: input.occupation,
+        occupation: input.occupation.value,
         experience: input.experience,
       },
     });

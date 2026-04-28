@@ -26,7 +26,7 @@ import {
   Star,
   UserIcon,
 } from 'lucide-react-native';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
@@ -38,7 +38,6 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 
 type DialogType = 'CARE' | 'CANCEL' | 'FINISH' | 'RATE' | 'APPOINTMENT' | null;
 
@@ -96,23 +95,21 @@ export default function ServiceListScreen() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const { location, error: locationError } = usePreciseLocation()
+  const { location, error: locationError } = usePreciseLocation();
 
-  
   const stableLoc = useMemo(() => {
-  if (!location) return null;
-  return {
-    lat: location.latitude,
-    long: location.longitude,
-  };
-}, [location?.latitude, location?.longitude]);
+    if (!location) return null;
+    return {
+      lat: location.latitude,
+      long: location.longitude,
+    };
+  }, [location?.latitude, location?.longitude]);
 
   const [activeDialog, setActiveDialog] = useState<DialogType>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [rating, setRating] = useState(5);
   const [timeStr, setTimeStr] = useState('');
-
 
   //Mise a jour de la localisation
   const updateLocationMutation = useMutation(
@@ -126,10 +123,10 @@ export default function ServiceListScreen() {
 
   const { data, isLoading, refetch, isRefetching } = useQuery({
     ...trpc.service.getYoursServices.queryOptions({
-      lat: stableLoc!.lat,
-      long: stableLoc!.long
+      lat: stableLoc?.lat as number,
+      long: stableLoc?.long as number,
     }),
-    enabled: !!session?.user.id && !! stableLoc,
+    enabled: !!session?.user.id && !!stableLoc,
   });
 
   const openDialog = (item: any, type: DialogType) => {
@@ -225,7 +222,7 @@ export default function ServiceListScreen() {
       <SafeAreaView className="flex-1">
         <View className="bg-background h-screen">
           <View className="flex-1 items-center justify-center gap-6">
-            <Text className="font-lg text-muted-foreground text-xl">
+            <Text className="font-lg text-muted-foreground text-center text-xl">
               Vous devez être connecté pour accéder à cette page
             </Text>
             <Button variant="outline" onPress={() => router.push('/auth')} className="rounded-full">
@@ -260,7 +257,7 @@ export default function ServiceListScreen() {
             <CardTitle className="text-lg font-bold">
               {item.skills?.title || item.title || 'Service sans titre'}
             </CardTitle>
-            <CardDescription className="mt-1.5 line-clamp-2 text-lg">
+            <CardDescription className="mt-1.5  w-full  text-wrap text-lg">
               {item.description}
             </CardDescription>
           </View>
@@ -268,14 +265,14 @@ export default function ServiceListScreen() {
         </CardHeader>
 
         <CardContent className="gap-3 px-4 py-0">
-          <View className="flex-row   flex-wrap items-center gap-2">
+          <View className="flex-row flex-wrap items-center gap-1.5">
             <View className="bg-primary/10 flex-row items-center rounded-full px-2 py-1">
               <UserIcon size={12} className="text-primary mr-1" />
               <Text className="text-primary text-xs font-semibold">
                 {partnerRoleLabel}: {partnerName}
               </Text>
             </View>
-            <View className="bg-muted flex-row  items-center rounded-full px-2 py-1">
+            <View className="bg-muted flex-row items-center rounded-full px-2 py-1">
               <CalendarClock size={12} className="text-muted-foreground mr-1" />
               <Text className="text-muted-foreground text-xs">
                 {new Date(item.createdAt).toLocaleDateString('fr-FR', {
@@ -288,20 +285,14 @@ export default function ServiceListScreen() {
                 })}
               </Text>
             </View>
-
-           
-
           </View>
 
           <View className="flex-row flex-wrap items-center gap-1.5">
-
-          <View className="bg-muted flex-row items-center rounded-full px-2 py-1">
+           {!isCustomer && <View className="bg-muted flex-row items-center rounded-full px-2 py-1">
               <Locate size={12} className="text-muted-foreground mr-1" />
-              <Text className="text-muted-foreground text-xs">
-                {item.distance?.toFixed(2)} km
-              </Text>
-            </View>
-            
+              <Text className="text-muted-foreground text-xs">{item?.distance?.toFixed(2)} km</Text>
+            </View>}
+
             <View className="flex-row items-center gap-2">
               <Locate size={14} className="text-muted-foreground" />
               <Text className="text-muted-foreground text-sm">
@@ -388,7 +379,7 @@ export default function ServiceListScreen() {
                   variant="outline"
                   disabled={updateLocationMutation.isPending}
                   onPress={() => {
-                    if (!stableLoc) { 
+                    if (!stableLoc) {
                       Alert.alert(
                         'Erreur',
                         'Impossible de récupérer votre position. Vérifiez que la localisation est activée.'
@@ -746,43 +737,43 @@ export default function ServiceListScreen() {
   };
 
   return (
-      <View className="bg-background h-screen">
-        {isLoading ? (
-          <View className="h-full w-full flex-row items-center justify-center">
-            <ActivityIndicator size={64} color={'orange'} />
-          </View>
-        ) : (
-          <>
-            {data && data?.length > 0 ? (
-              <View className="flex-1 p-2">
-                <FlatList
-                  data={data as unknown as any[]}
-                  keyExtractor={(item) => item.id}
-                  renderItem={renderItem}
-                  contentContainerStyle={{ paddingBottom: 100 }}
-                  showsVerticalScrollIndicator={false}
-                  refreshing={isRefetching}
-                  onRefresh={refetch}
-                />
-              </View>
-            ) : (
-              <View className="flex-1 items-center justify-center gap-6">
-                <Text className="font-lg text-muted-foreground text-xl">
-                  Vous n'avez aucun service en cours
-                </Text>
-                <Button variant="outline" onPress={() => refetch()} className="rounded-full">
-                  <Text>Actualiser</Text>
-                </Button>
-              </View>
-            )}
+    <View className="bg-background h-screen pb-30">
+      {isLoading ? (
+        <View className="h-full w-full flex-row items-center justify-center">
+          <ActivityIndicator size={64} color={'orange'} />
+        </View>
+      ) : (
+        <>
+          {data && data?.length > 0 ? (
+            <View className="flex-1 p-2">
+              <FlatList
+                data={data as unknown as any[]}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItem}
+                contentContainerStyle={{ paddingBottom: 100 }}
+                showsVerticalScrollIndicator={false}
+                refreshing={isRefetching}
+                onRefresh={refetch}
+              />
+            </View>
+          ) : (
+            <View className="flex-1 items-center justify-center gap-6">
+              <Text className="font-lg text-muted-foreground text-xl">
+                Vous n'avez aucun service en cours
+              </Text>
+              <Button variant="outline" onPress={() => refetch()} className="rounded-full">
+                <Text>Actualiser</Text>
+              </Button>
+            </View>
+          )}
 
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogContent className="w-full min-w-xs rounded-2xl">
-                {renderDialogContent()}
-              </DialogContent>
-            </Dialog>
-          </>
-        )}
-      </View>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogContent className="w-full min-w-xs rounded-2xl">
+              {renderDialogContent()}
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
+    </View>
   );
 }

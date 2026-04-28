@@ -40,7 +40,7 @@ function StoreLayout({}: Props) {
       <Stack.Screen name="contact" options={{title: "Contact"}} />
       <Stack.Screen name="[itemId]" options={{ title: 'Détail annonce' }} />
       <Stack.Screen name="messages/index" options={{ title: 'Discussions' }} />
-      <Stack.Screen name="messages/[conversationId]" options={{ title: 'Messagerie' }} />
+      <Stack.Screen name="messages/[conversationId]" options={{ title: 'Messagerie',  }} />
     </Stack>
   );
 }

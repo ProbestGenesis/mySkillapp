@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -27,7 +28,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
-import { Input } from '@/components/ui/input';
 
 type Props = {
   onComplete?: () => void;
@@ -183,27 +183,57 @@ export default function BecomeProvider({}: Props) {
                 )}
               />
 
-              <Controller
-                name="experience"
-                control={control}
-                defaultValue={1}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <View className="w-full">
-                    <Label className="text-lg font-bold">Années d'expérience</Label>
-                    <Input
-                      placeholder="Ex: 2"
-                      onChangeText={(text) => onChange(Number(text))}
-                      value={String(value ?? '')}
-                      className="mt-1 h-12"
-                      keyboardType="number-pad"
-                    />
-                    {error?.message && (
-                      <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
-                    )}
-                  </View>
-                )}
-              />
+              <View className="flex-row gap-4">
+                <Controller
+                  name="experience"
+                  control={control}
+                  defaultValue={1}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <View className="w-full flex-1">
+                      <Label className="text-lg font-bold">Années d'expérience</Label>
+                      <Input
+                        placeholder="Ex: 2"
+                        onChangeText={(text) => onChange(Number(text))}
+                        value={String(value ?? '')}
+                        className="mt-1 h-12"
+                        keyboardType="number-pad"
+                      />
+                      {error?.message && (
+                        <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
+                      )}
+                    </View>
+                  )}
+                />
 
+                <Controller
+                  name="occupation"
+                  control={control}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <View className="w-full flex-1">
+                      <Label className="text-lg font-bold">Ocupation</Label>
+                      <Select onValueChange={(v: any) => onChange(v)}>
+                        <SelectTrigger className="h-12">
+                          <SelectValue placeholder={String(value ?? 'PROFESSIONNEL')} />
+                        </SelectTrigger>
+                        <SelectContent insets={contentInsets}>
+                          <SelectGroup>
+                            <SelectLabel>Métiers</SelectLabel>
+                            {['ETUDIANT', 'PROFESSIONNEL'].map((item: any) => (
+                              //@ts-ignore
+                              <SelectItem key={item} label={item} value={item}>
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      {error?.message && (
+                        <Text className="mt-1 text-sm text-red-600">{error.message}</Text>
+                      )}
+                    </View>
+                  )}
+                />
+              </View>
 
               <Controller
                 control={control}
