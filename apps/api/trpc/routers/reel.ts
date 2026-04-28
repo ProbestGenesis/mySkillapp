@@ -30,6 +30,14 @@ export const reelRouter = t.router({
               comments: true,
             },
           },
+          like: {
+            where: {
+              userId: ctx.session?.user.id,
+            },
+            select: {
+              id: true,
+            },
+          },
         },
       })
 
@@ -50,9 +58,96 @@ export const reelRouter = t.router({
           userImage: reel.user.image,
           likesCount: reel._count.like,
           commentsCount: reel._count.comments,
+          isLiked: reel.like.length > 0,
           createdAt: reel.createdAt,
         })),
         nextCursor,
       }
+    }),
+
+  toggleLike: protectedProcedure
+    .input(z.object({ reelId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const existingLike = await ctx.prisma.like.findFirst({
+        where: {
+          reelId: input.reelId,
+          userId: ctx.session?.user.id,
+        },
+      })
+
+      if (existingLike) {
+        await ctx.prisma.like.delete({
+          where: { id: existingLike.id },
+        })
+        return { liked: false }
+      }
+
+      await ctx.prisma.like.create({
+        data: {
+          reel: {
+            connect: {
+              id: input.reelId,
+            }
+          }, 
+          user: {
+            connect: {
+             id: ctx.session?.user.id as string,
+            }
+        },
+        },
+      })
+      return { liked: true }
+    }),
+
+  getComments: protectedProcedure
+    .input(z.object({ reelId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      return ctx.prisma.comment.findMany({
+        where: { reelId: input.reelId },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      })
+    }),
+
+  addComment: protectedProcedure
+    .input(
+      z.object({
+        reelId: z.string(),
+        comment: z.string().min(1),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      return ctx.prisma.comment.create({
+        data: {
+          reel: {
+            connect: {
+              id: input.reelId,
+            }
+          },
+          user: {
+              connect: {
+               id: ctx.session?.user.id as string,
+              }
+          },
+          comment: input.comment,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+        },
+      })
     }),
 })
