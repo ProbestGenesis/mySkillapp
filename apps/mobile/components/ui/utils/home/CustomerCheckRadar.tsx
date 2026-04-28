@@ -75,7 +75,7 @@ function CustomerCheckRadar({ selectedService }: Props) {
         className="relative h-[60vh] w-full flex-col items-center justify-center"
         onLayout={onLayout}>
           <Ripple  />
-        <View className="absolute top-[53%] left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 items-center">
+        <View className="absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 items-center">
           <View className="absolute top-[47%] left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 items-center">
             <Avatar
               alt="user-avatar"

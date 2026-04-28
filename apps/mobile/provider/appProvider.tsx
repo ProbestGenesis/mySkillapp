@@ -24,9 +24,10 @@ export function AppProvider(props: { children: React.ReactNode }) {
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          url: "https://api-production-d535.up.railway.app/trpc/",
+          url: "http://192.168.201.18:4000/trpc/",
           headers() {
             const headers = new Map<string, string>();
+            //@ts-ignore
             const cookies = authClient.getCookie();
             if (cookies) {
               headers.set('Cookie', cookies);

@@ -116,7 +116,10 @@ export const createProvider = z.object({
     ]),
   }),
   type: z.enum(['INDIVIDUEL', 'ENTREPRISE']).optional(),
-  occupation: z.enum(["ETUDIANT", "PROFESSIONNEL"]).nonoptional("Veuillew selectionner une occupation").default("PROFESSIONNEL"),
+  occupation: z.object({
+    value: z.enum(["ETUDIANT", "PROFESSIONNEL"]),
+    label:  z.enum(["ETUDIANT", "PROFESSIONNEL"])
+  }),
   bio: z.string().min(20, {
     message: 'Veuillez saisir au moins 20 caracètre pour décrire vos compétences',
   }),
@@ -164,7 +167,10 @@ export const updateProviderProfileSchema = z.object({
     label: z.string(),
   }),
   experience: z.number().nonoptional("Veuillez saisir votre nombre d'années d'experience"),
-  occupation: z.enum(["ETUDIANT", "PROFESSIONNEL"]).default("PROFESSIONNEL"),
+  occupation: z.object({
+    value: z.enum(["ETUDIANT", "PROFESSIONNEL"]),
+    label:  z.enum(["ETUDIANT", "PROFESSIONNEL"])
+  }),
   bio: z.string().min(20, 'Veuillez saisir au moins 20 caractères'),
   availability: z.object({
     value: z.enum(['7j/7', 'Lundi-Samedi', 'week-end']),

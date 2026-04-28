@@ -2,6 +2,8 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "importHelpers": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {

@@ -5,6 +5,7 @@ import { usePreciseLocation } from '@/lib/geolocation';
 import { useTRPC } from '@/provider/appProvider';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
+import { Locate } from 'lucide-react-native';
 import { AnimatePresence, MotiView } from 'moti';
 import React, { useCallback, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Text, TouchableOpacity, View } from 'react-native';
@@ -23,6 +24,7 @@ export type NearProviderRow = {
   user: { name: string; image: string | null };
   skills: { id: string; title: string; description: string; average_price: number }[];
   distanceM: number;
+  distance: number
 };
 
 type Props = {
@@ -195,6 +197,12 @@ function ProviderCheckRadar({ selectedService }: Props) {
                         className="max-w-20 text-center text-[10px] font-bold text-black"
                         numberOfLines={1}>
                         {item.profession}
+                      </Text>
+                    </View>
+                    <View className="bg-muted flex-row gap-1.5 items-center rounded-full px-1.5 py-0.5">
+                      <Locate size={8} className="text-muted-foreground mr-1" />
+                      <Text className="text-muted-foreground text-[0.5rem]">
+                        {item?.distance?.toFixed(2)} km
                       </Text>
                     </View>
                   </View>

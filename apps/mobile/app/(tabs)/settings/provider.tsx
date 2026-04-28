@@ -211,14 +211,15 @@ export default function BecomeProvider({}: Props) {
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <View className="w-full flex-1">
                       <Label className="text-lg font-bold">Ocupation</Label>
-                      <Select onValueChange={(v: any) => onChange(v)}>
+                      <Select onValueChange={(v: any) => onChange(v)} value={value}
+                      defaultValue={value}>
                         <SelectTrigger className="h-12">
                           <SelectValue placeholder={String(value ?? 'PROFESSIONNEL')} />
                         </SelectTrigger>
                         <SelectContent insets={contentInsets}>
                           <SelectGroup>
                             <SelectLabel>Métiers</SelectLabel>
-                            {['ETUDIANT', 'PROFESSIONNEL'].map((item: any) => (
+                            {[{value: 'PROFESSIONNEL', label: 'PROFESSIONNEL'}, {value: 'ETUDIANT', label: 'ETUDIANT' }].map((item: any) => (
                               //@ts-ignore
                               <SelectItem key={item} label={item} value={item}>
                                 {item}
