@@ -6,7 +6,7 @@ import * as SecureStore from "expo-secure-store";
 
 
 export const authClient = createAuthClient({
-    baseURL: "https://api-production-d535.up.railway.app",
+    baseURL: "http://192.168.201.18:4000",
     plugins: [
         expoClient({
             scheme: process.env.EXPO_SCHEME ?? "skillmap://",
@@ -14,8 +14,9 @@ export const authClient = createAuthClient({
             storage: SecureStore,
         }),
         phoneNumberClient(),
+        //@ts-ignore
         customSessionClient<Auth>(),
     ],
 });
-
+//@ts-ignore
 export const { useSession, signIn, signUp, signOut, phoneNumber, updateUser, changeEmail } =  authClient;

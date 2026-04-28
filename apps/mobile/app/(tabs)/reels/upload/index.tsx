@@ -22,7 +22,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import zod from 'zod';
+import z from 'zod';
 
 const CLOUDINARY_CLOUD_NAME = 'dk30akh2m';
 const CLOUDINARY_UPLOAD_PRESET = 'reelUpload';
@@ -49,6 +49,9 @@ export default function VideoUploadPage() {
 
   const [isCompressing, setIsCompressing] = useState(false);
   const [isUploadingToCloudinary, setIsUploadingToCloudinary] = useState(false);
+  const formSchema = z.object({
+    description: z.string().optional(),
+  })
 
   // Procédure tRPC pour sauvegarder l'URL en base de données
   const saveUrlMutation = useMutation(
@@ -64,11 +67,7 @@ export default function VideoUploadPage() {
   );
 
   const { control, handleSubmit } = useForm({
-    resolver: zodResolver(
-      zod.object({
-        description: zod.string().optional(),
-      })
-    ),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       description: '',
     },
@@ -90,7 +89,7 @@ export default function VideoUploadPage() {
     }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (value: z.infer<typeof  formSchema>) => {
     if (!videoUri) {
       Alert.alert('Erreur', "Veuillez d'abord sélectionner une vidéo.");
       return;
@@ -158,7 +157,7 @@ export default function VideoUploadPage() {
       // 3. Sauvegarder l'URL via notre backend Express (tRPC)
       saveUrlMutation.mutate({
         videoUrl: finalVideoUrl,
-        description: 'Ma super vidéo !', // Tu peux ajouter un champ texte pour ça plus tard
+        description: value.description, 
       });
     } catch (err: any) {
       setIsCompressing(false);
@@ -241,7 +240,7 @@ export default function VideoUploadPage() {
 
             <Button
               variant="default"
-              onPress={handleUpload}
+              onPress={() => handleSubmit(data => handleUpload(data))}
               disabled={!videoUri || isWorking}
               className={`mt-2 rounded-full`}>
               {isWorking ? (
@@ -261,9 +260,6 @@ export default function VideoUploadPage() {
                 <Ionicons name="checkmark-circle" size={20} color="#15803d" className="mr-2" />
                 <Text className="ml-1 text-[15px] font-bold text-green-800">Reel publié !</Text>
               </View>
-              <Text className="mt-1 text-[12px] text-green-700" numberOfLines={2}>
-                {uploadedUrl}
-              </Text>
             </View>
           )}
 
