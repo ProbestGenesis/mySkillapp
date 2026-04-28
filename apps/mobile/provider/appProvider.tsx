@@ -24,7 +24,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          url: "http://192.168.201.18:4000/trpc/",
+          url: "https://api-production-d535.up.railway.app/trpc/",
           headers() {
             const headers = new Map<string, string>();
             //@ts-ignore
