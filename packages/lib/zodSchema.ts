@@ -126,7 +126,10 @@ export const postsSchema = z.object({
         message:
           "Veuillez saisir au moins 20 caracètre pour décrire vos compétences",
       }),
-    occupation: z.enum(["ETUDIANT", "PROFESSIONNEL"]).default("PROFESSIONNEL"),
+    occupation: z.object({
+        value: z.enum(["ETUDIANT", "PROFESSIONNEL"]),
+        label:  z.enum(["ETUDIANT", "PROFESSIONNEL"])
+      }),
     availability: z.object({
       value: z.enum(["7j/7", "Lundi-Samedi", "week-end"]),
       label: z.enum(["7j/7", "Lundi-Samedi", "week-end"]),
@@ -179,7 +182,10 @@ export const postsSchema = z.object({
       label: z.string(),
     }),
     experience: z.number().nonoptional("Veuillez saisir votre nombre d'années d'experience"),
-    occupation: z.enum(["ETUDIANT", "PROFESSIONNEL"]).default("PROFESSIONNEL"),
+    occupation: z.object({
+        value: z.enum(["ETUDIANT", "PROFESSIONNEL"]),
+        label:  z.enum(["ETUDIANT", "PROFESSIONNEL"])
+      }),
     bio: z.string().min(20, "Veuillez saisir au moins 20 caractères"),
     availability: z.object({
       value: z.enum(["7j/7", "Lundi-Samedi", "week-end"]),
