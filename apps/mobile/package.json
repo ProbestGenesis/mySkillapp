@@ -61,6 +61,7 @@
     "expo-image": "~55.0.8",
     "expo-image-and-video-compressor": "^1.0.1",
     "expo-image-picker": "~55.0.18",
+    "expo-insights": "~55.0.16",
     "expo-linking": "~55.0.12",
     "expo-location": "~55.1.8",
     "expo-modules-core": "~55.0.23",
@@ -105,9 +106,6 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "~5.9.2"
-  },
-  "engines": {
-    "node": ">=22.12.0"
   },
   "private": true
 }
