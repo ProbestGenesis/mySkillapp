@@ -10,7 +10,7 @@ import { usePathname, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
-import { promise, z } from 'zod';
+import { z } from 'zod';
 
 type Props = {
   forAuth: boolean;
@@ -35,20 +35,19 @@ function UserInfo({ closeDrawer, forAuth }: Props) {
     console.log(data);
     setIsLoading(true);
 
-
-    Promise.allSettled([
-      updateUser({
+    await Promise.all([
+     await updateUser({
         name: data.name,
       }),
-      changeEmail({
+     await changeEmail({
         newEmail: data.email ?? session?.user.email as string,
       }),
     ]).then((results) => {
       results.forEach((result) => {
-        if (result.status === 'rejected') {
+        if (result.data?.status === false) {
           setIsSuccess({
-            message: result.reason.message,
-            status: parseInt(result.reason.code ?? '0', 10),
+            message: result.error?.message,
+            status: parseInt(result.error?.code ?? "500", 10),
             error: true,
           });
         }
@@ -60,10 +59,10 @@ function UserInfo({ closeDrawer, forAuth }: Props) {
         error: false,
       });
     })
-    .catch(error =>{
+    .catch((error) => {
        setIsSuccess({
             message: error?.message,
-            status: parseInt(error?.code ?? '0', 10),
+            status: parseInt(error?.code ?? "500", 10),
             error: true,
           });
     })

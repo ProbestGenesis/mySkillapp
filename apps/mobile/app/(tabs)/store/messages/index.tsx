@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from "@/components/ui/button"
 
 export default function StoreConversationsScreen() {
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const trpc = useTRPC();
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export default function StoreConversationsScreen() {
     enabled: !!session?.user?.id,
   });
 
-  if (!session) {
+  if (!isPending && !session) {
     return (
       <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-col items-center justify-center gap-2">
@@ -69,7 +69,7 @@ export default function StoreConversationsScreen() {
         {data?.length ? (
           data.map((conversation) => {
             const other =
-              conversation.ownerId === session.user.id ? conversation.customer : conversation.owner;
+              conversation.ownerId === session?.user.id ? conversation.customer : conversation.owner;
             const lastMessage = conversation.messages[0];
             return (
               <Link key={conversation.id} href={`/(tabs)/store/messages/${conversation.id}`}>

@@ -19,7 +19,7 @@ import { createProvider } from '@/lib/zodSchema';
 import { useTRPC } from '@/provider/appProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useRouter } from 'expo-router';
 import { AnimatePresence, MotiView } from 'moti';
@@ -37,6 +37,7 @@ type Props = {
 export default function BecomeProvider({}: Props) {
   const router = useRouter();
   const trpc = useTRPC();
+  const queryClient = useQueryClient()
   const { data: session } = authClient.useSession();
   const { location, error: locationError, permissionGranted } = usePreciseLocation();
 
@@ -62,9 +63,12 @@ export default function BecomeProvider({}: Props) {
     resolver: zodResolver(createProvider),
   });
 
-  const { mutateAsync: createProviderMutation, isPending } = useMutation(
-    trpc.user.createProvider.mutationOptions()
-  );
+  const { mutateAsync: createProviderMutation, isPending } = useMutation({
+    ...trpc.user.createProvider.mutationOptions(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: trpc.user.getUserWithProviderData.queryKey()})
+    }
+  });
 
   useEffect(() => {
     if (locationError) {
@@ -184,14 +188,14 @@ export default function BecomeProvider({}: Props) {
                 )}
               />
 
-              <View className="flex-row gap-4">
+              <View className="flex-row flex-wrap items-center gap-4">
                 <Controller
                   name="experience"
                   control={control}
                   defaultValue={1}
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <View className="w-full flex-1">
-                      <Label className="text-lg font-bold">Années d'expérience</Label>
+                      <Label className="font-bold">Années d'expérience</Label>
                       <Input
                         placeholder="Ex: 2"
                         onChangeText={(text) => onChange(Number(text))}
@@ -211,15 +215,17 @@ export default function BecomeProvider({}: Props) {
                   control={control}
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <View className="w-full flex-1">
-                      <Label className="text-lg font-bold">Ocupation</Label>
-                      <Select onValueChange={(v: any) => onChange(v)} value={value}
-                      defaultValue={value}>
+                      <Label className="font-bold">Ocupation</Label>
+                      <Select
+                        onValueChange={(v: any) => onChange(v)}
+                        value={value}
+                        defaultValue={value}>
                         <SelectTrigger className="h-12">
                           <SelectValue placeholder={String(value ?? 'PROFESSIONNEL')} />
                         </SelectTrigger>
                         <SelectContent insets={contentInsets}>
                           <SelectGroup>
-                            <SelectLabel>Métiers</SelectLabel>
+                            <SelectLabel>Occupations</SelectLabel>
                             {occupations.map((item: any, idx: number) => (
                               //@ts-ignore
                               <SelectItem key={idx} label={item.label} value={item.value}>
@@ -301,7 +307,7 @@ export default function BecomeProvider({}: Props) {
             className="flex-1 justify-between px-6 py-10">
             <View>
               <Text className="text-center text-2xl font-extrabold">
-                🎯 Bienvenue sur <Text className="text-primary">BTPpro</Text>
+                🎯 Bienvenue sur <Text className="text-primary">SKILLMAP</Text>
               </Text>
               <Text className="mt-2 text-center text-base text-gray-600">
                 La plateforme de toutes les opportunités pour les pros de la prestation de services.

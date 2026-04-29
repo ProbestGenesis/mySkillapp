@@ -192,7 +192,7 @@ export default function StoreNewScreen() {
         ) : null}
 
         <Button onPress={onSubmit} disabled={createMutation.isPending || uploading}>
-          {createMutation.isPending ? (
+          {createMutation.isPending || isPending ? (
             <ActivityIndicator color="white" />
           ) : (
             <Text className="font-bold text-white">Publier</Text>

@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { authClient, useSession } from '@/lib/auth-client';
+import { authClient } from '@/lib/auth-client';
 import { useTRPC } from '@/provider/appProvider';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = {};
 function ProfilPicture({}: Props) {
-   const { data : session, isPending }= useSession()
+  const { data: session, isPending, refetch } = authClient.useSession();
   const queryClient = useQueryClient();
   const router = useRouter();
   const trpc = useTRPC();
@@ -50,7 +50,7 @@ function ProfilPicture({}: Props) {
         setImage(result.assets[0]);
       }
     } catch (error) {
-      console.error('Erreur lors de la sélection de l\'image:', error);
+      console.error("Erreur lors de la sélection de l'image:", error);
     }
   };
 
@@ -61,7 +61,8 @@ function ProfilPicture({}: Props) {
         image: data.imageUrl,
       });
       setSuccess({ message: data.message, status: 200 });
-      queryClient.invalidateQueries({ queryKey: ['userProviderInfo'] });
+      queryClient.invalidateQueries({ queryKey: trpc.user.getUserWithProviderData.queryKey() });
+
       setTimeout(() => {
         router.back();
       }, 1000);
@@ -82,34 +83,33 @@ function ProfilPicture({}: Props) {
   };
 
   if (!isPending && !session) {
-      return (
-        <SafeAreaView className="h-screen flex-1">
-          <View className="h-full w-full flex-col items-center justify-center gap-2">
-            <Text className="text-accent text-center text-lg">
-              {' '}
-              Vous devez vous connecter pour acceder a cette page{' '}
-            </Text>
-            <Button
-              className="rounded-full"
-              variant={'outline'}
-              size={"lg"}
-              onPress={() => {
-                router.push('/auth');
-              }}>
-              {' '}
-              <Text>Se connecter</Text>{' '}
-            </Button>
-          </View>
-        </SafeAreaView>
-      );
-    }
-  
+    return (
+      <SafeAreaView className="h-screen flex-1">
+        <View className="h-full w-full flex-col items-center justify-center gap-2">
+          <Text className="text-accent text-center text-lg">
+            {' '}
+            Vous devez vous connecter pour acceder a cette page{' '}
+          </Text>
+          <Button
+            className="rounded-full"
+            variant={'outline'}
+            size={'lg'}
+            onPress={() => {
+              router.push('/auth');
+            }}>
+            {' '}
+            <Text>Se connecter</Text>{' '}
+          </Button>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <View className="relative mt-2 h-full flex-col items-center justify-center gap-6 pt-8">
       <View className="flex-col items-center justify-center gap-6">
         <View className="">
-          <Text className="text-xl font-bold leading-tight tracking-widest">
+          <Text className="text-xl leading-tight font-bold tracking-widest">
             Choisir une photo de profil
           </Text>
         </View>
@@ -127,8 +127,12 @@ function ProfilPicture({}: Props) {
         <Button
           className="rounded-full"
           onPress={handleUpload}
-          disabled={profilMutation.isPending || !image?.base64}>
-          {profilMutation.isPending ? <ActivityIndicator size={24} color={"white"} />  : <Text className="text-lg font-bold text-white">Enregistrer</Text>}
+          disabled={profilMutation.isPending || !image?.base64 || isPending}>
+          {profilMutation.isPending ? (
+            <ActivityIndicator size={24} color={'white'} />
+          ) : (
+            <Text className="text-lg font-bold text-white">Enregistrer</Text>
+          )}
         </Button>
       </View>
 
