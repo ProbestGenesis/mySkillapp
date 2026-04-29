@@ -19,3 +19,5 @@ export const profession = [
   { label: 'Soudeur / ferronnier', value: 'Soudeur / ferronnier' },
   { label: 'Agent de voirie', value: 'Agent de voirie' },
 ];
+
+

@@ -192,7 +192,7 @@ function ProviderCheckRadar({ selectedService }: Props) {
                       <AvatarImage source={{ uri: item.user?.image ?? undefined }} />
                       <AvatarFallback />
                     </Avatar>
-                    <View className="absolute -bottom-5 rounded-full bg-white/80 px-2 py-0.5">
+                    <View className="rounded-full bg-white/80 px-2 py-0.5">
                       <Text
                         className="max-w-20 text-center text-[10px] font-bold text-black"
                         numberOfLines={1}>

@@ -119,7 +119,7 @@ export default function StoreIndexScreen() {
             )}
 
             {/* Pagination */}
-            {hasProducts && (
+            {hasProducts && hasNextPage && (
               <View className="flex-row justify-end gap-3 pt-2">
                 <Button
                   variant="outline"

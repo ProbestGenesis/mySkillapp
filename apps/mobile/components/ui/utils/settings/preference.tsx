@@ -8,7 +8,7 @@ export function Preference() {
               <CardHeader>
                 <View className="flex-row items-center gap-2">
                   <Settings />
-                  <Text className="text-lg font-bold">Preference</Text>
+                  <Text className="text-lg font-bold">Préference</Text>
                 </View>
               </CardHeader>
 

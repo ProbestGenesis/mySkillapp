@@ -35,8 +35,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
 import { z } from 'zod';
+
+export const occupations = [
+  { label: 'PROFESSIONNEL', value: 'PROFESSIONNEL'},
+  { label: 'ETUDIANT', value: 'ETUDIANT' },
+];
 
 export default function EditProfil() {
   const router = useRouter();
@@ -127,7 +132,6 @@ export default function EditProfil() {
             label: (userData.provider.availability as any) || '7j/7',
           },
           average_price: userData.provider.average_price?.toString() || '',
-         
         });
       }
     }
@@ -197,6 +201,24 @@ export default function EditProfil() {
       <View className="bg-background flex-1 items-center justify-center">
         <ActivityIndicator size="large" color="#F97316" />
       </View>
+    );
+  }
+
+  
+  if (!isPending && !session) {
+    return (
+      <SafeAreaView className="flex-1">
+        <View className="bg-background h-screen">
+          <View className="flex-1 items-center justify-center gap-6">
+            <Text className="font-lg text-muted-foreground text-center text-xl">
+              Vous devez être connecté pour accéder à cette page
+            </Text>
+            <Button variant="outline" onPress={() => router.push('/auth')} className="rounded-full">
+              <Text>Se connecter</Text>
+            </Button>
+          </View>
+        </View>
+      </SafeAreaView>
     );
   }
 
@@ -442,20 +464,20 @@ export default function EditProfil() {
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <View className="flex-1">
                       <Label className="text-lg font-bold">Ocupation</Label>
-                      <Select onValueChange={(v: any) => onChange(v)}
-                      value={value}
-                      defaultValue={value}
-                     >
+                      <Select
+                        onValueChange={(v: any) => onChange(v)}
+                        value={value}
+                        defaultValue={value}>
                         <SelectTrigger className="h-12">
                           <SelectValue placeholder={String(value ?? '')} />
                         </SelectTrigger>
                         <SelectContent insets={contentInsets}>
                           <SelectGroup>
                             <SelectLabel>Métiers</SelectLabel>
-                            {[{value: 'PROFESSIONNEL', label: 'PROFESSIONNEL'}, {value: 'ETUDIANT', label: 'ETUDIANT' }].map((item: any) => (
+                            {occupations.map((item: any, idx: number) => (
                               //@ts-ignore
-                              <SelectItem key={item} label={item} value={item}>
-                                {item}
+                              <SelectItem key={idx} label={item.label} value={item.value}>
+                                {item.value}
                               </SelectItem>
                             ))}
                           </SelectGroup>
@@ -528,7 +550,10 @@ export default function EditProfil() {
                 </View>
               </View>
               <View>
-                <Text className="text-muted">*Le rix de base est le prix en dessous de quel vous ne souhaitez pas être contacté </Text>
+                <Text className="text-muted">
+                  *Le rix de base est le prix en dessous de quel vous ne souhaitez pas être
+                  contacté{' '}
+                </Text>
               </View>
               {/* Submit */}
               <Button

@@ -10,12 +10,14 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Text, TouchableOpacity, View } from 'react-native';
 import DemandCard from './clients/demandCard';
 import Ripple from '../../radar';
+import { Locate } from "lucide-react-native";
 
 /** Aligné sur `customers.listNearDemands` (Post + user + distance). */
 type NearDemandPost = {
   id: string;
   user: { id: string; name: string; image: string | null };
   distanceM: number;
+  distance: number;
 };
 
 type Props = {
@@ -144,13 +146,20 @@ function CustomerCheckRadar({ selectedService }: Props) {
                         <AvatarImage source={{ uri: item.user?.image ?? undefined }} />
                         <AvatarFallback />
                       </Avatar>
-                      <View className="absolute -bottom-5 rounded-full bg-white/90 px-2 py-0.5 shadow-sm">
+                      <View className="rounded-full bg-white/90 px-2 py-0.5 shadow-sm">
                         <Text
                           className="max-w-[80px] text-center text-[10px] font-bold text-black"
                           numberOfLines={1}>
                           {item.user.name}
                         </Text>
                       </View>
+
+                      <View className="bg-muted flex-row gap-1.5 items-center rounded-full px-1.5 py-0.5">
+                      <Locate size={8} className="text-muted-foreground mr-1" />
+                      <Text className="text-muted-foreground text-[0.5rem]">
+                        {item?.distance?.toFixed(2)} km
+                      </Text>
+                    </View>
                     </View>
                   </TouchableOpacity>
                 </MotiView>

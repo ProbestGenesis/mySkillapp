@@ -78,7 +78,7 @@ export const CommentDrawer = ({ visible, reelId, onClose, commentCount }: Commen
               from={{ translateY: 600 }}
               animate={{ translateY: 0 }}
               exit={{ translateY: 600 }}
-              transition={{ type: 'spring', damping: 0, stiffness: 150 }}
+              transition={{ type: 'spring', stiffness: 150 }}
               className="h-[75%] w-full overflow-hidden rounded-t-[32px] bg-white pt-2">
               {/* Header Handle */}
               <Pressable className="items-center py-2" onPress={() => onClose()} >

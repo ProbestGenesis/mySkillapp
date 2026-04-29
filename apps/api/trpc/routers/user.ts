@@ -195,4 +195,12 @@ export const userRouter = t.router({
     });
     return { ok: true, message: 'Informations de prestation mises à jour avec succès' };
   }),
+
+  deleteUser : protectedProcedure.mutation(async ({ctx}) => {
+    const userId = ctx.session!.user.id;
+    await ctx.prisma.user.delete({
+      where: { id: userId },
+    });
+    return { ok: true, message: 'Votre compte a été supprimé avec succès' };
+  })
 })

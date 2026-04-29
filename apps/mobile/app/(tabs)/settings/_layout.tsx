@@ -1,14 +1,14 @@
-import { Stack } from "expo-router"
+import { Stack } from 'expo-router';
 
-type Props = {}
+type Props = {};
 function SettingLayout({}: Props) {
   return (
-      <Stack screenOptions={{ headerBackVisible: true }} >
+    <Stack screenOptions={{ headerBackVisible: true }}>
       <Stack.Screen
         name="index"
         options={{
           title: 'Vous',
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -18,10 +18,13 @@ function SettingLayout({}: Props) {
           headerBackVisible: true,
         }}
       />
-      <Stack.Screen  name="editProfil" options={{
-        title: "Modifier son profil",
-        headerBackVisible: true
-      }} />
+      <Stack.Screen
+        name="editProfil"
+        options={{
+          title: 'Modifier son profil',
+          headerBackVisible: true,
+        }}
+      />
 
       <Stack.Screen
         name="skills"
@@ -35,11 +38,14 @@ function SettingLayout({}: Props) {
         options={{
           title: 'Photo de profil',
           headerBackVisible: true,
-          
-          
         }}
       />
+
+      <Stack.Screen
+        name="additionalSetting"
+        options={{ title: 'Plus de paramètres', headerBackVisible: true }}
+      />
     </Stack>
-  )
+  );
 }
-export default SettingLayout
+export default SettingLayout;

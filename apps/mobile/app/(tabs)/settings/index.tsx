@@ -2,12 +2,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Preference } from '@/components/ui/utils/settings/preference';
@@ -17,18 +17,18 @@ import { useTRPC } from '@/provider/appProvider';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Link, useRouter } from 'expo-router';
-import { useState } from 'react';
 import {
-  AlertCircle,
-  BriefcaseBusiness,
-  Calendar,
-  HandCoins,
-  LogOut,
-  MapPin,
-  Phone,
-  Star,
-  UserIcon,
+    AlertCircle,
+    BriefcaseBusiness,
+    Calendar,
+    HandCoins,
+    LogOut,
+    MapPin,
+    Phone,
+    Star,
+    UserIcon,
 } from 'lucide-react-native';
+import { useState } from 'react';
 import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -63,7 +63,7 @@ function SettingScreen({}: Props) {
     }
   };
 
-  if (!session) {
+  if (!isPending && !session) {
     return (
       <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-col items-center justify-center gap-2">
@@ -399,6 +399,10 @@ function SettingScreen({}: Props) {
             <Skills data={data} isLoading={isLoading} session={session} />
 
             <Preference />
+
+            <Link href={"/settings/additionalSetting"} asChild> 
+              <Button variant={"outline"}><Text> Paramètre supplémentaire </Text> </Button>
+            </Link> 
 
             <Button className="w-full flex-row gap-6" variant={'outline'} onPress={handleSignOut}>
               <LogOut />

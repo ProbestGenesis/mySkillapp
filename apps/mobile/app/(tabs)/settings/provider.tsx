@@ -28,6 +28,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
+import { occupations } from './editProfil';
 
 type Props = {
   onComplete?: () => void;
@@ -219,10 +220,10 @@ export default function BecomeProvider({}: Props) {
                         <SelectContent insets={contentInsets}>
                           <SelectGroup>
                             <SelectLabel>Métiers</SelectLabel>
-                            {[{value: 'PROFESSIONNEL', label: 'PROFESSIONNEL'}, {value: 'ETUDIANT', label: 'ETUDIANT' }].map((item: any) => (
+                            {occupations.map((item: any, idx: number) => (
                               //@ts-ignore
-                              <SelectItem key={item} label={item} value={item}>
-                                {item}
+                              <SelectItem key={idx} label={item.label} value={item.value}>
+                                {item.value}
                               </SelectItem>
                             ))}
                           </SelectGroup>

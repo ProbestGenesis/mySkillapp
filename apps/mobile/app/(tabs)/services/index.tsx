@@ -93,7 +93,7 @@ export default function ServiceListScreen() {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
 
   const { location, error: locationError } = usePreciseLocation();
 
@@ -217,7 +217,7 @@ export default function ServiceListScreen() {
     return;
   }, [session, data]);
 
-  if (!session) {
+  if (!isPending && !session) {
     return (
       <SafeAreaView className="flex-1">
         <View className="bg-background h-screen">

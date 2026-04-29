@@ -170,7 +170,7 @@ export default function VideoUploadPage() {
   const isWorking = saveUrlMutation.isPending || isCompressing || isUploadingToCloudinary;
 
   const getStatusText = () => {
-    if (isCompressing) return 'Compression...';
+    if (isCompressing) return 'Traitement...';
     if (isUploadingToCloudinary) return 'En cours de telechargement...';
     if (saveUrlMutation.isPending) return "c'est presque prêt";
     return 'Envoyer le Reel';
