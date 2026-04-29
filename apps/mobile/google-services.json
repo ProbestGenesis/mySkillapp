@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "998835118385",
+    "project_id": "skillmap-2f09c",
+    "storage_bucket": "skillmap-2f09c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998835118385:android:d23230c7abed3cd2629010",
+        "android_client_info": {
+          "package_name": "com.genesiscorp.skillmap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvni_V5QQqv9EErJgGu61MjJK62b0z9_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
