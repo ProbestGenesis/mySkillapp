@@ -1,4 +1,6 @@
-import { Stack } from 'expo-router';
+import { Stack, Link } from 'expo-router';
+import { ArrowLeft } from "lucide-react-native"
+import { Button } from "@/components/ui/button"
 
 type Props = {};
 function SettingLayout({}: Props) {
@@ -37,7 +39,14 @@ function SettingLayout({}: Props) {
         name="profilPicture"
         options={{
           title: 'Photo de profil',
-          headerBackVisible: true,
+          headerBackVisible: false,
+          headerLeft: () => (
+            <Link asChild href="/(tabs)/settings">
+              <Button variant={'ghost'} size={"iconSm"} className='me-4'>
+                <ArrowLeft />
+              </Button>
+            </Link>
+          ),
         }}
       />
 

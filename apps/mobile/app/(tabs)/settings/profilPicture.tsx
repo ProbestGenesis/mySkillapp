@@ -131,7 +131,7 @@ function ProfilPicture({}: Props) {
           {profilMutation.isPending ? (
             <ActivityIndicator size={24} color={'white'} />
           ) : (
-            <Text className="text-lg font-bold text-white">Enregistrer</Text>
+            <Text className="font-bold text-white">Enregistrer</Text>
           )}
         </Button>
       </View>

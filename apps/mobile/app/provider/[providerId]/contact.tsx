@@ -254,7 +254,7 @@ function Contact({}: Props) {
             <View className="">
               <View className="flex-row items-center justify-end gap-2">
                 <Dialog>
-                   { !sessionIsPending && session  && form.getFieldState("description").isDirty  && (
+                   { !sessionIsPending && session  && (
                     <DialogTrigger asChild>
                       <Button size={'lg'} className="rounded-full">
                         <Text className="text-lg font-bold text-white">Faire appelle à lui</Text>

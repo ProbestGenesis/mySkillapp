@@ -247,16 +247,18 @@ function SettingScreen({}: Props) {
 
                 <CardContent>
                   <View className="flex-col gap-2">
-                    <View className="flex-col items-center justify-center">
-                      <Text className="font-bold tracking-widest">Bio</Text>
+                    <View className="flex-col justify-center mb-2.5">
+                      <Text className="font-bold tracking-widest">Biographie</Text>
                       {data?.provider?.bio ? (
-                        <Text className="text-center text-sm leading-snug dark:text-gray-50">
+                        <Text className="text-sm leading-snug dark:text-gray-50">
                           {data?.provider?.bio}
                         </Text>
                       ) : (
-                        <Button variant="link" size="sm">
-                          Ajouter un bio
-                        </Button>
+                        <Link href="/(tabs)/settings/editProfil" asChild>
+                          <Button variant="link" size="sm">
+                            Ajouter une bio
+                          </Button>
+                        </Link>
                       )}
                     </View>
 

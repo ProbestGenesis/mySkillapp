@@ -85,9 +85,14 @@ export default function EditProfil() {
     trpc.user.updatePersonalProfile.mutationOptions()
   );
 
-  const { mutateAsync: updateProvider, isPending: isUpdatingProvider } = useMutation(
-    trpc.user.updateProviderProfile.mutationOptions()
-  );
+  const { mutateAsync: updateProvider, isPending: isUpdatingProvider } = useMutation({
+    ...trpc.user.updateProviderProfile.mutationOptions(),
+    onSuccess: () => {
+      queryClient.invalidateQueries(
+        trpc.user.getUserWithProviderData.queryOptions({ userId: session?.user.id as string })
+      );
+    }
+  });
 
   const profilePictureMutation = useMutation({
     ...trpc.user.updateProfilePicture.mutationOptions(),
@@ -443,7 +448,7 @@ export default function EditProfil() {
                   defaultValue={1}
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <View className="flex-1">
-                      <Label className="text-lg font-bold">Années d'expérience</Label>
+                      <Label className="font-bold">Années d'expérience</Label>
                       <Input
                         placeholder="Ex: 2"
                         onChangeText={(text) => onChange(Number(text))}
@@ -463,7 +468,7 @@ export default function EditProfil() {
                   control={providerForm.control}
                   render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <View className="flex-1">
-                      <Label className="text-lg font-bold">Ocupation</Label>
+                      <Label className="font-bold">Ocupation</Label>
                       <Select
                         onValueChange={(v: any) => onChange(v)}
                         value={value}
