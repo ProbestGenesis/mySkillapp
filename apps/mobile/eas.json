@@ -7,6 +7,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "packageManager": "pnpm",
       "android": {
         "buildType": "apk"
       },
@@ -14,6 +15,7 @@
     },
     "preview": {
       "distribution": "internal",
+      "packageManager": "pnpm",
       "android": {
         "buildType": "apk"
       },
@@ -21,6 +23,7 @@
     },
     "production": {
       "autoIncrement": true,
+      "packageManager": "pnpm",
       "android": {
         "buildType": "apk"
       },
