@@ -7,7 +7,7 @@
     "dev": "tsx watch index.ts",
     "build": "tsc --project tsconfig.json",
     "start": "tsx index.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "pnpm prisma generate"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
