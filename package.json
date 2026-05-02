@@ -15,7 +15,10 @@
     "turbo": "^2.9.3",
     "typescript": "5.9.2"
   },
-  "packageManager": "yarn@1.22.22",
+  "resolutions": {
+    "hermes-compiler": "250829098.0.4"
+  },
+  "packageManager": "pnpm@10.33.2",
   "workspaces": [
     "apps/*",
     "packages/*"
