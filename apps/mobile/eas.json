@@ -1,7 +1,8 @@
 {
   "cli": {
     "version": "18.9.1",
-    "appVersionSource": "local"
+    "appVersionSource": "local",
+    "packageManager": "pnpm"
   },
   "build": {
     "development": {
@@ -9,9 +10,6 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      },
-      "hooks": {
-        "pre-build": "corepack enable && corepack prepare pnpm@10.33.2 --activate"
       },
       "channel": "development"
     },
