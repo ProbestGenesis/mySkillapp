@@ -5047,6 +5047,15 @@ expo-audio@~55.0.14:
   resolved "https://registry.yarnpkg.com/expo-audio/-/expo-audio-55.0.14.tgz#2a2b8f420eb860f15f2de9ffaedf21156139a889"
   integrity sha512-Biy6ffKXrnKHgcWSVWLKVdWLNhV/pj1JWJeotY6nDR6fVe8mjXQDCvi6EbaSFPdffVHym6UB2siKzWUNSnG+kQ==
 
+expo-build-properties@~55.0.13:
+  version "55.0.13"
+  resolved "https://registry.yarnpkg.com/expo-build-properties/-/expo-build-properties-55.0.13.tgz#e44247a14424fa7a1597f29f99cd84a69c25385b"
+  integrity sha512-UYZhUKyh7YQhbJdkBvo68WUQ7fOtZeSV7F8kfYkjEiN/ADRHG0WfEIiddvGfi9cH/5iwpptv/+Lu5cx6uvfegA==
+  dependencies:
+    "@expo/schema-utils" "^55.0.3"
+    resolve-from "^5.0.0"
+    semver "^7.6.0"
+
 expo-constants@~55.0.13, expo-constants@~55.0.15:
   version "55.0.15"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-55.0.15.tgz#62d1d828ff3384dda4bccdf45e990d700675fc70"
@@ -5844,6 +5853,11 @@ hermes-compiler@0.14.1:
   version "0.14.1"
   resolved "https://registry.yarnpkg.com/hermes-compiler/-/hermes-compiler-0.14.1.tgz#5381d2bb88454027d16736b8cb7fddaaf1556538"
   integrity sha512-+RPPQlayoZ9n6/KXKt5SFILWXCGJ/LV5d24L5smXrvTDrPS4L6dSctPczXauuvzFP3QEJbD1YO7Z3Ra4a+4IhA==
+
+hermes-compiler@250829098.0.4:
+  version "250829098.0.4"
+  resolved "https://registry.yarnpkg.com/hermes-compiler/-/hermes-compiler-250829098.0.4.tgz#f088ab43c2710ea9de8d62f17637adcb41022e39"
+  integrity sha512-8PEHLTuGOXUAnv2zByUG7Vud0TbU21fPuVqlMuek8PZgdYwb7KFWjw3+6In9J93Tx/6c/nRf5I30vzbaHBlgAQ==
 
 hermes-estree@0.32.0:
   version "0.32.0"
@@ -8544,6 +8558,10 @@ sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
+
+skills@expo/skills:
+  version "0.0.0"
+  resolved "https://codeload.github.com/expo/skills/tar.gz/93751dadf0494110893a9f7a2091ca14833d8212"
 
 slash@^3.0.0:
   version "3.0.0"
