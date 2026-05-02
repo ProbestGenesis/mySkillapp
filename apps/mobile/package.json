@@ -111,11 +111,10 @@
     "typescript": "~5.9.2"
   },
   "resolutions": {
-    "hermes-compiler": "250829098.0.4",
-    "node": "22.13.0"
+    "hermes-compiler": "250829098.0.4"
   },
   "engines": {
-    "node": "22.13.0"
+    "node": ">=22.13.0"
   },
   "private": true
 }
