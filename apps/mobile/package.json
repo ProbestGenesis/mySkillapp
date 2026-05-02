@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "packageManager": "pnpm@10.33.2",
   "scripts": {
+    "preinstall": "corepack enable && corepack prepare pnpm@10.33.2 --activate",
     "dev": "expo start -c",
     "android": "expo start -c --android",
     "ios": "expo start -c --ios",
