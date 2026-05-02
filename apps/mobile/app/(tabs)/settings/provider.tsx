@@ -38,7 +38,7 @@ export default function BecomeProvider({}: Props) {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient()
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending: sessionPending } = authClient.useSession();
   const { location, error: locationError, permissionGranted } = usePreciseLocation();
 
   const [success, setSuccess] = useState<{
@@ -99,7 +99,7 @@ export default function BecomeProvider({}: Props) {
     }
   };
 
-  if (!session) {
+  if (!sessionPending && !session) {
     return (
       <SafeAreaView className="h-screen flex-1">
         <View className="h-full w-full flex-col items-center justify-center gap-2">

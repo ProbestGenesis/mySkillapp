@@ -245,7 +245,7 @@ export default function EditProfil() {
           </TabsList>
 
           {/* ── Tab Général ── */}
-          <TabsContent value="personal" className="gap-4">
+          <TabsContent value="personal" className="gap-4  pb-30">
             <MotiView
               from={{ opacity: 0, translateX: -20 }}
               animate={{ opacity: 1, translateX: 0 }}
@@ -382,7 +382,7 @@ export default function EditProfil() {
           </TabsContent>
 
           {/* ── Tab Prestation ── */}
-          <TabsContent value="provider" className="gap-4">
+          <TabsContent value="provider" className="gap-4  pb-30">
             <MotiView
               from={{ opacity: 0, translateX: 20 }}
               animate={{ opacity: 1, translateX: 0 }}

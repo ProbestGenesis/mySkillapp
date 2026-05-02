@@ -84,10 +84,18 @@
         {
           "microphonePermission": "Allow SKILLMAP to access your microphone.",
           "enableBackgroundPlayback": true,
-          "enableBackgroundRecording": false
+          "enableBackgroundRecording": false,
+          "enableBsdiffPatchSupport": true
         }
       ],
-      "expo-video"
+      "expo-video",
+      [
+        "expo-build-properties",
+        {
+          "buildReactNativeFromSource": true,
+          "useHermesV1": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
